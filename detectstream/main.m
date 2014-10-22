@@ -3,9 +3,19 @@
 //  detectstream
 //
 //  Created by 高町なのは on 2014/10/21.
-//  Copyright (c) 2014年 Chikorita157's Anime Blog. All rights reserved.
+//Copyright (c) 2014, Atelier Shiori and James M.
+//All rights reserved.
 //
-
+//Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following //conditions are met:
+//
+//1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+//
+//2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+//
+//3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+//
+//THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#define NSLog(FORMAT, ...) printf("%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 #import <Foundation/Foundation.h>
 #import <ScriptingBridge/SBApplication.h>
 #import "Safari.h"
@@ -46,10 +56,10 @@
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
+        //Initalize Browser Check Object
         browsercheck * browser = [[browsercheck alloc] init];
-        BOOL check = [browser checkSafari];
         NSMutableArray* pages = [[NSMutableArray alloc]init];
-        if (check) {
+        if ([browser checkSafari]) {
             SafariApplication* safari = [SBApplication applicationWithBundleIdentifier:@"com.apple.Safari"];
             SBElementArray * windows = [safari windows];
             for (int i = 0; i < [windows count]; i++) {
@@ -76,29 +86,38 @@ int main(int argc, const char * argv[]) {
                 }
             }
         }
-                //NSLog(@"%@", pages);
+        // Check to see if the URL matches the streaming sites
+        NSMutableArray * matches = [[NSMutableArray alloc] init];
         if ([pages count]>0) {
             NSError *errRegex = NULL;
             NSRegularExpression *regex = [NSRegularExpression
-                                          regularExpressionWithPattern:@"\\(crunchyroll|daisuki|netflix|hulu)\b"
+                                          regularExpressionWithPattern:@"(google|crunchyroll|daisuki|netflix|hulu)"
                                           options:NSRegularExpressionCaseInsensitive
                                           error:&errRegex];
-            NSString *addresses = @"";
-            for (int i = 0; i < [pages count]; i++) {
-                NSDictionary * d = [pages objectAtIndex:i];
-                addresses = [NSString stringWithFormat:@"%@ - %@", addresses, [d objectForKey:@"url"]];
+            for (NSDictionary *d in pages) {
+                NSString * teststring = [NSString stringWithFormat:@"%@",[d objectForKey:@"url"]];
+                NSRange  searchrange = NSMakeRange(0, [teststring length]);
+                NSTextCheckingResult *match = [regex firstMatchInString:teststring options:0 range: searchrange];
+                NSRange matchRange = [regex rangeOfFirstMatchInString:teststring options:NSMatchingReportProgress range:searchrange];
+                if (matchRange.location != NSNotFound) {
+                    // Match found, add to match list
+                    NSDictionary * n = [[NSDictionary alloc] initWithObjectsAndKeys:[d objectForKey:@"title"], @"title", [d objectForKey:@"browser"], @"browser", [teststring substringWithRange:[match rangeAtIndex:1]] , @"site", nil];
+                    [matches addObject:n];
+                }
+              
             }
-            /*NSRange   searchedRange = NSMakeRange(0, [addresses length]);
-            for (NSTextCheckingResult* match in matches) {
-                
-            }*/
         }
-        NSDictionary *result = [[NSDictionary alloc] initWithObjectsAndKeys:pages,@"result", nil];
-        NSError *error;
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:result options:0 error:&error];
-        if (!jsonData) {
+        NSMutableArray * final = [[NSMutableArray alloc] init];
+        //Perform Regex and sanitize
+        if (matches.count > 0) {
             
         }
+        
+        // Generate JSON and output
+        NSDictionary *result = [[NSDictionary alloc] initWithObjectsAndKeys:final,@"result", nil];
+        NSError *error;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:result options:0 error:&error];
+        if (!jsonData) {}
         else{
             NSString *JSONString = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
             NSLog(@"%@", JSONString);
