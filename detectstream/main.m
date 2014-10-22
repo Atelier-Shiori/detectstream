@@ -13,6 +13,7 @@
 
 @import ScriptingBridge;
 @interface browsercheck : NSObject
+-(BOOL)checkChrome;
 -(BOOL)checkSafari;
 @end
 
@@ -56,7 +57,7 @@ int main(int argc, const char * argv[]) {
                 SBElementArray * tabs = [window tabs];
                 for (int i = 0 ; i < [tabs count]; i++) {
                     SafariTab * tab = [tabs objectAtIndex:i];
-                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab name],@"title",[tab URL], @"url",  nil];
+                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab name],@"title",[tab URL], @"url",  @"Safari", @"browser",  nil];
                     [pages addObject:page];
                 }
             }
@@ -70,7 +71,7 @@ int main(int argc, const char * argv[]) {
                 SBElementArray * tabs = [window tabs];
                 for (int i = 0 ; i < [tabs count]; i++) {
                     GoogleChromeTab * tab = [tabs objectAtIndex:i];
-                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url",  nil];
+                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", @"Chrome", @"browser",  nil];
                     [pages addObject:page];
                 }
             }
