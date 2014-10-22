@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <ScriptingBridge/SBApplication.h>
 #import "Safari.h"
+#import "Google Chrome.h"
 
 @import ScriptingBridge;
 @interface browsercheck : NSObject
@@ -28,27 +29,51 @@
     return false;
     
 }
+-(BOOL)checkChrome {
+    NSWorkspace * ws = [NSWorkspace sharedWorkspace];
+    NSArray *runningApps = [ws runningApplications];
+    NSRunningApplication *a;
+    for (a in runningApps ) {
+        if ([[a bundleIdentifier] isEqualToString:@"com.google.Chrome"]) {
+            return true;
+        }
+    }
+    return false;
+    
+}
 @end
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         browsercheck * browser = [[browsercheck alloc] init];
-        BOOL *check = [browser checkSafari];
+        BOOL check = [browser checkSafari];
         NSMutableArray* pages = [[NSMutableArray alloc]init];
         if (check) {
             SafariApplication* safari = [SBApplication applicationWithBundleIdentifier:@"com.apple.Safari"];
-            
-            SBElementArray* documents = [safari documents];
-            for (int i = 0; i< [documents count]; i++) {
-                
-                SafariDocument* frontDocument = [documents objectAtIndex: i];
-                id title = [safari doJavaScript: @"document.title" in: (SafariTab *) frontDocument];
-                id url = [safari doJavaScript: @"document.URL" in: (SafariTab *) frontDocument];
-                NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:title,@"title",url, @"url",  nil];
-                //NSLog(@"%@", page);
-                [pages addObject:page];
+            SBElementArray * windows = [safari windows];
+            for (int i = 0; i < [windows count]; i++) {
+                SafariWindow * window = [windows objectAtIndex:i];
+                SBElementArray * tabs = [window tabs];
+                for (int i = 0 ; i < [tabs count]; i++) {
+                    SafariTab * tab = [tabs objectAtIndex:i];
+                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab name],@"title",[tab URL], @"url",  nil];
+                    [pages addObject:page];
+                }
             }
 
+        }
+        if ([browser checkChrome]) {
+            GoogleChromeApplication * chrome = [SBApplication applicationWithBundleIdentifier:@"com.google.Chrome"];
+            SBElementArray * windows = [chrome windows];
+            for (int i = 0; i < [windows count]; i++) {
+                GoogleChromeWindow * window = [windows objectAtIndex:i];
+                SBElementArray * tabs = [window tabs];
+                for (int i = 0 ; i < [tabs count]; i++) {
+                    GoogleChromeTab * tab = [tabs objectAtIndex:i];
+                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url",  nil];
+                    [pages addObject:page];
+                }
+            }
         }
                 //NSLog(@"%@", pages);
         if ([pages count]>0) {

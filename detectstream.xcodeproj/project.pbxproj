@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8212F76019F75BFC0029B2F4 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */; };
 		8212F76319F75E7B0029B2F4 /* Safari.app in Sources */ = {isa = PBXBuildFile; fileRef = 8212F76219F75E4A0029B2F4 /* Safari.app */; };
+		8285734A19F812950004EF95 /* Google Chrome.app in Sources */ = {isa = PBXBuildFile; fileRef = 8285734819F811F60004EF95 /* Google Chrome.app */; };
 		829FB41619F7308D0026EAC2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 829FB41519F7308D0026EAC2 /* main.m */; };
 /* End PBXBuildFile section */
 
@@ -40,7 +41,8 @@
 
 /* Begin PBXFileReference section */
 		8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
-		8212F76219F75E4A0029B2F4 /* Safari.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Safari.app; path = ../../../../Applications/Safari.app; sourceTree = "<group>"; };
+		8212F76219F75E4A0029B2F4 /* Safari.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Safari.app; path = /Applications/Safari.app; sourceTree = "<absolute>"; };
+		8285734819F811F60004EF95 /* Google Chrome.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = "Google Chrome.app"; path = "/Applications/Google Chrome.app"; sourceTree = "<absolute>"; };
 		829FB41219F7308D0026EAC2 /* detectstream */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = detectstream; sourceTree = BUILT_PRODUCTS_DIR; };
 		829FB41519F7308D0026EAC2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -57,13 +59,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8285734919F811FB0004EF95 /* Apple Script */ = {
+			isa = PBXGroup;
+			children = (
+				8212F76219F75E4A0029B2F4 /* Safari.app */,
+				8285734819F811F60004EF95 /* Google Chrome.app */,
+			);
+			name = "Apple Script";
+			sourceTree = "<group>";
+		};
 		829FB40919F7308D0026EAC2 = {
 			isa = PBXGroup;
 			children = (
 				8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */,
 				829FB41419F7308D0026EAC2 /* detectstream */,
 				829FB41319F7308D0026EAC2 /* Products */,
-				8212F76219F75E4A0029B2F4 /* Safari.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -79,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				829FB41519F7308D0026EAC2 /* main.m */,
+				8285734919F811FB0004EF95 /* Apple Script */,
 			);
 			path = detectstream;
 			sourceTree = "<group>";
@@ -142,6 +153,7 @@
 			files = (
 				829FB41619F7308D0026EAC2 /* main.m in Sources */,
 				8212F76319F75E7B0029B2F4 /* Safari.app in Sources */,
+				8285734A19F812950004EF95 /* Google Chrome.app in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
