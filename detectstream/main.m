@@ -29,6 +29,7 @@
 //  POSSIBILITY OF SUCH DAMAGE.
 
 // Do not want to output timestamp for the output
+
 #define NSLog(FORMAT, ...) printf("%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 
 #import <Foundation/Foundation.h>
@@ -67,6 +68,52 @@
     return false;
     
 }
+@end
+//
+// This class is used to simplify regex
+//
+@interface ezregex : NSObject
+-(BOOL)checkMatch:(NSString *)string pattern:(NSString *)pattern;
+-(NSString *)searchreplace:(NSString *)string pattern:(NSString *)pattern;
+-(NSString *)findMatch:(NSString *)string pattern:(NSString *)pattern rangeatindex:(int)ri;
+@end
+
+@implementation ezregex
+
+-(BOOL)checkMatch:(NSString *)string pattern:(NSString *)pattern{
+    NSError *errRegex = NULL;
+    NSRegularExpression *regex = [NSRegularExpression
+                                  regularExpressionWithPattern:pattern
+                                  options:NSRegularExpressionCaseInsensitive
+                                  error:&errRegex];
+    NSRange  searchrange = NSMakeRange(0, [string length]);
+    NSRange matchRange = [regex rangeOfFirstMatchInString:string options:NSMatchingReportProgress range:searchrange];
+    if (matchRange.location != NSNotFound)
+        return true;
+        else
+        return false;
+}
+-(NSString *)searchreplace:(NSString *)string pattern:(NSString *)pattern{
+    NSError *errRegex = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&errRegex];
+    NSString * newString = [regex stringByReplacingMatchesInString:string options:0 range:NSMakeRange(0, [string length]) withTemplate:@""];
+    return newString;
+}
+-(NSString *)findMatch:(NSString *)string pattern:(NSString *)pattern rangeatindex:(int)ri{
+    NSError *errRegex = NULL;
+    NSRegularExpression *regex = [NSRegularExpression
+                                  regularExpressionWithPattern:pattern
+                                  options:NSRegularExpressionCaseInsensitive
+                                  error:&errRegex];
+    NSRange  searchrange = NSMakeRange(0, [string length]);
+    NSTextCheckingResult *match = [regex firstMatchInString:string options:0 range: searchrange];
+    NSRange matchRange = [regex rangeOfFirstMatchInString:string options:NSMatchingReportProgress range:searchrange];
+    if (matchRange.location != NSNotFound){
+        return [string substringWithRange:[match rangeAtIndex:ri]];
+    }
+    return @"";
+}
+
 @end
 
 int main(int argc, const char * argv[]) {
@@ -118,35 +165,68 @@ int main(int argc, const char * argv[]) {
                 NSRange matchRange = [regex rangeOfFirstMatchInString:teststring options:NSMatchingReportProgress range:searchrange];
                 if (matchRange.location != NSNotFound) {
                     // Match found, add to match list
-                    NSDictionary * n = [[NSDictionary alloc] initWithObjectsAndKeys:[d objectForKey:@"title"], @"title", [d objectForKey:@"browser"], @"browser", [teststring substringWithRange:[match rangeAtIndex:1]] , @"site", nil];
+                    NSDictionary * n = [[NSDictionary alloc] initWithObjectsAndKeys:[d objectForKey:@"title"], @"title", teststring , @"url" ,[d objectForKey:@"browser"], @"browser", [teststring substringWithRange:[match rangeAtIndex:1]] , @"site", nil];
                     [matches addObject:n];
                 }
               
             }
         }
         NSMutableArray * final = [[NSMutableArray alloc] init];
+        ezregex * ez = [[ezregex alloc] init];
         //Perform Regex and sanitize
         if (matches.count > 0) {
-            for (NSDictionary *d in matches) {
-                NSString * regextitle = [NSString stringWithFormat:@"%@",[d objectForKey:@"title"]];
-                NSString * site = [NSString stringWithFormat:@"%@", [d objectForKey:@"site"]];
+            for (NSDictionary *m in matches) {
+                NSString * regextitle = [NSString stringWithFormat:@"%@",[m objectForKey:@"title"]];
+                NSString * url = [NSString stringWithFormat:@"%@", [m objectForKey:@"url"]];
+                NSString * site = [NSString stringWithFormat:@"%@", [m objectForKey:@"site"]];
                 NSString * title;
-                NSString * episode;
-                NSString * season;
+                NSString * tmpepisode;
+                NSString * tmpseason;
                 if ([site isEqualToString:@"crunchyroll"]) {
                     //Add Regex Arguments Here
+                    continue;
                 }
                 else if ([site isEqualToString:@"daisuki"]) {
-                    //Add Regex Arguments Here
+                    //Add Regex Arguments for daisuki.net
+                    if ([ez checkMatch:url pattern:@"^(?=.*\\banime\\b)(?=.*\\bwatch\\b).*"]) {
+                        //Perform Sanitation
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\sDAISUKI\\b"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\D\\D\\s*.*\\s-"];
+                        tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d)" rangeatindex:0];
+                        title = [ez findMatch:regextitle pattern:@"\\b\\D([^\\n\\r]*)$" rangeatindex:0];
+                        title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                        tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                        tmpseason = @"0"; //not supported
+                    }
+                    else
+                        continue; // Invalid address
                 }
                 else if ([site isEqualToString:@"netflix"]) {
                     //Add Regex Arguments Here
+                    continue; //unsupported for now
                 }
                 else if ([site isEqualToString:@"hulu"]) {
                     //Add Regex Arguments Here
+                     continue; //unsupported for now
                 }
+                else{
+                    continue;
+                }
+                NSNumber * episode;
+                NSNumber * season;
+                // Final Checks
+                if ([tmpepisode length] ==0){
+                    episode = 0;
+                }
+                else{
+                    episode = [[[NSNumberFormatter alloc] init] numberFromString:tmpepisode];
+                }
+                if (title.length == 0) {
+                    continue;
+                }
+                season = [[[NSNumberFormatter alloc] init] numberFromString:tmpseason];
                 // Add to Final Array
-                NSDictionary * frecord = [[NSDictionary alloc] initWithObjectsAndKeys:title, @"title", episode, @"episode", season, @"season", site, @"site", [d objectForKey:@"browser"], @"browser", nil];
+                NSDictionary * frecord = [[NSDictionary alloc] initWithObjectsAndKeys:title, @"title", episode, @"episode", season, @"season", [m objectForKey:@"browser"], @"browser", site, @"site", nil];
                 [final addObject:frecord];
             }
         }
