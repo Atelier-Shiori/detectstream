@@ -155,7 +155,7 @@ int main(int argc, const char * argv[]) {
         if ([pages count]>0) {
             NSError *errRegex = NULL;
             NSRegularExpression *regex = [NSRegularExpression
-                                          regularExpressionWithPattern:@"(crunchyroll|daisuki|netflix|hulu)" //Supported Streaming Sites
+                                          regularExpressionWithPattern:@"(crunchyroll|daisuki)" //Supported Streaming Sites
                                           options:NSRegularExpressionCaseInsensitive
                                           error:&errRegex];
             for (NSDictionary *d in pages) {
@@ -184,6 +184,19 @@ int main(int argc, const char * argv[]) {
                 NSString * tmpseason;
                 if ([site isEqualToString:@"crunchyroll"]) {
                     //Add Regex Arguments Here
+                    if ([ez checkMatch:url pattern:@"\\b[^/]+\\/episode-[0-9]+.*-[0-9]+$"]||[ez checkMatch:url pattern:@"\\b[^/]+\\/.*-movie-[0-9]+$"]) {
+                        //Perform Sanitation
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\bCrunchyroll - Watch\\s"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\b\\s-\\sMovie\\s-\\sMovie"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\b\\sEpisode"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\D-\\s*.*$"];
+                        tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d|\\d)" rangeatindex:0];
+                        title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
+                        title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                        tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                        tmpseason = @"0"; //not supported
+                    }
+                    else
                     continue;
                 }
                 else if ([site isEqualToString:@"daisuki"]) {
