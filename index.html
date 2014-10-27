@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Detectstream by chikorita157</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Detectstream</h1>
+        <p>Command line application that outputs Anime that is being stream from Safari and Chrome in JSON on OS X</p>
+        <p class="view"><a href="https://github.com/chikorita157/detectstream">View the Project on GitHub <small>chikorita157/detectstream</small></a></p>
+        <ul>
+          <li><a href="https://github.com/chikorita157/detectstream/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/chikorita157/detectstream/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/chikorita157/detectstream">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="what-is-detectstream" class="anchor" href="#what-is-detectstream"><span class="octicon octicon-link"></span></a>What is detectstream</h1>
+
+<p>Detectstream is a command line program utility for OS X that takes all the URLs and titles from open windows and tabs and detect Anime being stream on legal streaming sites and spit out the series title and episode. It works like this:</p>
+
+<ul>
+<li>Check to see if Safari or Chrome is open. If there are any open windows and tabs, it will take the title and URL and put it in a dictionary, which in turn goes into an array called pages.</li>
+<li>The Pages array is then check by a first round of regular expressions to see if the URL is a streaming site. IF there is a match, that dictionary entry will go to the matches array. If not, the entry is ignored.</li>
+<li>Next, it goes through another round of regular expressions, but this time it's specific to a specific streaming site. Each streaming site will have a separate set of patterns. If the information is valid, it will be put in the final array.</li>
+<li>Lastly, the final array is put into a dictionary with a key called "result" and is outputted in JSON. If there is no windows or match, the output for result will come out as null.</li>
+</ul>
+
+<p>Here are the example of the outputs from the currently working program:</p>
+
+<p><code>{"result":[{"browser":"Safari","title":"Sword Art Online II","season":0,"site":"daisuki","episode":1}]}</code></p>
+
+<p>This will be the output when there is no match:</p>
+
+<p><code>{"result":null}</code></p>
+
+<h1>
+<a name="what-sites-do-you-support" class="anchor" href="#what-sites-do-you-support"><span class="octicon octicon-link"></span></a>What Sites do you Support?</h1>
+
+<p>We currently Support Crunchyroll and Daisuki.</p>
+
+<h1>
+<a name="how-to-help-out" class="anchor" href="#how-to-help-out"><span class="octicon octicon-link"></span></a>How to help out</h1>
+
+<p>You can help us out by sending the page title and URL of the Anime Stream with the series title, episode, service name and page source by using this form
+<a href="https://docs.google.com/forms/d/1tuv5OhD71U8L_3NyZuuZii3_A3BHlUhPAfQkkicvciU/viewform">https://docs.google.com/forms/d/1tuv5OhD71U8L_3NyZuuZii3_A3BHlUhPAfQkkicvciU/viewform</a></p>
+
+<p>or</p>
+
+<p>Fork this source code and add the necessary changes to improve the detection of various streaming sites.</p>
+
+<h1>
+<a name="to-compile" class="anchor" href="#to-compile"><span class="octicon octicon-link"></span></a>To Compile</h1>
+
+<p>Get the source and then type xcodebuild. You need to have Google Chrome instlalled to compile as it's used for the scripting bridge.</p>
+
+<p>Get the source by typing 'git clone <a href="https://github.com/chikorita157/detectstream.git">https://github.com/chikorita157/detectstream.git</a>'</p>
+
+<p>To compile, type:
+[<em>] 'cd detectstream'
+[</em>] 'xcodebuild'</p>
+
+<p>The built program should be in the build/release </p>
+
+<h1>
+<a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to use</h1>
+
+<p>The following example is in Objective C. To include it on your project, just drag it to Resources. It will be copied to the resource folder of the application bundle.</p>
+
+<p><code>NSTask *task;</code></p>
+
+<p><code>task = [[NSTask alloc] init];</code></p>
+
+<p><code>[task setLaunchPath:[myBundle pathForResource:@"detectstream" ofType:@""]];</code></p>
+
+<p><code>NSPipe *pipe;</code></p>
+
+<p><code>pipe = [NSPipe pipe];</code></p>
+
+<p><code>[task setStandardOutput: pipe];</code></p>
+
+<p><code>NSFileHandle *file;</code></p>
+
+<p><code>file = [pipe fileHandleForReading];</code></p>
+
+<p><code>[task launch];</code></p>
+
+<p><code>NSData *data;</code></p>
+
+<p><code>data = [file readDataToEndOfFile];</code> </p>
+
+<h3>
+<a name="to-use-the-data" class="anchor" href="#to-use-the-data"><span class="octicon octicon-link"></span></a>To use the data</h3>
+
+<p><code>NSError* error;</code></p>
+
+<p><code>NSDictionary* json = [NSJSONSerialization</code>
+        <code>JSONObjectWithData:data</code>
+        <code>options:kNilOptions</code>
+        <code>error:&amp;error];</code></p>
+
+<p><code>NSArray * a = [json objectForKey@"result"];</code></p>
+
+<p><code>NSDictionary * d = [a objectAtIndex:0];</code></p>
+
+<p><code>NSString * title = [d objectForKey@"title"];</code></p>
+
+<p><code>NSNumber * episode = [d objectForKey@"episode"];</code></p>
+
+<p><code>NSNumber * season = [d objectForKey@"season"];</code></p>
+
+<p><code>NSString * site = [d objectForKey@"site"];</code></p>
+
+<p><code>NSLog(@"%@ - %d - %d - %@, title, [episode intValue], [season intValue], site);</code></p>
+
+<h1>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h1>
+
+<p>Copyright (c) 2014, Atelier Shiori, James M.
+All rights reserved.</p>
+
+<p>Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:</p>
+
+<pre><code>* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer in the
+  documentation and/or other materials provided with the distribution.
+
+* Neither the name of the Atelier Shiori, James M nor the
+  names of its contributors may be used to endorse or promote products
+  derived from this software without specific prior written permission.
+</code></pre>
+
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL  BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/chikorita157">chikorita157</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
