@@ -56,6 +56,18 @@
     return false;
     
 }
+-(BOOL)checkWebkit {
+    NSWorkspace * ws = [NSWorkspace sharedWorkspace];
+    NSArray *runningApps = [ws runningApplications];
+    NSRunningApplication *a;
+    for (a in runningApps) {
+        if ([[a bundleIdentifier] isEqualToString:@"org.webkit.nightly.WebKit"]) {
+            return true;
+        }
+    }
+    return false;
+    
+}
 -(BOOL)checkChrome {
     NSWorkspace * ws = [NSWorkspace sharedWorkspace];
     NSArray *runningApps = [ws runningApplications];
@@ -121,6 +133,9 @@ int main(int argc, const char * argv[]) {
         //Initalize Browser Check Object
         browsercheck * browser = [[browsercheck alloc] init];
         NSMutableArray* pages = [[NSMutableArray alloc]init];
+/* 
+ Browser Detection
+ */
         // Check to see Safari is running. If so, add tab's title and url to the array
         if ([browser checkSafari]) {
             SafariApplication* safari = [SBApplication applicationWithBundleIdentifier:@"com.apple.Safari"];
@@ -135,6 +150,20 @@ int main(int argc, const char * argv[]) {
                 }
             }
 
+        }
+        // Do the same for Webkit
+        if ([browser checkWebkit]) {
+            SafariApplication* safari = [SBApplication applicationWithBundleIdentifier:@"org.webkit.nightly.WebKit"];
+            SBElementArray * windows = [safari windows];
+            for (int i = 0; i < [windows count]; i++) {
+                SafariWindow * window = [windows objectAtIndex:i];
+                SBElementArray * tabs = [window tabs];
+                for (int i = 0 ; i < [tabs count]; i++) {
+                    SafariTab * tab = [tabs objectAtIndex:i];
+                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab name],@"title",[tab URL], @"url",  @"Webkit", @"browser",  nil];
+                    [pages addObject:page];
+                }
+            }
         }
         // Check to see Chrome is running. If so, add tab's title and url to the array
         if ([browser checkChrome]) {
