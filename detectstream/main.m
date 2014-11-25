@@ -184,7 +184,7 @@ int main(int argc, const char * argv[]) {
         if ([pages count]>0) {
             NSError *errRegex = NULL;
             NSRegularExpression *regex = [NSRegularExpression
-                                          regularExpressionWithPattern:@"(crunchyroll|daisuki)" //Supported Streaming Sites
+                                          regularExpressionWithPattern:@"(crunchyroll|daisuki|animelab|animenewsnetwork|viz)" //Supported Streaming Sites
                                           options:NSRegularExpressionCaseInsensitive
                                           error:&errRegex];
             for (NSDictionary *d in pages) {
@@ -243,13 +243,39 @@ int main(int argc, const char * argv[]) {
                     else
                         continue; // Invalid address
                 }
-                else if ([site isEqualToString:@"netflix"]) {
-                    //Add Regex Arguments Here
-                    continue; //unsupported for now
+                // Following came from Taiga - https://github.com/erengy/taiga/ //
+                else if ([site isEqualToString:@"animelab"]) {
+                    if ([ez checkMatch:url pattern:@"(/player/)"]) {
+                        regextitle = [ez searchreplace:regextitle pattern:@"AnimeLab - "];
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\b\\sEpisode"];
+                        tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d)" rangeatindex:0];
+                        title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
+                        title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                        tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                        tmpseason = @"0"; //not supported
+                    }
+                    else
+                        continue; // Invalid address
                 }
-                else if ([site isEqualToString:@"hulu"]) {
-                    //Add Regex Arguments Here
-                     continue; //unsupported for now
+                else if ([site isEqualToString:@"animenewsnetwork"]) {
+                    if ([ez checkMatch:url pattern:@"video/[0-9]+"]) {
+                        regextitle = [ez searchreplace:regextitle pattern:@" - Anime News Network"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\b\\sEpisode"];
+                        tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d)" rangeatindex:0];
+                        title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
+                        title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                        tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                        tmpseason = @"0"; //not supported
+                    }
+                    else
+                        continue; // Invalid address
+                }
+                else if ([site isEqualToString:@"viz"]) {
+                    if ([ez checkMatch:url pattern:@"anime/streaming/[^/]+-episode-[0-9]+/"]||[ez checkMatch:url pattern:@"anime/streaming/[^/]+-movie/"]) {
+                        continue;
+                    }
+                    else
+                        continue; // Invalid address
                 }
                 else{
                     continue;
