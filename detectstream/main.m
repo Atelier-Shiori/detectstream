@@ -41,6 +41,7 @@
 @interface browsercheck : NSObject
 -(BOOL)checkChrome;
 -(BOOL)checkSafari;
+-(BOOL)checkWebkit;
 @end
 
 @implementation browsercheck
@@ -137,34 +138,39 @@ int main(int argc, const char * argv[]) {
  Browser Detection
  */
         // Check to see Safari is running. If so, add tab's title and url to the array
-        if ([browser checkSafari]) {
-            SafariApplication* safari = [SBApplication applicationWithBundleIdentifier:@"com.apple.Safari"];
-            SBElementArray * windows = [safari windows];
-            for (int i = 0; i < [windows count]; i++) {
-                SafariWindow * window = [windows objectAtIndex:i];
-                SBElementArray * tabs = [window tabs];
-                for (int i = 0 ; i < [tabs count]; i++) {
-                    SafariTab * tab = [tabs objectAtIndex:i];
-                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab name],@"title",[tab URL], @"url",  @"Safari", @"browser",  nil];
-                    [pages addObject:page];
+            for (int s = 0; s <2; s++) {
+                SafariApplication* safari;
+                NSString * browserstring;
+                switch (s) {
+                    case 0:
+                        if (![browser checkSafari]) {
+                            continue;
+                        }
+                        safari = [SBApplication applicationWithBundleIdentifier:@"com.apple.Safari"];
+                        browserstring = @"Safari";
+                        break;
+                    case 1:
+                        if (![browser checkWebkit]) {
+                            continue;
+                        }
+                        safari  = [SBApplication applicationWithBundleIdentifier:@"org.webkit.nightly.WebKit"];
+                        browserstring = @"Webkit";
+                        break;
+                    default:
+                        break;
                 }
-            }
 
-        }
-        // Do the same for Webkit
-        if ([browser checkWebkit]) {
-            SafariApplication* safari = [SBApplication applicationWithBundleIdentifier:@"org.webkit.nightly.WebKit"];
-            SBElementArray * windows = [safari windows];
-            for (int i = 0; i < [windows count]; i++) {
-                SafariWindow * window = [windows objectAtIndex:i];
-                SBElementArray * tabs = [window tabs];
-                for (int i = 0 ; i < [tabs count]; i++) {
-                    SafariTab * tab = [tabs objectAtIndex:i];
-                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab name],@"title",[tab URL], @"url",  @"Webkit", @"browser",  nil];
-                    [pages addObject:page];
+                SBElementArray * windows = [safari windows];
+                for (int i = 0; i < [windows count]; i++) {
+                    SafariWindow * window = [windows objectAtIndex:i];
+                    SBElementArray * tabs = [window tabs];
+                    for (int i = 0 ; i < [tabs count]; i++) {
+                        SafariTab * tab = [tabs objectAtIndex:i];
+                        NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab name],@"title",[tab URL], @"url",  browserstring, @"browser",  nil];
+                        [pages addObject:page];
+                    }
                 }
             }
-        }
         // Check to see Chrome is running. If so, add tab's title and url to the array
         if ([browser checkChrome]) {
             GoogleChromeApplication * chrome = [SBApplication applicationWithBundleIdentifier:@"com.google.Chrome"];
@@ -272,6 +278,15 @@ int main(int argc, const char * argv[]) {
                 }
                 else if ([site isEqualToString:@"viz"]) {
                     if ([ez checkMatch:url pattern:@"anime/streaming/[^/]+-episode-[0-9]+/"]||[ez checkMatch:url pattern:@"anime/streaming/[^/]+-movie/"]) {
+                        regextitle = [ez searchreplace:regextitle pattern:@"VIZ.com - NEON ALLEY - "];
+                        regextitle = [ez searchreplace:regextitle pattern:@" (DUB)"];
+                        regextitle = [ez searchreplace:regextitle pattern:@" (SUB)"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\b\\sEpisode"];
+                        tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d)" rangeatindex:0];
+                        title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
+                        title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                        tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                        tmpseason = @"0"; //not supported
                         continue;
                     }
                     else
