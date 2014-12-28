@@ -265,8 +265,9 @@ int main(int argc, const char * argv[]) {
                 }
                 else if ([site isEqualToString:@"animenewsnetwork"]) {
                     if ([ez checkMatch:url pattern:@"video/[0-9]+"]) {
-                        regextitle = [ez searchreplace:regextitle pattern:@" - Anime News Network"];
-                        regextitle = [ez searchreplace:regextitle pattern:@"\\b\\sEpisode"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"\b\s-\sAnime News Network$"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"\s\((s|d)\)\s"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"ep\."];
                         tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d)" rangeatindex:0];
                         title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
                         title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
