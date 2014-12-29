@@ -251,10 +251,12 @@ int main(int argc, const char * argv[]) {
                 }
                 // Following came from Taiga - https://github.com/erengy/taiga/ //
                 else if ([site isEqualToString:@"animelab"]) {
-                    if ([ez checkMatch:url pattern:@"(/player/)"]) {
-                        regextitle = [ez searchreplace:regextitle pattern:@"AnimeLab - "];
-                        regextitle = [ez searchreplace:regextitle pattern:@"\\b\\sEpisode"];
-                        tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d)" rangeatindex:0];
+                    if ([ez checkMatch:url pattern:@"(\\/player\\/)"]) {
+                        regextitle = [ez searchreplace:regextitle pattern:@"AnimeLab\\s-\\s"];
+                        
+                        regextitle = [ez searchreplace:regextitle pattern:@"-\\sEpisode\\s"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\s.*"];
+                        tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d|\\d)" rangeatindex:0];
                         title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
                         title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                         tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -264,11 +266,11 @@ int main(int argc, const char * argv[]) {
                         continue; // Invalid address
                 }
                 else if ([site isEqualToString:@"animenewsnetwork"]) {
-                    if ([ez checkMatch:url pattern:@"video/[0-9]+"]) {
-                        regextitle = [ez searchreplace:regextitle pattern:@"\b\s-\sAnime News Network$"];
-                        regextitle = [ez searchreplace:regextitle pattern:@"\s\((s|d)\)\s"];
-                        regextitle = [ez searchreplace:regextitle pattern:@"ep\."];
-                        tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d)" rangeatindex:0];
+                    if ([ez checkMatch:url pattern:@"video\\/[0-9]+"]) {
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\b\\s-\\sAnime News Network$"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\s\\((s|d)\\)\\s"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"ep\\."];
+                        tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d|\\d)" rangeatindex:0];
                         title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
                         title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                         tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -278,17 +280,15 @@ int main(int argc, const char * argv[]) {
                         continue; // Invalid address
                 }
                 else if ([site isEqualToString:@"viz"]) {
-                    if ([ez checkMatch:url pattern:@"anime/streaming/[^/]+-episode-[0-9]+/"]||[ez checkMatch:url pattern:@"anime/streaming/[^/]+-movie/"]) {
-                        regextitle = [ez searchreplace:regextitle pattern:@"VIZ.com - NEON ALLEY - "];
-                        regextitle = [ez searchreplace:regextitle pattern:@" (DUB)"];
-                        regextitle = [ez searchreplace:regextitle pattern:@" (SUB)"];
+                    if ([ez checkMatch:url pattern:@"anime\\/streaming\\/[^/]+-episode-[0-9]+\\/"]||[ez checkMatch:url pattern:@"anime\\/streaming\\/[^/]+-movie\\/"]) {
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\bVIZ.com - NEON ALLEY -\\s"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\s\\((DUB|SUB)\\)"];
                         regextitle = [ez searchreplace:regextitle pattern:@"\\b\\sEpisode"];
-                        tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d)" rangeatindex:0];
-                        title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
+                        tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d|\\d)" rangeatindex:0];
+                        title = [ez findMatch:regextitle pattern:@"\\b.*\\s" rangeatindex:0];
                         title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                         tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                         tmpseason = @"0"; //not supported
-                        continue;
                     }
                     else
                         continue; // Invalid address
@@ -300,7 +300,7 @@ int main(int argc, const char * argv[]) {
                 NSNumber * season;
                 // Final Checks
                 if ([tmpepisode length] ==0){
-                    episode = 0;
+                    episode = [NSNumber numberWithInt:0];
                 }
                 else{
                     episode = [[[NSNumberFormatter alloc] init] numberFromString:tmpepisode];
