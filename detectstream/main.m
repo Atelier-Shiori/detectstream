@@ -318,13 +318,15 @@ int main(int argc, const char * argv[]) {
 					    NSDictionary *metadata = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
 						NSDictionary *videodata = [metadata objectForKey:@"video"];
 						title = [videodata objectForKey:@"title"];
+                        NSString * videoid = [ez findMatch:url pattern:@"\\b(?:movieid=)\\d+" rangeatindex:0];
+                        videoid = [videoid stringByReplacingOccurrencesOfString:@"movieid=" withString:@""];
 						NSArray * seasondata = [videodata objectForKey:@"seasons"];
                         for (int i = 0; i < [seasondata count]; i++) {
                             NSDictionary * season = [seasondata objectAtIndex:i];
                             NSArray *episodes = [season objectForKey:@"episodes"];
                             for (int e = 0; e < [episodes count]; e++) {
                                 NSDictionary * episode = [episodes objectAtIndex:e];
-                                if ([episode objectForKey:@"bookmark"] !=nil) {
+                                if (![videoid isEqualTo:[NSString stringWithFormat:@"%@", [episode objectForKey:@"id"]]]) {
                                     continue;
                                 }
                                 else{
