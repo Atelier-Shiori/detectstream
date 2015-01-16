@@ -126,7 +126,6 @@
     }
     return @"";
 }
-
 @end
 
 int main(int argc, const char * argv[]) {
@@ -166,7 +165,15 @@ int main(int argc, const char * argv[]) {
                     SBElementArray * tabs = [window tabs];
                     for (int i = 0 ; i < [tabs count]; i++) {
                         SafariTab * tab = [tabs objectAtIndex:i];
-                        NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab name],@"title",[tab URL], @"url",  browserstring, @"browser",  nil];
+						NSString * DOM;
+						if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:@"(netflix)"]){
+							//Include DOM
+							DOM = [tab source];
+						}
+						else{
+							DOM = nil;
+						}
+                        NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab name],@"title",[tab URL], @"url",  browserstring, @"browser", DOM, @"DOM",  nil];
                         [pages addObject:page];
                     }
                 }
@@ -180,7 +187,11 @@ int main(int argc, const char * argv[]) {
                 SBElementArray * tabs = [window tabs];
                 for (int i = 0 ; i < [tabs count]; i++) {
                     GoogleChromeTab * tab = [tabs objectAtIndex:i];
-                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", @"Chrome", @"browser",  nil];
+					if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:@"(netflix)"]){
+						// Chrome does not provide DOM, exclude
+						continue;
+					}
+                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", @"Chrome", @"browser", nil, @"DOM",  nil];
                     [pages addObject:page];
                 }
             }
@@ -190,7 +201,7 @@ int main(int argc, const char * argv[]) {
         if ([pages count]>0) {
             NSError *errRegex = NULL;
             NSRegularExpression *regex = [NSRegularExpression
-                                          regularExpressionWithPattern:@"(crunchyroll|daisuki|animelab|animenewsnetwork|viz)" //Supported Streaming Sites
+                                          regularExpressionWithPattern:@"(crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix)" //Supported Streaming Sites
                                           options:NSRegularExpressionCaseInsensitive
                                           error:&errRegex];
             for (NSDictionary *d in pages) {
@@ -200,7 +211,7 @@ int main(int argc, const char * argv[]) {
                 NSRange matchRange = [regex rangeOfFirstMatchInString:teststring options:NSMatchingReportProgress range:searchrange];
                 if (matchRange.location != NSNotFound) {
                     // Match found, add to match list
-                    NSDictionary * n = [[NSDictionary alloc] initWithObjectsAndKeys:[d objectForKey:@"title"], @"title", teststring , @"url" ,[d objectForKey:@"browser"], @"browser", [teststring substringWithRange:[match rangeAtIndex:1]] , @"site", nil];
+                    NSDictionary * n = [[NSDictionary alloc] initWithObjectsAndKeys:[d objectForKey:@"title"], @"title", teststring , @"url" ,[d objectForKey:@"browser"], @"browser", [teststring substringWithRange:[match rangeAtIndex:1]] , @"site",[d objectForKey:@"DOM"] , @"DOM", nil];
                     [matches addObject:n];
                 }
               
@@ -293,6 +304,40 @@ int main(int argc, const char * argv[]) {
                     else
                         continue; // Invalid address
                 }
+				else if ([site isEqualToString:@"netflix"]){
+					//Experimental
+                    if([ez checkMatch:url pattern:@"WiPlayer"]){
+						NSString * DOM = [NSString stringWithFormat:@"%@",[m objectForKey:@"DOM"]];
+						DOM = [ez findMatch:DOM pattern:@"\"metadata\":\"*.*\",\"initParams\"" rangeatindex:0];
+                        DOM = [DOM stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                        DOM = [DOM stringByReplacingOccurrencesOfString:@"metadata:" withString:@""];
+                        DOM = [DOM stringByReplacingOccurrencesOfString:@",initParams" withString:@""];
+						// Decode JSON Data
+						NSData * jsonData = [[NSData alloc] initWithBase64Encoding:DOM];
+					    NSError* error;
+					    NSDictionary *metadata = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+						NSDictionary *videodata = [metadata objectForKey:@"video"];
+						title = [videodata objectForKey:@"title"];
+						NSArray * seasondata = [videodata objectForKey:@"seasons"];
+                        for (int i = 0; i < [seasondata count]; i++) {
+                            NSDictionary * season = [seasondata objectAtIndex:i];
+                            NSArray *episodes = [season objectForKey:@"episodes"];
+                            for (int e = 0; e < [episodes count]; e++) {
+                                NSDictionary * episode = [episodes objectAtIndex:e];
+                                if ([episode objectForKey:@"bookmark"] !=nil) {
+                                    continue;
+                                }
+                                else{
+                                    tmpepisode = [NSString stringWithFormat:@"%@", [episode objectForKey:@"seq"]];
+                                    break;
+                                }
+                            }
+                        }
+                        tmpseason = @"0"; //not supported
+					}
+					else
+						continue;
+				}
                 else{
                     continue;
                 }
