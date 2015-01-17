@@ -28,7 +28,7 @@
       </header>
       <section>
         <h1>
-<a name="what-is-detectstream" class="anchor" href="#what-is-detectstream"><span class="octicon octicon-link"></span></a>What is detectstream</h1>
+<a id="what-is-detectstream" class="anchor" href="#what-is-detectstream" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is detectstream</h1>
 
 <p>Detectstream is a command line program utility for OS X that takes all the URLs and titles from open windows and tabs and detect Anime being stream on legal streaming sites and spit out the series title and episode. It works like this:</p>
 
@@ -47,13 +47,15 @@
 
 <p><code>{"result":null}</code></p>
 
-<h1>
-<a name="what-sites-do-you-support" class="anchor" href="#what-sites-do-you-support"><span class="octicon octicon-link"></span></a>What Sites do you Support?</h1>
-
-<p>We currently Support Crunchyroll and Daisuki.</p>
+<p>This helper program is used in Hachidori and MAL Updater OS X for legal streaming detection support.</p>
 
 <h1>
-<a name="how-to-help-out" class="anchor" href="#how-to-help-out"><span class="octicon octicon-link"></span></a>How to help out</h1>
+<a id="what-sites-do-you-support" class="anchor" href="#what-sites-do-you-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>What Sites do you Support?</h1>
+
+<p>We currently Support Crunchyroll, Daisuki, Anime News Network Video Player, AnimeLab, Viz and Netflix (under Safari only). With the exception of Netflix, legal streaming detection supports work in Safari, Webkit and Chrome.</p>
+
+<h1>
+<a id="how-to-help-out" class="anchor" href="#how-to-help-out" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to help out</h1>
 
 <p>You can help us out by sending the page title and URL of the Anime Stream with the series title, episode, service name and page source by using this form
 <a href="https://docs.google.com/forms/d/1tuv5OhD71U8L_3NyZuuZii3_A3BHlUhPAfQkkicvciU/viewform">https://docs.google.com/forms/d/1tuv5OhD71U8L_3NyZuuZii3_A3BHlUhPAfQkkicvciU/viewform</a></p>
@@ -63,7 +65,7 @@
 <p>Fork this source code and add the necessary changes to improve the detection of various streaming sites.</p>
 
 <h1>
-<a name="to-compile" class="anchor" href="#to-compile"><span class="octicon octicon-link"></span></a>To Compile</h1>
+<a id="to-compile" class="anchor" href="#to-compile" aria-hidden="true"><span class="octicon octicon-link"></span></a>To Compile</h1>
 
 <p>Get the source and then type xcodebuild. You need to have Google Chrome instlalled to compile as it's used for the scripting bridge.</p>
 
@@ -76,7 +78,7 @@
 <p>The built program should be in the build/release </p>
 
 <h1>
-<a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to use</h1>
+<a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use</h1>
 
 <p>The following example is in Objective C. To include it on your project, just drag it to Resources. It will be copied to the resource folder of the application bundle.</p>
 
@@ -103,7 +105,7 @@
 <p><code>data = [file readDataToEndOfFile];</code> </p>
 
 <h3>
-<a name="to-use-the-data" class="anchor" href="#to-use-the-data"><span class="octicon octicon-link"></span></a>To use the data</h3>
+<a id="to-use-the-data" class="anchor" href="#to-use-the-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>To use the data</h3>
 
 <p><code>NSError* error;</code></p>
 
@@ -127,36 +129,9 @@
 <p><code>NSLog(@"%@ - %d - %d - %@, title, [episode intValue], [season intValue], site);</code></p>
 
 <h1>
-<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h1>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h1>
 
-<p>Copyright (c) 2014, Atelier Shiori, James M.
-All rights reserved.</p>
-
-<p>Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:</p>
-
-<pre><code>* Redistributions of source code must retain the above copyright
-  notice, this list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright
-  notice, this list of conditions and the following disclaimer in the
-  documentation and/or other materials provided with the distribution.
-
-* Neither the name of the Atelier Shiori, James M nor the
-  names of its contributors may be used to endorse or promote products
-  derived from this software without specific prior written permission.
-</code></pre>
-
-<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL  BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<p>Licensed under the <a href="https://github.com/chikorita157/detectstream/blob/master/License.md">GNU Public License Version 3</a>.</p>
       </section>
     </div>
     <footer>
