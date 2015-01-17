@@ -89,6 +89,7 @@
 -(BOOL)checkMatch:(NSString *)string pattern:(NSString *)pattern;
 -(NSString *)searchreplace:(NSString *)string pattern:(NSString *)pattern;
 -(NSString *)findMatch:(NSString *)string pattern:(NSString *)pattern rangeatindex:(int)ri;
+-(NSArray *)findMatches:(NSString *)string pattern:(NSString *)pattern;
 @end
 
 @implementation ezregex
@@ -125,6 +126,20 @@
         return [string substringWithRange:[match rangeAtIndex:ri]];
     }
     return @"";
+}
+-(NSArray *)findMatches:(NSString *)string pattern:(NSString *)pattern {
+    NSError *errRegex = NULL;
+    NSRegularExpression *regex = [NSRegularExpression
+                                  regularExpressionWithPattern:pattern
+                                  options:NSRegularExpressionCaseInsensitive
+                                  error:&errRegex];
+    NSRange  searchrange = NSMakeRange(0, [string length]);
+    NSArray * a = [regex matchesInString:string options:kNilOptions range:searchrange];
+    NSMutableArray * results = [[NSMutableArray alloc] init];
+    for (NSTextCheckingResult * result in a ) {
+        [results addObject:[string substringWithRange:[result rangeAtIndex:0]]];
+    }
+    return results;
 }
 @end
 
@@ -318,8 +333,8 @@ int main(int argc, const char * argv[]) {
 					    NSDictionary *metadata = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
 						NSDictionary *videodata = [metadata objectForKey:@"video"];
 						title = [videodata objectForKey:@"title"];
-                        NSString * videoid = [ez findMatch:url pattern:@"\\b(?:movieid=)\\d+" rangeatindex:0];
-                        videoid = [videoid stringByReplacingOccurrencesOfString:@"movieid=" withString:@""];
+                        NSString * videoid = [NSString stringWithFormat:@"%@", [[ez findMatches:url pattern:@"\\b(movieid|EpisodeMovieId)=\\d+"] lastObject]];
+                        videoid = [ez searchreplace:videoid pattern:@"(movieid|EpisodeMovieId)="];
 						NSArray * seasondata = [videodata objectForKey:@"seasons"];
                         for (int i = 0; i < [seasondata count]; i++) {
                             NSDictionary * season = [seasondata objectAtIndex:i];
