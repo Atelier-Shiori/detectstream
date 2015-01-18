@@ -1,14 +1,17 @@
-# What is this? 
-This is an open source application that detects Web Stream presence in Safari and Chrome using the Scripting framework (other browsers are unsupported as they don't support Applescript)
+# What is detectstream
+This is an open source command line helper tool that detects Web Stream presence in Safari, Webkit, OmniWeb and Chrome using the Scripting framework (other browsers are unsupported as they don't support Applescript)
 
-Still a work in progress. Browser detection is done, but still need to do work on Regular Expressions.
+detectstream is used in [Hachidori](https://github.com/chikorita157/hachidori) and [MAL Updater OS X](https://github.com/chikorita157/malupdaterosx-cocoa)
 
 #Support
 detectstream currently supports these sites:
 
 Chrome and Safari: Crunchyroll, Daisuki, AnimeNewsNetwork, AnimeLab, Viz Neon Valley
 
-Safari only (requires HTML Scraping): Netflix 
+Safari and [OmniWeb](http://www.omnigroup.com/more) only (requires HTML Scraping): Netflix 
+
+#How to use
+Sample source code for using this helper program in Objective-C and Swift can be seen [here](https://github.com/chikorita157/detectstream/wiki/Usage)
 
 # How to help out
 You can help us out by sending the page title and URL of the Anime Stream with the series title, episode, service name and page source by using this form
@@ -19,7 +22,7 @@ or
 Fork this source code and add the necessary changes to improve the detection of various streaming sites.
 
 #To Compile
-Get the source and then type xcodebuild. You need to have Google Chrome instlalled to compile as it's used for the scripting bridge.
+Get the source and then type xcodebuild. You need to have Google Chrome and Omniweb instlalled to compile since its used for the scripting bridge.
 
 #License
 This version is licensed under GNU Public License V3 and all older versions now is licensed under GPL V3. This is because I do not want people to steal my work and make it closed source.
