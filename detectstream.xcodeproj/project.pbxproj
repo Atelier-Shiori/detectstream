@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F0592561A6C241E00C60C29 /* OmniWeb.app in Sources */ = {isa = PBXBuildFile; fileRef = 6F0592551A6C241400C60C29 /* OmniWeb.app */; };
 		8212F76019F75BFC0029B2F4 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */; };
 		8212F76319F75E7B0029B2F4 /* Safari.app in Sources */ = {isa = PBXBuildFile; fileRef = 8212F76219F75E4A0029B2F4 /* Safari.app */; };
 		8285734A19F812950004EF95 /* Google Chrome.app in Sources */ = {isa = PBXBuildFile; fileRef = 8285734819F811F60004EF95 /* Google Chrome.app */; };
@@ -31,7 +32,7 @@
 		829FB41019F7308D0026EAC2 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
+			dstPath = /usr/share/man/man1;
 			dstSubfolderSpec = 0;
 			files = (
 			);
@@ -40,6 +41,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6F0592551A6C241400C60C29 /* OmniWeb.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = OmniWeb.app; path = ../../../../Applications/OmniWeb.app; sourceTree = "<group>"; };
 		8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		8212F76219F75E4A0029B2F4 /* Safari.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Safari.app; path = /Applications/Safari.app; sourceTree = "<absolute>"; };
 		8285734819F811F60004EF95 /* Google Chrome.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = "Google Chrome.app"; path = "/Applications/Google Chrome.app"; sourceTree = "<absolute>"; };
@@ -62,6 +64,7 @@
 		8285734919F811FB0004EF95 /* Apple Script */ = {
 			isa = PBXGroup;
 			children = (
+				6F0592551A6C241400C60C29 /* OmniWeb.app */,
 				8212F76219F75E4A0029B2F4 /* Safari.app */,
 				8285734819F811F60004EF95 /* Google Chrome.app */,
 			);
@@ -154,6 +157,7 @@
 				829FB41619F7308D0026EAC2 /* main.m in Sources */,
 				8212F76319F75E7B0029B2F4 /* Safari.app in Sources */,
 				8285734A19F812950004EF95 /* Google Chrome.app in Sources */,
+				6F0592561A6C241E00C60C29 /* OmniWeb.app in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

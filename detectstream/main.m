@@ -26,50 +26,24 @@
 #import <ScriptingBridge/SBApplication.h>
 #import "Safari.h"
 #import "Google Chrome.h"
+#import "OmniWeb.h"
 
 @import ScriptingBridge;
 @interface browsercheck : NSObject
--(BOOL)checkChrome;
--(BOOL)checkSafari;
--(BOOL)checkWebkit;
+-(BOOL)checkIdentifier:(NSString*)identifier;
 @end
 
 @implementation browsercheck
--(BOOL)checkSafari {
+-(BOOL)checkIdentifier:(NSString*)identifier{
     NSWorkspace * ws = [NSWorkspace sharedWorkspace];
     NSArray *runningApps = [ws runningApplications];
     NSRunningApplication *a;
     for (a in runningApps) {
-        if ([[a bundleIdentifier] isEqualToString:@"com.apple.Safari"]) {
+        if ([[a bundleIdentifier] isEqualToString:identifier]) {
             return true;
         }
     }
     return false;
-    
-}
--(BOOL)checkWebkit {
-    NSWorkspace * ws = [NSWorkspace sharedWorkspace];
-    NSArray *runningApps = [ws runningApplications];
-    NSRunningApplication *a;
-    for (a in runningApps) {
-        if ([[a bundleIdentifier] isEqualToString:@"org.webkit.nightly.WebKit"]) {
-            return true;
-        }
-    }
-    return false;
-    
-}
--(BOOL)checkChrome {
-    NSWorkspace * ws = [NSWorkspace sharedWorkspace];
-    NSArray *runningApps = [ws runningApplications];
-    NSRunningApplication *a;
-    for (a in runningApps) {
-        if ([[a bundleIdentifier] isEqualToString:@"com.google.Chrome"]) {
-            return true;
-        }
-    }
-    return false;
-    
 }
 @end
 //
@@ -147,14 +121,14 @@ int main(int argc, const char * argv[]) {
                 NSString * browserstring;
                 switch (s) {
                     case 0:
-                        if (![browser checkSafari]) {
+                        if (![browser checkIdentifier:@"com.apple.Safari"]) {
                             continue;
                         }
                         safari = [SBApplication applicationWithBundleIdentifier:@"com.apple.Safari"];
                         browserstring = @"Safari";
                         break;
                     case 1:
-                        if (![browser checkWebkit]) {
+                        if (![browser checkIdentifier:@"org.webkit.nightly.WebKit"]) {
                             continue;
                         }
                         safari  = [SBApplication applicationWithBundleIdentifier:@"org.webkit.nightly.WebKit"];
@@ -184,7 +158,7 @@ int main(int argc, const char * argv[]) {
                 }
             }
         // Check to see Chrome is running. If so, add tab's title and url to the array
-        if ([browser checkChrome]) {
+        if ([browser checkIdentifier:@"com.google.Chrome"]) {
             GoogleChromeApplication * chrome = [SBApplication applicationWithBundleIdentifier:@"com.google.Chrome"];
             SBElementArray * windows = [chrome windows];
             for (int i = 0; i < [windows count]; i++) {
@@ -197,6 +171,36 @@ int main(int argc, const char * argv[]) {
 						continue;
 					}
                     NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", @"Chrome", @"browser", nil, @"DOM",  nil];
+                    [pages addObject:page];
+                }
+            }
+        }
+        // Check to see Omniweb is running. If so, add tab's title and url to the array
+        if ([browser checkIdentifier:@"com.omnigroup.OmniWeb5"]||[browser checkIdentifier:@"com.omnigroup.OmniWeb6"]) {
+            OmniWebApplication * omniweb;
+            if ([browser checkIdentifier:@"com.omnigroup.OmniWeb5"]) {
+                // For version 5
+                omniweb = [SBApplication applicationWithBundleIdentifier:@"com.omnigroup.OmniWeb5"];
+            }
+            else{
+                // For version 6
+                omniweb = [SBApplication applicationWithBundleIdentifier:@"com.omnigroup.OmniWeb6"];
+            }
+            SBElementArray * browsers = [omniweb browsers];
+            for (int i = 0; i < [browsers count]; i++) {
+                OmniWebBrowser * obrowser = [browsers objectAtIndex:i];
+                SBElementArray * tabs = [obrowser tabs];
+                for (int i = 0 ; i < [tabs count]; i++) {
+                    OmniWebTab * tab = [tabs objectAtIndex:i];
+                    NSString * DOM;
+                    if ([[[ezregex alloc] init] checkMatch:[tab address] pattern:@"(netflix)"]){
+                        // Chrome does not provide DOM, exclude
+                        DOM = [tab source];
+                    }
+                    else{
+                        DOM = nil;
+                    }
+                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab address], @"url", @"OmniWeb", @"browser", DOM, @"DOM",  nil];
                     [pages addObject:page];
                 }
             }
