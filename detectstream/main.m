@@ -31,6 +31,7 @@
 @import ScriptingBridge;
 @interface browsercheck : NSObject
 -(BOOL)checkIdentifier:(NSString*)identifier;
+-(NSString *)checkURL:(NSString *)url;
 @end
 
 @implementation browsercheck
@@ -44,6 +45,26 @@
         }
     }
     return false;
+}
+-(NSString *)checkURL:(NSString *)url{
+    NSError *errRegex = NULL;
+    NSRegularExpression *regex = [NSRegularExpression
+                                  regularExpressionWithPattern:@"(crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix)" //Supported Streaming Sites
+                                  options:NSRegularExpressionCaseInsensitive
+                                  error:&errRegex];
+    NSString * teststring = url;
+    NSRange  searchrange = NSMakeRange(0, [teststring length]);
+        NSTextCheckingResult *match = [regex firstMatchInString:teststring options:0 range: searchrange];
+        NSRange matchRange = [regex rangeOfFirstMatchInString:teststring options:NSMatchingReportProgress range:searchrange];
+    NSString * result;
+        if (matchRange.location != NSNotFound) {
+            result = [teststring substringWithRange:[match rangeAtIndex:1]];
+            return result;
+        }
+        else{
+            return result;
+        }
+    
 }
 @end
 //
@@ -144,16 +165,23 @@ int main(int argc, const char * argv[]) {
                     SBElementArray * tabs = [window tabs];
                     for (int i = 0 ; i < [tabs count]; i++) {
                         SafariTab * tab = [tabs objectAtIndex:i];
-						NSString * DOM;
-						if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:@"(netflix)"]){
-							//Include DOM
-							DOM = [tab source];
-						}
-						else{
-							DOM = nil;
-						}
-                        NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab name],@"title",[tab URL], @"url",  browserstring, @"browser", DOM, @"DOM",  nil];
-                        [pages addObject:page];
+                        NSString * site = [browser checkURL:[tab URL]];
+                        if (site.length > 0) {
+                            NSString * DOM;
+                            if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:@"(netflix)"]){
+                                //Include DOM
+                                DOM = [tab source];
+                            }
+                            else{
+                                DOM = nil;
+                            }
+                            NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab name],@"title",[tab URL], @"url",  browserstring, @"browser", site, @"site", DOM, @"DOM",  nil];
+                            [pages addObject:page];
+                        }
+                        else{
+                            continue;
+                        }
+						
                     }
                 }
             }
@@ -166,12 +194,18 @@ int main(int argc, const char * argv[]) {
                 SBElementArray * tabs = [window tabs];
                 for (int i = 0 ; i < [tabs count]; i++) {
                     GoogleChromeTab * tab = [tabs objectAtIndex:i];
+                    NSString * site  = [browser checkURL:[tab URL]];
+                    if (site.length > 0) {
 					if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:@"(netflix)"]){
 						// Chrome does not provide DOM, exclude
 						continue;
 					}
-                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", @"Chrome", @"browser", nil, @"DOM",  nil];
+                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", @"Chrome", @"browser",  site, @"site", nil, @"DOM", nil];
                     [pages addObject:page];
+                    }
+                    else{
+                        continue;
+                    }
                 }
             }
         }
@@ -192,6 +226,8 @@ int main(int argc, const char * argv[]) {
                 SBElementArray * tabs = [obrowser tabs];
                 for (int i = 0 ; i < [tabs count]; i++) {
                     OmniWebTab * tab = [tabs objectAtIndex:i];
+                    NSString * site  = [browser checkURL:[tab address]];
+                    if (site.length > 0) {
                     NSString * DOM;
                     if ([[[ezregex alloc] init] checkMatch:[tab address] pattern:@"(netflix)"]){
                         // Chrome does not provide DOM, exclude
@@ -200,37 +236,20 @@ int main(int argc, const char * argv[]) {
                     else{
                         DOM = nil;
                     }
-                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab address], @"url", @"OmniWeb", @"browser", DOM, @"DOM",  nil];
+                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab address], @"url", @"OmniWeb", @"browser", site, @"site", DOM, @"DOM", nil];
                     [pages addObject:page];
+                    }
+                    else{
+                        continue;
+                    }
                 }
-            }
-        }
-        // Check to see if the URL matches the streaming sites
-        NSMutableArray * matches = [[NSMutableArray alloc] init];
-        if ([pages count]>0) {
-            NSError *errRegex = NULL;
-            NSRegularExpression *regex = [NSRegularExpression
-                                          regularExpressionWithPattern:@"(crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix)" //Supported Streaming Sites
-                                          options:NSRegularExpressionCaseInsensitive
-                                          error:&errRegex];
-            for (NSDictionary *d in pages) {
-                NSString * teststring = [NSString stringWithFormat:@"%@",[d objectForKey:@"url"]];
-                NSRange  searchrange = NSMakeRange(0, [teststring length]);
-                NSTextCheckingResult *match = [regex firstMatchInString:teststring options:0 range: searchrange];
-                NSRange matchRange = [regex rangeOfFirstMatchInString:teststring options:NSMatchingReportProgress range:searchrange];
-                if (matchRange.location != NSNotFound) {
-                    // Match found, add to match list
-                    NSDictionary * n = [[NSDictionary alloc] initWithObjectsAndKeys:[d objectForKey:@"title"], @"title", teststring , @"url" ,[d objectForKey:@"browser"], @"browser", [teststring substringWithRange:[match rangeAtIndex:1]] , @"site",[d objectForKey:@"DOM"] , @"DOM", nil];
-                    [matches addObject:n];
-                }
-              
             }
         }
         NSMutableArray * final = [[NSMutableArray alloc] init];
         ezregex * ez = [[ezregex alloc] init];
         //Perform Regex and sanitize
-        if (matches.count > 0) {
-            for (NSDictionary *m in matches) {
+        if (pages.count > 0) {
+            for (NSDictionary *m in pages) {
                 NSString * regextitle = [NSString stringWithFormat:@"%@",[m objectForKey:@"title"]];
                 NSString * url = [NSString stringWithFormat:@"%@", [m objectForKey:@"url"]];
                 NSString * site = [NSString stringWithFormat:@"%@", [m objectForKey:@"site"]];
