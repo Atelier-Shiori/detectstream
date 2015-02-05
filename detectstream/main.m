@@ -375,7 +375,7 @@ int main(int argc, const char * argv[]) {
                 else if ([site isEqualToString:@"plex"]){
                     if ([ez checkMatch:url pattern:@"web\\/app#!\\/server"]||[ez checkMatch:url pattern:@"web\\/index.html"]) {
                         // Check if there is a usable episode number
-                        if ([ez checkMatch:regextitle pattern:@"((ep|e)\\d+|episode \\d+|\\d+)"]) {
+                        if (![ez checkMatch:regextitle pattern:@"Plex"]) {
                             regextitle = [ez searchreplace:regextitle pattern:@"\\▶\\s"];
                             if ([ez checkMatch:regextitle pattern:@"(\\d(st|nd|rd|th) season|s\\d)"]) {
                                 tmpseason = [ez findMatch:regextitle pattern:@"(\\d(st|nd|rd|th) season|s\\d)"rangeatindex:0];
@@ -386,6 +386,10 @@ int main(int argc, const char * argv[]) {
                                 tmpseason = @"0";
                             }
                             tmpepisode = [ez findMatch:regextitle pattern:@"((ep|e)\\d+|episode \\d+|\\d+)" rangeatindex:0];
+							if (tmpepisode.length == 0){
+								// Probably a movie
+								tmpepisode = @"0";
+							}
                             regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
                             tmpepisode = [ez searchreplace:tmpepisode pattern:@"(ep|e|episode)"];
                             title = regextitle;
