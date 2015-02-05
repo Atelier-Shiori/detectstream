@@ -388,9 +388,9 @@ int main(int argc, const char * argv[]) {
                             tmpepisode = [ez findMatch:regextitle pattern:@"((ep|e)\\d+|episode \\d+|\\d+)" rangeatindex:0];
                             regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
                             tmpepisode = [ez searchreplace:tmpepisode pattern:@"(ep|e|episode)"];
+                            title = regextitle;
                             title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                             tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                            title = regextitle;
                         }
                         else{
                             continue;
