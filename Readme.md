@@ -6,7 +6,7 @@ detectstream is used in [Hachidori](https://github.com/chikorita157/hachidori) a
 #Support
 detectstream currently supports these sites:
 
-Safari, Webkit, Chrome and Omniweb: Crunchyroll, Daisuki, AnimeNewsNetwork, AnimeLab, Viz Neon Valley
+Safari, Webkit, Chrome and Omniweb: Crunchyroll, Daisuki, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Plex.tv Media Server (locally and on the web).
 
 Safari and [OmniWeb](http://www.omnigroup.com/more) only (requires HTML Scraping): Netflix 
 
