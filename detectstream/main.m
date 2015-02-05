@@ -49,7 +49,7 @@
 -(NSString *)checkURL:(NSString *)url{
     NSError *errRegex = NULL;
     NSRegularExpression *regex = [NSRegularExpression
-                                  regularExpressionWithPattern:@"(crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix)" //Supported Streaming Sites
+                                  regularExpressionWithPattern:@"(crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix|plex|32400)" //Supported Streaming Sites
                                   options:NSRegularExpressionCaseInsensitive
                                   error:&errRegex];
     NSString * teststring = url;
@@ -59,6 +59,10 @@
     NSString * result;
         if (matchRange.location != NSNotFound) {
             result = [teststring substringWithRange:[match rangeAtIndex:1]];
+            if ([result isEqualToString:@"32400"]) {
+                //Plex local port, return plex
+                return @"plex";
+            }
             return result;
         }
         else{
@@ -368,6 +372,34 @@ int main(int argc, const char * argv[]) {
 					else
 						continue;
 				}
+                else if ([site isEqualToString:@"plex"]){
+                    if ([ez checkMatch:url pattern:@"web\\/app#!\\/server"]||[ez checkMatch:url pattern:@"web\\/index.html"]) {
+                        // Check if there is a usable episode number
+                        if ([ez checkMatch:regextitle pattern:@"((ep|e)\\d+|episode \\d+|\\d+)"]) {
+                            regextitle = [ez searchreplace:regextitle pattern:@"\\▶\\s"];
+                            if ([ez checkMatch:regextitle pattern:@"(\\d(st|nd|rd|th) season|s\\d)"]) {
+                                tmpseason = [ez findMatch:regextitle pattern:@"(\\d(st|nd|rd|th) season|s\\d)"rangeatindex:0];
+                                regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpseason withString:@""];
+                                tmpseason = [ez searchreplace:tmpseason pattern:@"((st|nd|rd|th) season|s)"];
+                            }
+                            else{
+                                tmpseason = @"0";
+                            }
+                            tmpepisode = [ez findMatch:regextitle pattern:@"((ep|e)\\d+|episode \\d+|\\d+)" rangeatindex:0];
+                            regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
+                            tmpepisode = [ez searchreplace:tmpepisode pattern:@"(ep|e|episode)"];
+                            title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                            tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                            title = regextitle;
+                        }
+                        else{
+                            continue;
+                        }
+                    }
+                    else{
+                        continue;
+                    }
+                }
                 else{
                     continue;
                 }
