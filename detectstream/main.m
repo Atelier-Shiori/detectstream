@@ -27,6 +27,7 @@
 #import "Safari.h"
 #import "Google Chrome.h"
 #import "OmniWeb.h"
+#import "Roccat.h"
 
 @import ScriptingBridge;
 @interface browsercheck : NSObject
@@ -232,16 +233,44 @@ int main(int argc, const char * argv[]) {
                     OmniWebTab * tab = [tabs objectAtIndex:i];
                     NSString * site  = [browser checkURL:[tab address]];
                     if (site.length > 0) {
-                    NSString * DOM;
-                    if ([[[ezregex alloc] init] checkMatch:[tab address] pattern:@"(netflix)"]){
-                        // Chrome does not provide DOM, exclude
-                        DOM = [tab source];
+                        NSString * DOM;
+                        if ([[[ezregex alloc] init] checkMatch:[tab address] pattern:@"(netflix)"]){
+                            // Add Source
+                            DOM = [tab source];
+                        }
+                        else{
+                            DOM = nil;
+                        }
+                        NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab address], @"url", @"OmniWeb", @"browser", site, @"site", DOM, @"DOM", nil];
+                        [pages addObject:page];
                     }
                     else{
-                        DOM = nil;
+                        continue;
                     }
-                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab address], @"url", @"OmniWeb", @"browser", site, @"site", DOM, @"DOM", nil];
-                    [pages addObject:page];
+                }
+            }
+        }
+        // Check to see Roccat is running. If so, add tab's title and url to the array
+        if ([browser checkIdentifier:@"org.Runecats.Roccat"]) {
+            RoccatApplication * roccat = [SBApplication applicationWithBundleIdentifier:@"org.Runecats.Roccat"];
+            SBElementArray * browsers = [roccat browserWindows];
+            for (int i = 0; i < [browsers count]; i++) {
+                RoccatBrowserWindow * rbrowser = [browsers objectAtIndex:i];
+                SBElementArray * tabs = [rbrowser tabs];
+                for (int i = 0 ; i < [tabs count]; i++) {
+                    RoccatTab * tab = [tabs objectAtIndex:i];
+                    NSString * site  = [browser checkURL:[tab URL]];
+                    if (site.length > 0) {
+                        NSString * DOM;
+                        if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:@"(netflix)"]){
+                            // Include DOM
+                            DOM = [tab source];
+                        }
+                        else{
+                            DOM = nil;
+                        }
+                        NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", @"Roccat", @"browser", site, @"site", DOM, @"DOM", nil];
+                        [pages addObject:page];
                     }
                     else{
                         continue;
