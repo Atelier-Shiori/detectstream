@@ -24,114 +24,16 @@
 
 #import <Foundation/Foundation.h>
 #import <ScriptingBridge/SBApplication.h>
+// Support Classes
+#import "ezregex.h"
+#import "browsercheck.h"
+// Browsers
 #import "Safari.h"
 #import "Google Chrome.h"
 #import "OmniWeb.h"
 #import "Roccat.h"
 
 @import ScriptingBridge;
-@interface browsercheck : NSObject
--(BOOL)checkIdentifier:(NSString*)identifier;
--(NSString *)checkURL:(NSString *)url;
-@end
-
-@implementation browsercheck
--(BOOL)checkIdentifier:(NSString*)identifier{
-    NSWorkspace * ws = [NSWorkspace sharedWorkspace];
-    NSArray *runningApps = [ws runningApplications];
-    NSRunningApplication *a;
-    for (a in runningApps) {
-        if ([[a bundleIdentifier] isEqualToString:identifier]) {
-            return true;
-        }
-    }
-    return false;
-}
--(NSString *)checkURL:(NSString *)url{
-    NSError *errRegex = NULL;
-    NSRegularExpression *regex = [NSRegularExpression
-                                  regularExpressionWithPattern:@"(crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix|plex|32400)" //Supported Streaming Sites
-                                  options:NSRegularExpressionCaseInsensitive
-                                  error:&errRegex];
-    NSString * teststring = url;
-    NSRange  searchrange = NSMakeRange(0, [teststring length]);
-        NSTextCheckingResult *match = [regex firstMatchInString:teststring options:0 range: searchrange];
-        NSRange matchRange = [regex rangeOfFirstMatchInString:teststring options:NSMatchingReportProgress range:searchrange];
-    NSString * result;
-        if (matchRange.location != NSNotFound) {
-            result = [teststring substringWithRange:[match rangeAtIndex:1]];
-            if ([result isEqualToString:@"32400"]) {
-                //Plex local port, return plex
-                return @"plex";
-            }
-            return result;
-        }
-        else{
-            return result;
-        }
-    
-}
-@end
-//
-// This class is used to simplify regex
-//
-@interface ezregex : NSObject
--(BOOL)checkMatch:(NSString *)string pattern:(NSString *)pattern;
--(NSString *)searchreplace:(NSString *)string pattern:(NSString *)pattern;
--(NSString *)findMatch:(NSString *)string pattern:(NSString *)pattern rangeatindex:(int)ri;
--(NSArray *)findMatches:(NSString *)string pattern:(NSString *)pattern;
-@end
-
-@implementation ezregex
-
--(BOOL)checkMatch:(NSString *)string pattern:(NSString *)pattern{
-    NSError *errRegex = NULL;
-    NSRegularExpression *regex = [NSRegularExpression
-                                  regularExpressionWithPattern:pattern
-                                  options:NSRegularExpressionCaseInsensitive
-                                  error:&errRegex];
-    NSRange  searchrange = NSMakeRange(0, [string length]);
-    NSRange matchRange = [regex rangeOfFirstMatchInString:string options:NSMatchingReportProgress range:searchrange];
-    if (matchRange.location != NSNotFound)
-        return true;
-        else
-        return false;
-}
--(NSString *)searchreplace:(NSString *)string pattern:(NSString *)pattern{
-    NSError *errRegex = nil;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&errRegex];
-    NSString * newString = [regex stringByReplacingMatchesInString:string options:0 range:NSMakeRange(0, [string length]) withTemplate:@""];
-    return newString;
-}
--(NSString *)findMatch:(NSString *)string pattern:(NSString *)pattern rangeatindex:(int)ri{
-    NSError *errRegex = NULL;
-    NSRegularExpression *regex = [NSRegularExpression
-                                  regularExpressionWithPattern:pattern
-                                  options:NSRegularExpressionCaseInsensitive
-                                  error:&errRegex];
-    NSRange  searchrange = NSMakeRange(0, [string length]);
-    NSTextCheckingResult *match = [regex firstMatchInString:string options:0 range: searchrange];
-    NSRange matchRange = [regex rangeOfFirstMatchInString:string options:NSMatchingReportProgress range:searchrange];
-    if (matchRange.location != NSNotFound){
-        return [string substringWithRange:[match rangeAtIndex:ri]];
-    }
-    return @"";
-}
--(NSArray *)findMatches:(NSString *)string pattern:(NSString *)pattern {
-    NSError *errRegex = NULL;
-    NSRegularExpression *regex = [NSRegularExpression
-                                  regularExpressionWithPattern:pattern
-                                  options:NSRegularExpressionCaseInsensitive
-                                  error:&errRegex];
-    NSRange  searchrange = NSMakeRange(0, [string length]);
-    NSArray * a = [regex matchesInString:string options:kNilOptions range:searchrange];
-    NSMutableArray * results = [[NSMutableArray alloc] init];
-    for (NSTextCheckingResult * result in a ) {
-        [results addObject:[string substringWithRange:[result rangeAtIndex:0]]];
-    }
-    return results;
-}
-@end
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
