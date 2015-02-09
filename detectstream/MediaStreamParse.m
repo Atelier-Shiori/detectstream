@@ -50,7 +50,6 @@
                     title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
                     title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                    tmpseason = @"0"; //not supported
                 }
                 else
                     continue;
@@ -65,7 +64,6 @@
                     title = [ez findMatch:regextitle pattern:@"\\b\\D([^\\n\\r]*)$" rangeatindex:0];
                     title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                    tmpseason = @"0"; //not supported
                 }
                 else
                     continue; // Invalid address
@@ -95,7 +93,6 @@
                     title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
                     title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                    tmpseason = @"0"; //not supported
                 }
                 else
                     continue; // Invalid address
@@ -109,7 +106,6 @@
                     title = [ez findMatch:regextitle pattern:@"\\b.*\\s" rangeatindex:0];
                     title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                    tmpseason = @"0"; //not supported
                 }
                 else
                     continue; // Invalid address
@@ -160,9 +156,6 @@
                             }
                         }
                     }
-                    if (tmpseason.length == 0) {
-                        tmpseason = @"0";
-                    }
                 }
                 else
                     continue;
@@ -176,9 +169,6 @@
                             tmpseason = [ez findMatch:regextitle pattern:@"(\\d(st|nd|rd|th) season|s\\d)"rangeatindex:0];
                             regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpseason withString:@""];
                             tmpseason = [ez searchreplace:tmpseason pattern:@"((st|nd|rd|th) season|s)"];
-                        }
-                        else{
-                            tmpseason = @"0";
                         }
                         tmpepisode = [ez findMatch:regextitle pattern:@"((ep|e)\\d+|episode \\d+|\\d+)" rangeatindex:0];
                         if (tmpepisode.length == 0){
@@ -211,10 +201,15 @@
             else{
                 episode = [[[NSNumberFormatter alloc] init] numberFromString:tmpepisode];
             }
+            if (tmpseason.length == 0) {
+                season = @(0);
+            }
+            else{
+                season = [[[NSNumberFormatter alloc] init] numberFromString:tmpseason];
+            }
             if (title.length == 0) {
                 continue;
             }
-            season = [[[NSNumberFormatter alloc] init] numberFromString:tmpseason];
             // Add to Final Array
             NSDictionary * frecord = [[NSDictionary alloc] initWithObjectsAndKeys:title, @"title", episode, @"episode", season, @"season", [m objectForKey:@"browser"], @"browser", site, @"site", nil];
             [final addObject:frecord];

@@ -23,7 +23,6 @@
 //
 
 #import "BrowserDetection.h"
-#import "browsercheck.h"
 #import "ezregex.h"
 #import <ScriptingBridge/SBApplication.h>
 // Browsers
@@ -37,7 +36,7 @@
 @implementation BrowserDetection
 +(NSArray *)getPages{
     //Initalize Browser Check Object
-    browsercheck * browser = [[browsercheck alloc] init];
+    BrowserDetection * browser = [[self alloc] init];
     NSMutableArray * pages = [[NSMutableArray alloc] init];
     /*
      Browser Detection
@@ -181,4 +180,24 @@
     }
     return pages;
 }
+-(BOOL)checkIdentifier:(NSString*)identifier{
+    NSWorkspace * ws = [NSWorkspace sharedWorkspace];
+    NSArray *runningApps = [ws runningApplications];
+    NSRunningApplication *a;
+    for (a in runningApps) {
+        if ([[a bundleIdentifier] isEqualToString:identifier]) {
+            return true;
+        }
+    }
+    return false;
+}
+-(NSString *)checkURL:(NSString *)url{
+    NSString * site = [[[ezregex alloc] init] findMatch:url pattern:@"(crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix|plex|32400)" rangeatindex:0];
+    if ([site isEqualToString:@"32400"]) {
+        //Plex local port, return plex
+        return @"plex";
+    }
+    return site;
+}
+
 @end
