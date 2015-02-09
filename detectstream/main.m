@@ -313,7 +313,9 @@ int main(int argc, const char * argv[]) {
                                 }
                             }
                         }
-                        
+                        if (tmpseason.length == 0) {
+                            tmpseason = @"0";
+                        }
 					}
 					else
 						continue;
