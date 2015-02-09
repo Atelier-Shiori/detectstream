@@ -61,7 +61,7 @@
                     //Perform Sanitation
                     regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\sDAISUKI\\b"];
                     regextitle = [ez searchreplace:regextitle pattern:@"\\D\\D\\s*.*\\s-"];
-                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d)" rangeatindex:0];
+                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
                     title = [ez findMatch:regextitle pattern:@"\\b\\D([^\\n\\r]*)$" rangeatindex:0];
                     title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -77,7 +77,7 @@
                     
                     regextitle = [ez searchreplace:regextitle pattern:@"-\\sEpisode\\s"];
                     regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\s.*"];
-                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d|\\d)" rangeatindex:0];
+                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
                     title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
                     title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -91,7 +91,7 @@
                     regextitle = [ez searchreplace:regextitle pattern:@"\\b\\s-\\sAnime News Network$"];
                     regextitle = [ez searchreplace:regextitle pattern:@"\\s\\((s|d)\\)\\s"];
                     regextitle = [ez searchreplace:regextitle pattern:@"ep\\."];
-                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d|\\d)" rangeatindex:0];
+                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
                     title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
                     title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -105,7 +105,7 @@
                     regextitle = [ez searchreplace:regextitle pattern:@"\\bVIZ.com - NEON ALLEY -\\s"];
                     regextitle = [ez searchreplace:regextitle pattern:@"\\s\\((DUB|SUB)\\)"];
                     regextitle = [ez searchreplace:regextitle pattern:@"\\b\\sEpisode"];
-                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d\\d\\d|\\d\\d|\\d)" rangeatindex:0];
+                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
                     title = [ez findMatch:regextitle pattern:@"\\b.*\\s" rangeatindex:0];
                     title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
