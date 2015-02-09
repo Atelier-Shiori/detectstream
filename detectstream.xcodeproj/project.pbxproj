@@ -14,6 +14,8 @@
 		6FB88B201A8553D400ACF806 /* Roccat.app in Sources */ = {isa = PBXBuildFile; fileRef = 6FB88B1F1A8553CB00ACF806 /* Roccat.app */; };
 		8212F76019F75BFC0029B2F4 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */; };
 		8212F76319F75E7B0029B2F4 /* Safari.app in Sources */ = {isa = PBXBuildFile; fileRef = 8212F76219F75E4A0029B2F4 /* Safari.app */; };
+		822DDD821A887BAC003D9464 /* BrowserDetection.m in Sources */ = {isa = PBXBuildFile; fileRef = 822DDD811A887BAC003D9464 /* BrowserDetection.m */; };
+		822DDD851A887CE3003D9464 /* MediaStreamParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 822DDD841A887CE3003D9464 /* MediaStreamParse.m */; };
 		8285734A19F812950004EF95 /* Google Chrome.app in Sources */ = {isa = PBXBuildFile; fileRef = 8285734819F811F60004EF95 /* Google Chrome.app */; };
 		829FB41619F7308D0026EAC2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 829FB41519F7308D0026EAC2 /* main.m */; };
 /* End PBXBuildFile section */
@@ -54,6 +56,10 @@
 		6FB88B1F1A8553CB00ACF806 /* Roccat.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Roccat.app; path = ../../../../Applications/Roccat.app; sourceTree = "<group>"; };
 		8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		8212F76219F75E4A0029B2F4 /* Safari.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Safari.app; path = /Applications/Safari.app; sourceTree = "<absolute>"; };
+		822DDD801A887BAC003D9464 /* BrowserDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserDetection.h; sourceTree = "<group>"; };
+		822DDD811A887BAC003D9464 /* BrowserDetection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserDetection.m; sourceTree = "<group>"; };
+		822DDD831A887CE3003D9464 /* MediaStreamParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaStreamParse.h; sourceTree = "<group>"; };
+		822DDD841A887CE3003D9464 /* MediaStreamParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaStreamParse.m; sourceTree = "<group>"; };
 		8285734819F811F60004EF95 /* Google Chrome.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = "Google Chrome.app"; path = "/Applications/Google Chrome.app"; sourceTree = "<absolute>"; };
 		829FB41219F7308D0026EAC2 /* detectstream */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = detectstream; sourceTree = BUILT_PRODUCTS_DIR; };
 		829FB41519F7308D0026EAC2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -72,6 +78,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		822DDD861A887E93003D9464 /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */,
+				6FB3BBE61A8582C200D3A69C /* AppKit.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
 		8285734919F811FB0004EF95 /* Apple Script */ = {
 			isa = PBXGroup;
 			children = (
@@ -86,8 +101,7 @@
 		829FB40919F7308D0026EAC2 = {
 			isa = PBXGroup;
 			children = (
-				6FB3BBE61A8582C200D3A69C /* AppKit.framework */,
-				8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */,
+				822DDD861A887E93003D9464 /* Linked Frameworks */,
 				829FB41419F7308D0026EAC2 /* detectstream */,
 				829FB41319F7308D0026EAC2 /* Products */,
 			);
@@ -108,7 +122,11 @@
 				6FB3BBE11A8581CB00D3A69C /* browsercheck.m */,
 				6FB3BBE21A8581CB00D3A69C /* ezregex.h */,
 				6FB3BBE31A8581CC00D3A69C /* ezregex.m */,
+				822DDD801A887BAC003D9464 /* BrowserDetection.h */,
+				822DDD811A887BAC003D9464 /* BrowserDetection.m */,
 				829FB41519F7308D0026EAC2 /* main.m */,
+				822DDD831A887CE3003D9464 /* MediaStreamParse.h */,
+				822DDD841A887CE3003D9464 /* MediaStreamParse.m */,
 				8285734919F811FB0004EF95 /* Apple Script */,
 			);
 			path = detectstream;
@@ -171,6 +189,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				822DDD821A887BAC003D9464 /* BrowserDetection.m in Sources */,
 				829FB41619F7308D0026EAC2 /* main.m in Sources */,
 				6FB88B201A8553D400ACF806 /* Roccat.app in Sources */,
 				8212F76319F75E7B0029B2F4 /* Safari.app in Sources */,
@@ -178,6 +197,7 @@
 				6FB3BBE41A8581CC00D3A69C /* browsercheck.m in Sources */,
 				8285734A19F812950004EF95 /* Google Chrome.app in Sources */,
 				6F0592561A6C241E00C60C29 /* OmniWeb.app in Sources */,
+				822DDD851A887CE3003D9464 /* MediaStreamParse.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
