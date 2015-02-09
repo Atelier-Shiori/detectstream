@@ -302,7 +302,6 @@ int main(int argc, const char * argv[]) {
                             NSArray *episodes = [season objectForKey:@"episodes"];
                             for (int e = 0; e < [episodes count]; e++) {
                                 NSDictionary * episode = [episodes objectAtIndex:e];
-                                NSLog(@"%@",[episode objectForKey:@"id"]);
                                 if (![videoid isEqualTo:[NSString stringWithFormat:@"%@", [episode objectForKey:@"id"]]]) {
                                     continue;
                                 }
