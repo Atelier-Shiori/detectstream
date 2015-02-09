@@ -268,9 +268,21 @@ int main(int argc, const char * argv[]) {
                         continue; // Invalid address
                 }
 				else if ([site isEqualToString:@"netflix"]){
-					//Experimental
                     if([ez checkMatch:url pattern:@"WiPlayer"]){
+                        //Get the Document Object Model
 						NSString * DOM = [NSString stringWithFormat:@"%@",[m objectForKey:@"DOM"]];
+                        //Get the Episode Movie ID
+                        NSArray * matches = [ez findMatches:url pattern:@"\\b(EpisodeMovieId)=\\d+"];
+                        NSString * videoid;
+                        if (matches.count > 0) {
+                            videoid = [NSString stringWithFormat:@"%@", [[ez findMatches:url pattern:@"\\b(EpisodeMovieId)=\\d+"] lastObject]];
+                            videoid = [ez searchreplace:videoid pattern:@"(EpisodeMovieId)="];
+                        }
+                        else{
+                            videoid = [ez findMatch:[NSString stringWithFormat:@"%@",[m objectForKey:@"DOM"]] pattern:@"EpisodeMovieId=\\d+" rangeatindex:0];
+                            videoid = [videoid stringByReplacingOccurrencesOfString:@"EpisodeMovieId=" withString:@""];
+                        }
+                        // Parse the DOM to get the JSON Data
 						DOM = [ez findMatch:DOM pattern:@"\"metadata\":\"*.*\",\"initParams\"" rangeatindex:0];
                         DOM = [DOM stringByReplacingOccurrencesOfString:@"\"" withString:@""];
                         DOM = [DOM stringByReplacingOccurrencesOfString:@"metadata:" withString:@""];
@@ -278,27 +290,31 @@ int main(int argc, const char * argv[]) {
 						// Decode JSON Data
 						NSData * jsonData = [[NSData alloc] initWithBase64Encoding:DOM];
 					    NSError* error;
+                        // Parse JSON Data
 					    NSDictionary *metadata = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
 						NSDictionary *videodata = [metadata objectForKey:@"video"];
+                        // Set Title
 						title = [videodata objectForKey:@"title"];
-                        NSString * videoid = [NSString stringWithFormat:@"%@", [[ez findMatches:url pattern:@"\\b(movieid|EpisodeMovieId)=\\d+"] lastObject]];
-                        videoid = [ez searchreplace:videoid pattern:@"(movieid|EpisodeMovieId)="];
+                        // Search to get the right Episode Number
 						NSArray * seasondata = [videodata objectForKey:@"seasons"];
                         for (int i = 0; i < [seasondata count]; i++) {
                             NSDictionary * season = [seasondata objectAtIndex:i];
                             NSArray *episodes = [season objectForKey:@"episodes"];
                             for (int e = 0; e < [episodes count]; e++) {
                                 NSDictionary * episode = [episodes objectAtIndex:e];
+                                NSLog(@"%@",[episode objectForKey:@"id"]);
                                 if (![videoid isEqualTo:[NSString stringWithFormat:@"%@", [episode objectForKey:@"id"]]]) {
                                     continue;
                                 }
                                 else{
+                                    //Set Episode Number and Season
                                     tmpepisode = [NSString stringWithFormat:@"%@", [episode objectForKey:@"seq"]];
+                                    tmpseason = [NSString stringWithFormat:@"%i", i+1];
                                     break;
                                 }
                             }
                         }
-                        tmpseason = @"0"; //not supported
+                        
 					}
 					else
 						continue;
