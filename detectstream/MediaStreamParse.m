@@ -87,8 +87,6 @@
                     regextitle = [ez searchreplace:regextitle pattern:@"ep\\."];
                     tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
                     title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
-                    title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                    tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 }
                 else
                     continue; // Invalid address
@@ -155,7 +153,7 @@
                     continue;
             }
             else if ([site isEqualToString:@"plex"]){
-                if ([ez checkMatch:url pattern:@"web\\/app#!\\/server"]||[ez checkMatch:url pattern:@"web\\/index.html"]) {
+                if ([ez checkMatch:url pattern:@"web\\/app"]||[ez checkMatch:url pattern:@"web\\/index.html"]) {
                     // Check if there is a usable episode number
                     if (![ez checkMatch:regextitle pattern:@"Plex"]) {
                         regextitle = [ez searchreplace:regextitle pattern:@"\\▶\\s"];
