@@ -115,15 +115,25 @@
         }
     }
     // Check to see Omniweb is running. If so, add tab's title and url to the array
-    if ([browser checkIdentifier:@"com.omnigroup.OmniWeb5"]||[browser checkIdentifier:@"com.omnigroup.OmniWeb6"]) {
+    for (int s = 0; s <2; s++) {
         OmniWebApplication * omniweb;
-        if ([browser checkIdentifier:@"com.omnigroup.OmniWeb5"]) {
-            // For version 5
-            omniweb = [SBApplication applicationWithBundleIdentifier:@"com.omnigroup.OmniWeb5"];
-        }
-        else{
-            // For version 6
-            omniweb = [SBApplication applicationWithBundleIdentifier:@"com.omnigroup.OmniWeb6"];
+        switch (s) {
+            case 0:
+                if (![browser checkIdentifier:@"com.omnigroup.OmniWeb5"]) {
+                    continue;
+                }
+                // For version 5
+                omniweb = [SBApplication applicationWithBundleIdentifier:@"com.omnigroup.OmniWeb5"];
+                break;
+            case 1:
+                if (![browser checkIdentifier:@"com.omnigroup.OmniWeb6"]) {
+                    continue;
+                }
+                // For version 6
+                omniweb = [SBApplication applicationWithBundleIdentifier:@"com.omnigroup.OmniWeb6"];
+                break;
+            default:
+                break;
         }
         SBElementArray * browsers = [omniweb browsers];
         for (int i = 0; i < [browsers count]; i++) {

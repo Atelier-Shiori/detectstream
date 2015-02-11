@@ -155,7 +155,7 @@
             else if ([site isEqualToString:@"plex"]){
                 if ([ez checkMatch:url pattern:@"web\\/app"]||[ez checkMatch:url pattern:@"web\\/index.html"]) {
                     // Check if there is a usable episode number
-                    if (![ez checkMatch:regextitle pattern:@"Plex"]) {
+                    if (![regextitle isEqualToString:@"Plex"]) {
                         regextitle = [ez searchreplace:regextitle pattern:@"\\▶\\s"];
                         if ([ez checkMatch:regextitle pattern:@"(\\d(st|nd|rd|th) season|s\\d)"]) {
                             tmpseason = [ez findMatch:regextitle pattern:@"(\\d(st|nd|rd|th) season|s\\d)"rangeatindex:0];
