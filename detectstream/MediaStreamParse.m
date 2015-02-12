@@ -157,11 +157,6 @@
                     // Check if there is a usable episode number
                     if (![regextitle isEqualToString:@"Plex"]) {
                         regextitle = [ez searchreplace:regextitle pattern:@"\\▶\\s"];
-                        if ([ez checkMatch:regextitle pattern:@"(\\d(st|nd|rd|th) season|s\\d)"]) {
-                            tmpseason = [ez findMatch:regextitle pattern:@"(\\d(st|nd|rd|th) season|s\\d)"rangeatindex:0];
-                            regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpseason withString:@""];
-                            tmpseason = [ez searchreplace:tmpseason pattern:@"((st|nd|rd|th) season|s)"];
-                        }
                         tmpepisode = [ez findMatch:regextitle pattern:@"((ep|e)\\d+|episode \\d+|\\d+)" rangeatindex:0];
                         if (tmpepisode.length == 0){
                             // Probably a movie
@@ -182,23 +177,32 @@
             else{
                 continue;
             }
+            NSNumber * episode;
+            NSNumber * season;
+            // Populate Season
+            if (tmpseason.length == 0) {
+                // Parse Season from title
+                NSDictionary * seasondata = [MediaStreamParse checkSeason:title];
+                if (seasondata != nil) {
+                    season = (NSNumber *)seasondata[@"season"];
+                    title = seasondata[@"title"];
+                }
+                else{
+                   season = @(1);
+                }
+            }
+            else{
+                season = [[[NSNumberFormatter alloc] init] numberFromString:tmpseason];
+            }
             //Trim Whitespace
             title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            NSNumber * episode;
-            NSNumber * season;
             // Final Checks
             if ([tmpepisode length] ==0){
                 episode = [NSNumber numberWithInt:0];
             }
             else{
                 episode = [[[NSNumberFormatter alloc] init] numberFromString:tmpepisode];
-            }
-            if (tmpseason.length == 0) {
-                season = @(0);
-            }
-            else{
-                season = [[[NSNumberFormatter alloc] init] numberFromString:tmpseason];
             }
             if (title.length == 0) {
                 continue;
@@ -209,5 +213,38 @@
         }
     }
     return final;
+}
++(NSDictionary *)checkSeason:(NSString *) title{
+    // Parses season
+    ezregex * ez = [ezregex new];
+    NSString * tmpseason;
+    NSDictionary * result;
+    NSString * pattern = @"(\\d(st|nd|rd|th) season|season \\d|s\\d)";
+    if ([ez checkMatch:title pattern:pattern]) {
+        tmpseason = [ez findMatch:title pattern:pattern rangeatindex:0];
+        title = [title stringByReplacingOccurrencesOfString:tmpseason withString:@""];
+        tmpseason = [ez findMatch:tmpseason pattern:@"\\d+" rangeatindex:0];
+        result = [[NSDictionary alloc] initWithObjectsAndKeys:title, @"title", [[NSNumberFormatter alloc] numberFromString:tmpseason], @"season", nil];
+        
+    }
+    pattern = @"(first|season|third|fourth|fifth) season";
+    if ([ez checkMatch:title pattern:@"(first|season|third|fourth|fifth) season"] && tmpseason.length == 0) {
+        tmpseason = [ez findMatch:title pattern:pattern rangeatindex:0];
+        title = [title stringByReplacingOccurrencesOfString:tmpseason withString:@""];
+        result = [[NSDictionary alloc] initWithObjectsAndKeys:title, @"title",@([MediaStreamParse recognizeseason:tmpseason]), @"season", nil];
+    }
+    return result;
+}
++(int)recognizeseason:(NSString *)season{
+    if ([season caseInsensitiveCompare:@"second season"] == NSOrderedSame)
+        return 2;
+    else if ([season caseInsensitiveCompare:@"third season"] == NSOrderedSame)
+        return 3;
+    else if ([season caseInsensitiveCompare:@"fourth season"] == NSOrderedSame)
+        return 4;
+    else if ([season caseInsensitiveCompare:@"fifth season"] == NSOrderedSame)
+        return 5;
+    else
+        return 1;
 }
 @end
