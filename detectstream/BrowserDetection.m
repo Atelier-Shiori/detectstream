@@ -66,10 +66,10 @@
         
         SBElementArray * windows = [safari windows];
         for (int i = 0; i < [windows count]; i++) {
-            SafariWindow * window = [windows objectAtIndex:i];
+            SafariWindow * window = windows[i];
             SBElementArray * tabs = [window tabs];
             for (int i = 0 ; i < [tabs count]; i++) {
-                SafariTab * tab = [tabs objectAtIndex:i];
+                SafariTab * tab = tabs[i];
                 NSString * site = [browser checkURL:[tab URL]];
                 if (site.length > 0) {
                     NSString * DOM;
@@ -95,10 +95,10 @@
         GoogleChromeApplication * chrome = [SBApplication applicationWithBundleIdentifier:@"com.google.Chrome"];
         SBElementArray * windows = [chrome windows];
         for (int i = 0; i < [windows count]; i++) {
-            GoogleChromeWindow * window = [windows objectAtIndex:i];
+            GoogleChromeWindow * window = windows[i];
             SBElementArray * tabs = [window tabs];
             for (int i = 0 ; i < [tabs count]; i++) {
-                GoogleChromeTab * tab = [tabs objectAtIndex:i];
+                GoogleChromeTab * tab = tabs[i];
                 NSString * site  = [browser checkURL:[tab URL]];
                 if (site.length > 0) {
                     if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:@"(netflix)"]){
@@ -137,10 +137,10 @@
         }
         SBElementArray * browsers = [omniweb browsers];
         for (int i = 0; i < [browsers count]; i++) {
-            OmniWebBrowser * obrowser = [browsers objectAtIndex:i];
+            OmniWebBrowser * obrowser = browsers[i];
             SBElementArray * tabs = [obrowser tabs];
             for (int i = 0 ; i < [tabs count]; i++) {
-                OmniWebTab * tab = [tabs objectAtIndex:i];
+                OmniWebTab * tab = tabs[i];
                 NSString * site  = [browser checkURL:[tab address]];
                 if (site.length > 0) {
                     NSString * DOM;
@@ -165,10 +165,10 @@
         RoccatApplication * roccat = [SBApplication applicationWithBundleIdentifier:@"org.Runecats.Roccat"];
         SBElementArray * browsers = [roccat browserWindows];
         for (int i = 0; i < [browsers count]; i++) {
-            RoccatBrowserWindow * rbrowser = [browsers objectAtIndex:i];
+            RoccatBrowserWindow * rbrowser = browsers[i];
             SBElementArray * tabs = [rbrowser tabs];
             for (int i = 0 ; i < [tabs count]; i++) {
-                RoccatTab * tab = [tabs objectAtIndex:i];
+                RoccatTab * tab = tabs[i];
                 NSString * site  = [browser checkURL:[tab URL]];
                 if (site.length > 0) {
                     NSString * DOM;

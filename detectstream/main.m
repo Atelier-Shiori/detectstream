@@ -37,11 +37,11 @@ int main(int argc, const char * argv[]) {
         // Generate JSON and output
         NSDictionary * result;
         if (final.count > 0 ) {
-            result = [[NSDictionary alloc] initWithObjectsAndKeys:final,@"result", nil];
+            result = @{@"result": final};
         }
         else {
             // Empty final array, send null
-            result = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNull null], @"result", nil];
+            result = @{@"result": [NSNull null]};
         }
         NSError *error;
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:result options:0 error:&error];

@@ -32,9 +32,9 @@
     //Perform Regex and sanitize
     if (pages.count > 0) {
         for (NSDictionary *m in pages) {
-            NSString * regextitle = [NSString stringWithFormat:@"%@",[m objectForKey:@"title"]];
-            NSString * url = [NSString stringWithFormat:@"%@", [m objectForKey:@"url"]];
-            NSString * site = [NSString stringWithFormat:@"%@", [m objectForKey:@"site"]];
+            NSString * regextitle = [NSString stringWithFormat:@"%@",m[@"title"]];
+            NSString * url = [NSString stringWithFormat:@"%@", m[@"url"]];
+            NSString * site = [NSString stringWithFormat:@"%@", m[@"site"]];
             NSString * title;
             NSString * tmpepisode;
             NSString * tmpseason;
@@ -105,7 +105,7 @@
             else if ([site isEqualToString:@"netflix"]){
                 if([ez checkMatch:url pattern:@"WiPlayer"]){
                     //Get the Document Object Model
-                    NSString * DOM = [NSString stringWithFormat:@"%@",[m objectForKey:@"DOM"]];
+                    NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
                     //Get the Episode Movie ID
                     NSArray * matches = [ez findMatches:url pattern:@"\\b(EpisodeMovieId)=\\d+"];
                     NSString * videoid;
@@ -114,7 +114,7 @@
                         videoid = [ez searchreplace:videoid pattern:@"(EpisodeMovieId)="];
                     }
                     else{
-                        videoid = [ez findMatch:[NSString stringWithFormat:@"%@",[m objectForKey:@"DOM"]] pattern:@"EpisodeMovieId=\\d+" rangeatindex:0];
+                        videoid = [ez findMatch:[NSString stringWithFormat:@"%@",m[@"DOM"]] pattern:@"EpisodeMovieId=\\d+" rangeatindex:0];
                         videoid = [videoid stringByReplacingOccurrencesOfString:@"EpisodeMovieId=" withString:@""];
                     }
                     // Parse the DOM to get the JSON Data
@@ -127,22 +127,22 @@
                     NSError* error;
                     // Parse JSON Data
                     NSDictionary *metadata = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
-                    NSDictionary *videodata = [metadata objectForKey:@"video"];
+                    NSDictionary *videodata = metadata[@"video"];
                     // Set Title
-                    title = [videodata objectForKey:@"title"];
+                    title = videodata[@"title"];
                     // Search to get the right Episode Number
-                    NSArray * seasondata = [videodata objectForKey:@"seasons"];
+                    NSArray * seasondata = videodata[@"seasons"];
                     for (int i = 0; i < [seasondata count]; i++) {
-                        NSDictionary * season = [seasondata objectAtIndex:i];
-                        NSArray *episodes = [season objectForKey:@"episodes"];
+                        NSDictionary * season = seasondata[i];
+                        NSArray *episodes = season[@"episodes"];
                         for (int e = 0; e < [episodes count]; e++) {
-                            NSDictionary * episode = [episodes objectAtIndex:e];
-                            if (![videoid isEqualTo:[NSString stringWithFormat:@"%@", [episode objectForKey:@"id"]]]) {
+                            NSDictionary * episode = episodes[e];
+                            if (![videoid isEqualTo:[NSString stringWithFormat:@"%@", episode[@"id"]]]) {
                                 continue;
                             }
                             else{
                                 //Set Episode Number and Season
-                                tmpepisode = [NSString stringWithFormat:@"%@", [episode objectForKey:@"seq"]];
+                                tmpepisode = [NSString stringWithFormat:@"%@", episode[@"seq"]];
                                 tmpseason = [NSString stringWithFormat:@"%i", i+1];
                                 break;
                             }
@@ -199,7 +199,7 @@
             tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             // Final Checks
             if ([tmpepisode length] ==0){
-                episode = [NSNumber numberWithInt:0];
+                episode = @(0);
             }
             else{
                 episode = [[[NSNumberFormatter alloc] init] numberFromString:tmpepisode];
