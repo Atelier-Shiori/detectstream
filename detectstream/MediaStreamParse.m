@@ -157,6 +157,11 @@
                     // Check if there is a usable episode number
                     if (![regextitle isEqualToString:@"Plex"]) {
                         regextitle = [ez searchreplace:regextitle pattern:@"\\▶\\s"];
+                        NSDictionary * seasoninfo = [MediaStreamParse checkSeason:regextitle];
+                        if (seasoninfo) {
+                            regextitle = seasoninfo[@"title"];
+                            tmpseason = [(NSNumber *)seasoninfo[@"season"] stringValue];
+                        }
                         tmpepisode = [ez findMatch:regextitle pattern:@"((ep|e)\\d+|episode \\d+|\\d+)" rangeatindex:0];
                         if (tmpepisode.length == 0){
                             // Probably a movie
