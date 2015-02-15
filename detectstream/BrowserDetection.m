@@ -202,7 +202,7 @@
     return false;
 }
 -(NSString *)checkURL:(NSString *)url{
-    NSString * site = [[[ezregex alloc] init] findMatch:url pattern:@"(crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix|plex|32400)" rangeatindex:0];
+    NSString * site = [[[ezregex alloc] init] findMatch:url pattern:@"(animesols|crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix|plex|32400)" rangeatindex:0];
     if ([site isEqualToString:@"32400"]) {
         //Plex local port, return plex
         return @"plex";

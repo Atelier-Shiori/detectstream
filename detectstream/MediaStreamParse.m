@@ -179,6 +179,16 @@
                     continue;
                 }
             }
+            else if ([site isEqualToString:@"animesols"]) {
+                if ([ez checkMatch:url pattern:@"videos\\/\\d+"]) {
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@"Anime Sols " withString:@""];
+                    regextitle = [ez searchreplace:regextitle pattern:@"-\\sEpisode\\s"];
+                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
+                    title = [ez findMatch:regextitle pattern:@"\\b.*\\s" rangeatindex:0];
+                }
+                else
+                    continue; // Invalid address
+            }
             else{
                 continue;
             }
