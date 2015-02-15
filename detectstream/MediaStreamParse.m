@@ -189,6 +189,18 @@
                 else
                     continue; // Invalid address
             }
+            else if ([site isEqualToString:@"wakanim"]) {
+                if ([ez checkMatch:url pattern:@"video(-premium)?/[^/]+/"]) {
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@" - Wakanim.TV" withString:@""];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@"de " withString:@""];
+                    regextitle = [ez searchreplace:regextitle pattern:@"en\\sVOSTFR\\s\\/\\sStreaming"];
+                    regextitle = [ez searchreplace:regextitle pattern:@"Episode\\s"];
+                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
+                    title = [ez findMatch:regextitle pattern:@"\\s.*" rangeatindex:0];
+                }
+                else
+                    continue; // Invalid address
+            }
             else{
                 continue;
             }
