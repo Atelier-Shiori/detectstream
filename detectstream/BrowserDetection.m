@@ -34,6 +34,11 @@
 @import ScriptingBridge;
 
 @implementation BrowserDetection
+#pragma Constants
+NSString *const supportedSites = @"(animesols|crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix|plex|wakanim|32400)";
+NSString *const requiresScraping = @"(netflix)";
+
+#pragma Methods
 +(NSArray *)getPages{
     //Initalize Browser Check Object
     BrowserDetection * browser = [[self alloc] init];
@@ -73,7 +78,7 @@
                 NSString * site = [browser checkURL:[tab URL]];
                 if (site.length > 0) {
                     NSString * DOM;
-                    if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:@"(netflix)"]){
+                    if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
                         //Include DOM
                         DOM = [tab source];
                     }
@@ -101,7 +106,7 @@
                 GoogleChromeTab * tab = tabs[i];
                 NSString * site  = [browser checkURL:[tab URL]];
                 if (site.length > 0) {
-                    if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:@"(netflix)"]){
+                    if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
                         // Chrome does not provide DOM, exclude
                         continue;
                     }
@@ -144,7 +149,7 @@
                 NSString * site  = [browser checkURL:[tab address]];
                 if (site.length > 0) {
                     NSString * DOM;
-                    if ([[[ezregex alloc] init] checkMatch:[tab address] pattern:@"(netflix)"]){
+                    if ([[[ezregex alloc] init] checkMatch:[tab address] pattern:requiresScraping]){
                         // Add Source
                         DOM = [tab source];
                     }
@@ -172,7 +177,7 @@
                 NSString * site  = [browser checkURL:[tab URL]];
                 if (site.length > 0) {
                     NSString * DOM;
-                    if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:@"(netflix)"]){
+                    if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
                         // Include DOM
                         DOM = [tab source];
                     }
@@ -202,7 +207,7 @@
     return false;
 }
 -(NSString *)checkURL:(NSString *)url{
-    NSString * site = [[[ezregex alloc] init] findMatch:url pattern:@"(animesols|crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix|plex|wakanim|32400)" rangeatindex:0];
+    NSString * site = [[[ezregex alloc] init] findMatch:url pattern:supportedSites rangeatindex:0];
     if ([site isEqualToString:@"32400"]) {
         //Plex local port, return plex
         return @"plex";
