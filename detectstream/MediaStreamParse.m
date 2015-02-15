@@ -201,6 +201,17 @@
                 else
                     continue; // Invalid address
             }
+            else if ([site isEqualToString:@"animaxtv"]) {
+                if ([ez checkMatch:url pattern:@"watch\\/series\\/.*\\/episode-\\d+-\\d+"]) {
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@" | Animax UK | Watch Anime TV Shows & Movies Online" withString:@""];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@" | Videos | " withString:@""];
+                    regextitle = [ez searchreplace:regextitle pattern:@"Episode\\s"];
+                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
+                    title = [ez findMatch:regextitle pattern:@".*" rangeatindex:0];
+                }
+                else
+                    continue; // Invalid address
+            }
             else{
                 continue;
             }
