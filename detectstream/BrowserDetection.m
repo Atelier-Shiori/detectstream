@@ -35,7 +35,7 @@
 
 @implementation BrowserDetection
 #pragma Constants
-NSString *const supportedSites = @"(animesols|animaxtv|crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix|plex|wakanim|32400)";
+NSString *const supportedSites = @"(animesols|crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix|plex|wakanim|32400)";
 NSString *const requiresScraping = @"(netflix)";
 
 #pragma Methods
