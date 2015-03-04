@@ -107,23 +107,37 @@
                     //Get the Document Object Model
                     NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
                     //Get the Episode Movie ID
-                    NSArray * matches = [ez findMatches:url pattern:@"\\b(EpisodeMovieId)=\\d+"];
+                    NSArray * matches = [ez findMatches:url pattern:@"\\b(EpisodeMovieId|episodeId)=\\d+"];
                     NSString * videoid;
                     if (matches.count > 0) {
-                        videoid = [NSString stringWithFormat:@"%@", [[ez findMatches:url pattern:@"\\b(EpisodeMovieId)=\\d+"] lastObject]];
-                        videoid = [ez searchreplace:videoid pattern:@"(EpisodeMovieId)="];
+                        videoid = [NSString stringWithFormat:@"%@", [[ez findMatches:url pattern:@"\\b(EpisodeMovieId|episodeId)=\\d+"] lastObject]];
+                        videoid = [ez searchreplace:videoid pattern:@"(EpisodeMovieId|episodeId)="];
+                    }
+                    NSData * jsonData;
+                    if ([ez checkMatch:DOM pattern:@"\"video\":*.*\\]\\}\\}"]){
+                        // HTML5 Player
+                        if (videoid.length == 0) {
+                            //Get Video ID
+                            videoid = [ez findMatch:[NSString stringWithFormat:@"%@", m[@"DOM"]] pattern:@"\"videoId\":\\d+" rangeatindex:0];
+                            videoid = [videoid stringByReplacingOccurrencesOfString:@"\"videoId\":" withString:@""];
+                        }
+                        DOM = [NSString stringWithFormat:@"{%@",[ez findMatch:DOM pattern:@"\"video\":*.*\\]\\}\\}" rangeatindex:0]];
+                        jsonData = [DOM dataUsingEncoding:NSUTF8StringEncoding];
                     }
                     else{
-                        videoid = [ez findMatch:[NSString stringWithFormat:@"%@",m[@"DOM"]] pattern:@"EpisodeMovieId=\\d+" rangeatindex:0];
-                        videoid = [videoid stringByReplacingOccurrencesOfString:@"EpisodeMovieId=" withString:@""];
+                        if (videoid.length == 0) {
+                            //Get Video ID
+                            videoid = [ez findMatch:[NSString stringWithFormat:@"%@",m[@"DOM"]] pattern:@"EpisodeMovieId=\\d+" rangeatindex:0];
+                            videoid = [videoid stringByReplacingOccurrencesOfString:@"EpisodeMovieId=" withString:@""];
+                        }
+                        // Silverlight Player
+                        // Parse the DOM to get the JSON Data
+                        DOM = [ez findMatch:DOM pattern:@"\"metadata\":\"*.*\",\"initParams\"" rangeatindex:0];
+                        DOM = [DOM stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+                        DOM = [DOM stringByReplacingOccurrencesOfString:@"metadata:" withString:@""];
+                        DOM = [DOM stringByReplacingOccurrencesOfString:@",initParams" withString:@""];
+                        jsonData = [[NSData alloc] initWithBase64Encoding:DOM];
                     }
-                    // Parse the DOM to get the JSON Data
-                    DOM = [ez findMatch:DOM pattern:@"\"metadata\":\"*.*\",\"initParams\"" rangeatindex:0];
-                    DOM = [DOM stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-                    DOM = [DOM stringByReplacingOccurrencesOfString:@"metadata:" withString:@""];
-                    DOM = [DOM stringByReplacingOccurrencesOfString:@",initParams" withString:@""];
-                    // Decode JSON Data
-                    NSData * jsonData = [[NSData alloc] initWithBase64Encoding:DOM];
                     NSError* error;
                     // Parse JSON Data
                     NSDictionary *metadata = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
