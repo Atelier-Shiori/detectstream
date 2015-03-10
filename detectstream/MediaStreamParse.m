@@ -40,7 +40,7 @@
             NSString * tmpseason;
             if ([site isEqualToString:@"crunchyroll"]) {
                 //Add Regex Arguments Here
-                if ([ez checkMatch:url pattern:@"\\b[^/]+\\/episode-[0-9]+.*-[0-9]+$"]||[ez checkMatch:url pattern:@"\\b[^/]+\\/.*-movie-[0-9]+$"]) {
+                if ([ez checkMatch:url pattern:@"[^/]+\\/episode-[0-9]+.*-[0-9]+"]||[ez checkMatch:url pattern:@"[^/]+\\/.*-movie-[0-9]+"]) {
                     //Perform Sanitation
                     regextitle = [ez searchreplace:regextitle pattern:@"Crunchyroll - Watch\\s"];
                     regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\sMovie\\s-\\sMovie"];
