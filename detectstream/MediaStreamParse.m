@@ -193,11 +193,15 @@
                     continue;
                 }
             }
-            else if ([site isEqualToString:@"animesols"]) {
-                if ([ez checkMatch:url pattern:@"videos\\/\\d+"]) {
-                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@"Anime Sols " withString:@""];
-                    regextitle = [ez searchreplace:regextitle pattern:@"-\\sEpisode\\s"];
-                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
+            else if ([site isEqualToString:@"viewster"]) {
+                if ([ez checkMatch:url pattern:@"\\/serie\\/\\d+-\\d+-\\d+\\/*.*\\/"]) {
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@"Watch " withString:@""];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@" Free - Viewster" withString:@""];
+                    tmpepisode = [ez findMatch:url pattern:@"\\d+\\/" rangeatindex:0];
+					tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"/" withString:@""];
+					if ([tmpepisode isEqualToString:@"000"]){
+						tmpepisode = @"1";
+					}
                     title = [ez findMatch:regextitle pattern:@"\\b.*\\s" rangeatindex:0];
                 }
                 else
