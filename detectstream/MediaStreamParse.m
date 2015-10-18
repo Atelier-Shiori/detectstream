@@ -102,6 +102,19 @@
                 else
                     continue; // Invalid address
             }
+            else if ([site isEqualToString:@"funimation"]) {
+                if ([ez checkMatch:url pattern:@"shows\\/\\S+\\/videos\\/official\\/\\S+"]) {
+                    //Get the Document Object Model
+                    NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+                    tmpepisode = [ez findMatch:[NSString stringWithFormat:@"%@", DOM] pattern:@"Episode\\s+\\d+" rangeatindex:0];
+                    tmpepisode = [ez searchreplace:tmpepisode pattern:@"Episode\\s+"];
+                    title = [ez findMatch:[NSString stringWithFormat:@"%@", DOM] pattern:@"<div class=\"heading\">\\s+<h2>*.*<br/>" rangeatindex:0];
+                    title = [ez searchreplace:title pattern:@"<div class=\"heading\">\\s+<h2>"];
+                    title = [title stringByReplacingOccurrencesOfString:@"<br/>" withString:@""];
+                }
+                else
+                    continue; // Invalid address
+            }
             else if ([site isEqualToString:@"netflix"]){
                 if([ez checkMatch:url pattern:@"WiPlayer"]){
                     //Get the Document Object Model
@@ -222,6 +235,7 @@
             else{
                 continue;
             }
+        
             NSNumber * episode;
             NSNumber * season;
             // Populate Season
