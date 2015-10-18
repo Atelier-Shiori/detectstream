@@ -6,9 +6,9 @@ detectstream is used in [Hachidori](https://github.com/chikorita157/hachidori) a
 #Support
 detectstream currently supports these sites:
 
-Safari, Webkit, Chrome, Roccat Browser and Omniweb: Crunchyroll, Daisuki, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Anime Sols, Wakanim, Plex.tv Media Server (locally and on the web).
+Safari, Webkit, Chrome, Roccat Browser and Omniweb: Crunchyroll, Daisuki, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster (Beta), Wakanim, Plex.tv Media Server (locally and on the web).
 
-Safari, Webkit, [Roccat Browser](http://runecats.com/roccatbrowsermac.html) and [OmniWeb](http://www.omnigroup.com/more) only (requires HTML Scraping): Netflix 
+Safari, Webkit, [Roccat Browser](http://runecats.com/roccatbrowsermac.html) and [OmniWeb](http://www.omnigroup.com/more) only (requires HTML Scraping): Netflix, Funimation
 
 #How to use
 Sample source code for using this helper program in Objective-C and Swift can be seen [here](https://github.com/chikorita157/detectstream/wiki/Usage)
