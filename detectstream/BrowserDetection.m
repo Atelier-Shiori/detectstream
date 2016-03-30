@@ -47,7 +47,7 @@ NSString *const requiresScraping = @"(netflix|funimation)";
      Browser Detection
      */
     // Check to see Safari is running. If so, add tab's title and url to the array
-    for (int s = 0; s <2; s++) {
+    for (int s = 0; s <3; s++) {
         SafariApplication* safari;
         NSString * browserstring;
         switch (s) {
@@ -64,6 +64,13 @@ NSString *const requiresScraping = @"(netflix|funimation)";
                 }
                 safari  = [SBApplication applicationWithBundleIdentifier:@"org.webkit.nightly.WebKit"];
                 browserstring = @"Webkit";
+                break;
+            case 2:
+                if (![browser checkIdentifier:@"com.apple.SafariTechnologyPreview"]) {
+                    continue;
+                }
+                safari  = [SBApplication applicationWithBundleIdentifier:@"com.apple.SafariTechnologyPreview"];
+                browserstring = @"Safari Tech Preview";
                 break;
             default:
                 break;

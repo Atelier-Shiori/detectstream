@@ -46,11 +46,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6F0592551A6C241400C60C29 /* OmniWeb.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = OmniWeb.app; path = ../../../../Applications/OmniWeb.app; sourceTree = "<group>"; };
+		6F0592551A6C241400C60C29 /* OmniWeb.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = OmniWeb.app; path = ../../../../../Applications/OmniWeb.app; sourceTree = "<group>"; };
 		6FB3BBE21A8581CB00D3A69C /* ezregex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ezregex.h; sourceTree = "<group>"; };
 		6FB3BBE31A8581CC00D3A69C /* ezregex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ezregex.m; sourceTree = "<group>"; };
 		6FB3BBE61A8582C200D3A69C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		6FB88B1F1A8553CB00ACF806 /* Roccat.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Roccat.app; path = ../../../../Applications/Roccat.app; sourceTree = "<group>"; };
+		6FB88B1F1A8553CB00ACF806 /* Roccat.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Roccat.app; path = ../../../../../Applications/Roccat.app; sourceTree = "<group>"; };
 		8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		8212F76219F75E4A0029B2F4 /* Safari.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Safari.app; path = /Applications/Safari.app; sourceTree = "<absolute>"; };
 		822DDD801A887BAC003D9464 /* BrowserDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserDetection.h; sourceTree = "<group>"; };
