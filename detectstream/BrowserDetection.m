@@ -103,8 +103,34 @@ NSString *const requiresScraping = @"(netflix|funimation)";
         }
     }
     // Check to see Chrome is running. If so, add tab's title and url to the array
-    if ([browser checkIdentifier:@"com.google.Chrome"]) {
-        GoogleChromeApplication * chrome = [SBApplication applicationWithBundleIdentifier:@"com.google.Chrome"];
+    for (int s = 0; s <3; s++) {
+            GoogleChromeApplication * chrome;
+            NSString * browserstring;
+            switch (s) {
+                case 0:
+                    if (![browser checkIdentifier:@"com.google.Chrome"]) {
+                        continue;
+                    }
+                    chrome = [SBApplication applicationWithBundleIdentifier:@"com.google.Chrome"];
+                    browserstring = @"Chrome";
+                    break;
+                case 1:
+                    if (![browser checkIdentifier:@"org.chromium.Chromium"]) {
+                        continue;
+                    }
+                    chrome  = [SBApplication applicationWithBundleIdentifier:@"org.chromium.Chromium"];
+                    browserstring = @"Chromium";
+                    break;
+                case 2:
+                    if (![browser checkIdentifier:@"com.google.Chrome.canary"]) {
+                        continue;
+                    }
+                    chrome  = [SBApplication applicationWithBundleIdentifier:@"com.google.Chrome.canary"];
+                    browserstring = @"Chrome Canary";
+                    break;
+                default:
+                    break;
+            }
         SBElementArray * windows = [chrome windows];
         for (int i = 0; i < [windows count]; i++) {
             GoogleChromeWindow * window = windows[i];
@@ -117,7 +143,7 @@ NSString *const requiresScraping = @"(netflix|funimation)";
                         // Chrome does not provide DOM, exclude
                         continue;
                     }
-                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", @"Chrome", @"browser",  site, @"site", nil, @"DOM", nil];
+                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", browserstring, @"browser",  site, @"site", nil, @"DOM", nil];
                     [pages addObject:page];
                 }
                 else{
