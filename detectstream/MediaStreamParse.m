@@ -232,6 +232,17 @@
                 else
                     continue; // Invalid address
             }
+            else if ([site isEqualToString:@"myanimelist"]) {
+                if ([ez checkMatch:url pattern:@"anime\\/\\d+\\/*.*\\/episode\\/\\d+"]) {
+                    regextitle = [ez searchreplace:regextitle pattern:@"- MyAnimeList.net"];
+                    regextitle = [ez searchreplace:regextitle pattern:@"\\sEpisode"];
+                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
+                    regextitle = [ez searchreplace:regextitle pattern:@"\\D-\\s*.*$"];
+                    title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
+                }
+                else
+                    continue; // Invalid address
+            }
             else{
                 continue;
             }
