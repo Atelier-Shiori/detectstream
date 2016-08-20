@@ -44,10 +44,11 @@
                     //Perform Sanitation
                     regextitle = [ez searchreplace:regextitle pattern:@"Crunchyroll - Watch\\s"];
                     regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\sMovie\\s-\\sMovie"];
-                    regextitle = [ez searchreplace:regextitle pattern:@"\\sEpisode"];
-                    regextitle = [ez searchreplace:regextitle pattern:@"\\D-\\s*.*$"];
-                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
-                    title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
+                    tmpepisode = [ez findMatch:regextitle pattern:@"\\sEpisode (\\d+)" rangeatindex:0];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
+                    tmpepisode = [ez searchreplace:tmpepisode pattern:@"\\sEpisode"];
+                    regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\s*.*"];
+                    title = regextitle;
                 }
                 else
                     continue;
@@ -111,6 +112,7 @@
                     title = [ez findMatch:[NSString stringWithFormat:@"%@", DOM] pattern:@"<div class=\"heading\">\\s+<h2>*.*<br/>" rangeatindex:0];
                     title = [ez searchreplace:title pattern:@"<div class=\"heading\">\\s+<h2>"];
                     title = [title stringByReplacingOccurrencesOfString:@"<br/>" withString:@""];
+                    title = [ez searchreplace:title pattern:@"\\s-\\s*.*"];
                 }
                 else
                     continue; // Invalid address
