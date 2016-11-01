@@ -93,11 +93,10 @@
                     continue; // Invalid address
             }
             else if ([site isEqualToString:@"viz"]) {
-                if ([ez checkMatch:url pattern:@"anime\\/streaming\\/[^/]+-episode-[0-9]+\\/"]||[ez checkMatch:url pattern:@"anime\\/streaming\\/[^/]+-movie\\/"]) {
-                    regextitle = [ez searchreplace:regextitle pattern:@"\\bVIZ.com - NEON ALLEY -\\s"];
-                    regextitle = [ez searchreplace:regextitle pattern:@"\\s\\((DUB|SUB)\\)"];
-                    regextitle = [ez searchreplace:regextitle pattern:@"\\b\\sEpisode"];
+                if ([ez checkMatch:url pattern:@"watch\\/streaming\\/[^/]+-episode-[0-9]+\\/"]||[ez checkMatch:url pattern:@"watch\\/streaming\\/[^/]+-movie\\/"]) {
                     tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
+                    regextitle = [ez searchreplace:regextitle pattern:@"#\\d+\\s*.*\\/\\/\\sVIZ"];
+                    regextitle = [ez searchreplace:regextitle pattern:@"#\\d+\\s\\w+"];
                     title = [ez findMatch:regextitle pattern:@"\\b.*\\s" rangeatindex:0];
                 }
                 else
