@@ -185,19 +185,9 @@
                     // Check if there is a usable episode number
                     if (![regextitle isEqualToString:@"Plex"]) {
                         regextitle = [ez searchreplace:regextitle pattern:@"\\▶\\s"];
-                        NSDictionary * seasoninfo = [MediaStreamParse checkSeason:regextitle];
-                        if (seasoninfo) {
-                            regextitle = seasoninfo[@"title"];
-                            tmpseason = [(NSNumber *)seasoninfo[@"season"] stringValue];
-                        }
-                        tmpepisode = [ez findMatch:regextitle pattern:@"((ep|e)\\d+|episode \\d+|\\d+)" rangeatindex:0];
-                        if (tmpepisode.length == 0){
-                            // Probably a movie
-                            tmpepisode = @"0";
-                        }
-                        regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
-                        tmpepisode = [ez searchreplace:tmpepisode pattern:@"(ep|e|episode)"];
+                        // Just return title, let Anitomy pharse the rest
                         title = regextitle;
+                        tmpepisode = @"0";
                     }
                     else{
                         continue;
