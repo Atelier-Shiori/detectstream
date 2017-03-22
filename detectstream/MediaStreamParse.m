@@ -201,9 +201,9 @@
                 if ([ez checkMatch:url pattern:@"\\/serie\\/\\d+-\\d+-\\d+\\/*.*\\/"]) {
                     //Get the Document Object Model
                     NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
-                    regextitle = [ez findMatch:DOM pattern:@".*\\sEpisode\\s\\d+" rangeatindex:0];
+                    regextitle = [ez findMatch:DOM pattern:@".*\\sEpisode\\s\\d+:" rangeatindex:0];
                     tmpepisode = [ez findMatch:regextitle pattern:@"Episode\\s\\d+" rangeatindex:0];
-                    title = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
+                    title = [regextitle stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@:",tmpepisode] withString:@""];
 					tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"Episode " withString:@""];
                 }
                 else
