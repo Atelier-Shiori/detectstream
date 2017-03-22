@@ -40,7 +40,7 @@
             NSString * tmpseason;
             if ([site isEqualToString:@"crunchyroll"]) {
                 //Add Regex Arguments Here
-                if ([ez checkMatch:url pattern:@"[^/]+\\/episode-[0-9]+.*-[0-9]+"]||[ez checkMatch:url pattern:@"[^/]+\\/.*-movie-[0-9]+"]) {
+                if ([ez checkMatch:url pattern:@"[^/]+\\/episode-[0-9]+.*-[0-9]+"]||[ez checkMatch:url pattern:@"[^/]+\\/.*-movie-[0-9]+"]||[ez checkMatch:url pattern:@"[^/]+\\/.*-\\d+"]) {
                     //Perform Sanitation
                     regextitle = [ez searchreplace:regextitle pattern:@"Crunchyroll - Watch\\s"];
                     regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\sMovie\\s-\\sMovie"];
@@ -199,14 +199,12 @@
             }
             else if ([site isEqualToString:@"viewster"]) {
                 if ([ez checkMatch:url pattern:@"\\/serie\\/\\d+-\\d+-\\d+\\/*.*\\/"]) {
-                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@"Watch " withString:@""];
-                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@" Free - Viewster" withString:@""];
-                    tmpepisode = [ez findMatch:url pattern:@"\\d+\\/" rangeatindex:0];
-					tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"/" withString:@""];
-					if ([tmpepisode isEqualToString:@"000"]){
-						tmpepisode = @"1";
-					}
-                    title = [ez findMatch:regextitle pattern:@"\\b.*\\s" rangeatindex:0];
+                    //Get the Document Object Model
+                    NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+                    regextitle = [ez findMatch:DOM pattern:@".*\\sEpisode\\s\\d+" rangeatindex:0];
+                    tmpepisode = [ez findMatch:regextitle pattern:@"Episode\\s\\d+" rangeatindex:0];
+                    title = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
+					tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"Episode " withString:@""];
                 }
                 else
                     continue; // Invalid address

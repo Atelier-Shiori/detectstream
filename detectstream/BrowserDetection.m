@@ -37,6 +37,7 @@
 #pragma Constants
 NSString *const supportedSites = @"(crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|32400)";
 NSString *const requiresScraping = @"(netflix|funimation)";
+NSString *const requiresJavaScript = @"(viewster)";
 
 #pragma Methods
 +(NSArray *)getPages{
@@ -89,6 +90,10 @@ NSString *const requiresScraping = @"(netflix|funimation)";
                         //Include DOM
                         DOM = [tab source];
                     }
+                    else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
+                        // From https://github.com/matthewdias/media-strategies/blob/master/strategies/viewster.js
+                        DOM = [NSString stringWithFormat:@"%@ %@", [safari doJavaScript:@"document.querySelector('.title').innerHTML" in:tab], [safari doJavaScript:@"document.querySelector('.playing').parentElement.parentElement.querySelector('.slide-title > .episode-title').innerHTML" in:tab]];
+                    }
                     else{
                         DOM = nil;
                     }
@@ -139,7 +144,7 @@ NSString *const requiresScraping = @"(netflix|funimation)";
                 GoogleChromeTab * tab = tabs[i];
                 NSString * site  = [browser checkURL:[tab URL]];
                 if (site.length > 0) {
-                    if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
+                    if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]||[[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
                         // Chrome does not provide DOM, exclude
                         continue;
                     }
@@ -186,6 +191,10 @@ NSString *const requiresScraping = @"(netflix|funimation)";
                         // Add Source
                         DOM = [tab source];
                     }
+                    else if ([[[ezregex alloc] init] checkMatch:[tab address] pattern:requiresJavaScript]){
+                        // Can't return javascript output, continue
+                        continue;
+                    }
                     else{
                         DOM = nil;
                     }
@@ -213,6 +222,11 @@ NSString *const requiresScraping = @"(netflix|funimation)";
                     if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
                         // Include DOM
                         DOM = [tab source];
+             
+                    }
+                    else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
+                        // Javascript Applescript function does not return value, continue
+                        continue;
                     }
                     else{
                         DOM = nil;
