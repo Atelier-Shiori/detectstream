@@ -8,9 +8,7 @@ detectstream currently supports these sites:
 
 Safari, Webkit, Chrome, Roccat Browser and Omniweb: Crunchyroll, Daisuki, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster, Wakanim, Plex.tv Media Server (locally and on the web).
 
-Safari, Webkit, [Roccat Browser](http://runecats.com/roccatbrowsermac.html) and [OmniWeb](http://www.omnigroup.com/more) only (requires HTML Scraping): Netflix, Funimation
-
-Safari only (requires Javascript Execution): Viewster
+Chrome and Safari only (requires Javascript Execution): Viewster (For Safari, you need to have "Enable Javascript from Apple Events" enabled in the [Developer Menu](https://support.apple.com/kb/PH21491))
 
 # How to use
 Sample source code for using this helper program in Objective-C and Swift can be seen [here](https://github.com/chikorita157/detectstream/wiki/Usage)
