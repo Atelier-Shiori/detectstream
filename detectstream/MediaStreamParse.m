@@ -103,14 +103,14 @@
                     continue; // Invalid address
             }
             else if ([site isEqualToString:@"funimation"]) {
-                if ([ez checkMatch:url pattern:@"shows\\/\\S+\\/videos\\/official\\/\\S+"]) {
+                if ([ez checkMatch:url pattern:@"shows\\/*.*\\/"]) {
                     //Get the Document Object Model
                     NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
                     tmpepisode = [ez findMatch:[NSString stringWithFormat:@"%@", DOM] pattern:@"Episode\\s+\\d+" rangeatindex:0];
                     tmpepisode = [ez searchreplace:tmpepisode pattern:@"Episode\\s+"];
-                    title = [ez findMatch:[NSString stringWithFormat:@"%@", DOM] pattern:@"<div class=\"heading\">\\s+<h2>*.*<br/>" rangeatindex:0];
-                    title = [ez searchreplace:title pattern:@"<div class=\"heading\">\\s+<h2>"];
-                    title = [title stringByReplacingOccurrencesOfString:@"<br/>" withString:@""];
+                    title = [ez findMatch:[NSString stringWithFormat:@"%@", DOM] pattern:@"<h2 class=\"show-headline video-title\"><a href=\"*.*\">*.*<\\/a>" rangeatindex:0];
+                    title = [ez searchreplace:title pattern:@"<h2 class=\"show-headline video-title\"><a href=\"*.*\">"];
+                    title = [title stringByReplacingOccurrencesOfString:@"</a>" withString:@""];
                     title = [ez searchreplace:title pattern:@"\\s-\\s*.*"];
                 }
                 else
