@@ -91,8 +91,10 @@ NSString *const requiresJavaScript = @"(viewster)";
                         DOM = [tab source];
                     }
                     else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
-                        // From https://github.com/matthewdias/media-strategies/blob/master/strategies/viewster.js
-                        DOM = [NSString stringWithFormat:@"%@ %@", [safari doJavaScript:@"document.querySelector('.title').innerHTML" in:tab], [safari doJavaScript:@"document.querySelector('.playing').parentElement.parentElement.querySelector('.slide-title > .episode-title').innerHTML" in:tab]];
+                        if ([site isEqualToString:@"viewster"]){
+                            // From https://github.com/matthewdias/media-strategies/blob/master/strategies/viewster.js
+                            DOM = [NSString stringWithFormat:@"%@ %@", [safari doJavaScript:@"document.querySelector('.title').innerHTML" in:tab], [safari doJavaScript:@"document.querySelector('.playing').parentElement.parentElement.querySelector('.slide-title > .episode-title').innerHTML" in:tab]];
+                        }
                     }
                     else{
                         DOM = nil;
@@ -143,12 +145,19 @@ NSString *const requiresJavaScript = @"(viewster)";
             for (int i = 0 ; i < [tabs count]; i++) {
                 GoogleChromeTab * tab = tabs[i];
                 NSString * site  = [browser checkURL:[tab URL]];
+                NSString * DOM;
                 if (site.length > 0) {
-                    if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]||[[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
-                        // Chrome does not provide DOM, exclude
-                        continue;
+                    if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
+                        // Get source code using Javascript
+                        DOM = (NSString *)[tab executeJavascript:@"document.documentElement.innerHTML"];
                     }
-                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", browserstring, @"browser",  site, @"site", nil, @"DOM", nil];
+                    else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
+                        if ([site isEqualToString:@"viewster"]){
+                            // From https://github.com/matthewdias/media-strategies/blob/master/strategies/viewster.js
+                            DOM = [NSString stringWithFormat:@"%@ %@", [tab executeJavascript:@"document.querySelector('.title').innerHTML"], [tab executeJavascript:@"document.querySelector('.playing').parentElement.parentElement.querySelector('.slide-title > .episode-title').innerHTML"]];
+                        }
+                    }
+                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", browserstring, @"browser",  site, @"site", DOM, @"DOM", nil];
                     [pages addObject:page];
                 }
                 else{
