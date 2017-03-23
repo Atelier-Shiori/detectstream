@@ -39,6 +39,11 @@ NSString *const supportedSites = @"(crunchyroll|daisuki|animelab|animenewsnetwor
 NSString *const requiresScraping = @"(netflix|funimation)";
 NSString *const requiresJavaScript = @"(viewster)";
 
+#pragma Javascript Constants
+// From https://github.com/matthewdias/media-strategies/blob/master/strategies/viewster.js
+NSString *const viewstertitle = @"document.querySelector('.title').innerHTML";
+NSString *const viewsterepisode = @"document.querySelector('.playing').parentElement.parentElement.querySelector('.slide-title > .episode-title').innerHTML";
+
 #pragma Methods
 +(NSArray *)getPages{
     //Initalize Browser Check Object
@@ -92,8 +97,7 @@ NSString *const requiresJavaScript = @"(viewster)";
                     }
                     else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
                         if ([site isEqualToString:@"viewster"]){
-                            // From https://github.com/matthewdias/media-strategies/blob/master/strategies/viewster.js
-                            DOM = [NSString stringWithFormat:@"%@ %@", [safari doJavaScript:@"document.querySelector('.title').innerHTML" in:tab], [safari doJavaScript:@"document.querySelector('.playing').parentElement.parentElement.querySelector('.slide-title > .episode-title').innerHTML" in:tab]];
+                            DOM = [NSString stringWithFormat:@"%@ %@", [safari doJavaScript:viewstertitle in:tab], [safari doJavaScript:viewsterepisode in:tab]];
                         }
                     }
                     else{
@@ -153,8 +157,7 @@ NSString *const requiresJavaScript = @"(viewster)";
                     }
                     else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
                         if ([site isEqualToString:@"viewster"]){
-                            // From https://github.com/matthewdias/media-strategies/blob/master/strategies/viewster.js
-                            DOM = [NSString stringWithFormat:@"%@ %@", [tab executeJavascript:@"document.querySelector('.title').innerHTML"], [tab executeJavascript:@"document.querySelector('.playing').parentElement.parentElement.querySelector('.slide-title > .episode-title').innerHTML"]];
+                            DOM = [NSString stringWithFormat:@"%@ %@", [tab executeJavascript:viewstertitle], [tab executeJavascript:viewsterepisode]];
                         }
                     }
                     NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", browserstring, @"browser",  site, @"site", DOM, @"DOM", nil];
