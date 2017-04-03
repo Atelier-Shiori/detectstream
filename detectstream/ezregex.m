@@ -24,6 +24,8 @@
 @implementation ezregex
 
 -(BOOL)checkMatch:(NSString *)string pattern:(NSString *)pattern{
+    if (string == nil)
+        return false; // Can't check a match of a nil string.
     NSError *errRegex = NULL;
     NSRegularExpression *regex = [NSRegularExpression
                                   regularExpressionWithPattern:pattern
@@ -37,12 +39,16 @@
         return false;
 }
 -(NSString *)searchreplace:(NSString *)string pattern:(NSString *)pattern{
+    if (string == nil)
+        return @""; // Can't check a match of a nil string.
     NSError *errRegex = nil;
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&errRegex];
     NSString * newString = [regex stringByReplacingMatchesInString:string options:0 range:NSMakeRange(0, [string length]) withTemplate:@""];
     return newString;
 }
 -(NSString *)findMatch:(NSString *)string pattern:(NSString *)pattern rangeatindex:(int)ri{
+    if (string == nil)
+        return @""; // Can't check a match of a nil string.
     NSError *errRegex = NULL;
     NSRegularExpression *regex = [NSRegularExpression
                                   regularExpressionWithPattern:pattern
@@ -57,6 +63,8 @@
     return @"";
 }
 -(NSArray *)findMatches:(NSString *)string pattern:(NSString *)pattern {
+    if (string == nil)
+        return [NSArray new]; // Can't check a match of a nil string.
     NSError *errRegex = NULL;
     NSRegularExpression *regex = [NSRegularExpression
                                   regularExpressionWithPattern:pattern
