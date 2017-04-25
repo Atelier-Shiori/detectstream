@@ -25,5 +25,5 @@
 #import <Foundation/Foundation.h>
 
 @interface MediaStreamParse : NSObject
-+(NSArray *)parse:(NSArray *)pages;
++ (NSArray *)parse:(NSArray *)pages;
 @end

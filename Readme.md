@@ -22,7 +22,7 @@ or
 Fork this source code and add the necessary changes to improve the detection of various streaming sites.
 
 # To Compile
-Get the source and then type xcodebuild. You need to have Google Chrome and Omniweb in your Applications folder in order to compile since its used for the scripting bridge.
+Get the source and then type xcodebuild. Having the applications installed is no longer necessary as the scripting bridge headers are now included.
 
 # License
 This version is licensed under GNU Public License V3 and all older versions now is licensed under GPL V3. This is because I do not want people to steal my work and make it closed source.

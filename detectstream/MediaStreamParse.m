@@ -26,7 +26,7 @@
 #import "ezregex.h"
 
 @implementation MediaStreamParse
-+(NSArray *)parse:(NSArray *)pages{
++ (NSArray *)parse:(NSArray *)pages {
      NSMutableArray * final = [[NSMutableArray alloc] init];
     ezregex * ez = [[ezregex alloc] init];
     //Perform Regex and sanitize
@@ -49,6 +49,9 @@
                     tmpepisode = [ez searchreplace:tmpepisode pattern:@"\\sEpisode"];
                     regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\s*.*"];
                     title = regextitle;
+                    if ([ez checkMatch:title pattern:@"Crunchyroll"]) {
+                        continue;
+                    }
                 }
                 else
                     continue;
@@ -273,7 +276,7 @@
     }
     return final;
 }
-+(NSDictionary *)checkSeason:(NSString *) title{
++ (NSDictionary *)checkSeason:(NSString *) title {
     // Parses season
     ezregex * ez = [ezregex new];
     NSString * tmpseason;
@@ -294,16 +297,21 @@
     }
     return result;
 }
-+(int)recognizeseason:(NSString *)season{
-    if ([season caseInsensitiveCompare:@"second season"] == NSOrderedSame)
++ (int)recognizeseason:(NSString *)season {
+    if ([season caseInsensitiveCompare:@"second season"] == NSOrderedSame) {
         return 2;
-    else if ([season caseInsensitiveCompare:@"third season"] == NSOrderedSame)
+    }
+    else if ([season caseInsensitiveCompare:@"third season"] == NSOrderedSame) {
         return 3;
-    else if ([season caseInsensitiveCompare:@"fourth season"] == NSOrderedSame)
+    }
+    else if ([season caseInsensitiveCompare:@"fourth season"] == NSOrderedSame) {
         return 4;
-    else if ([season caseInsensitiveCompare:@"fifth season"] == NSOrderedSame)
+    }
+    else if ([season caseInsensitiveCompare:@"fifth season"] == NSOrderedSame) {
         return 5;
-    else
+    }
+    else {
         return 1;
+    }
 }
 @end

@@ -45,7 +45,7 @@ NSString *const viewstertitle = @"document.querySelector('.title').innerHTML";
 NSString *const viewsterepisode = @"document.querySelector('.playing').parentElement.parentElement.querySelector('.slide-title > .episode-title').innerHTML";
 
 #pragma Methods
-+(NSArray *)getPages{
++ (NSArray *)getPages {
     //Initalize Browser Check Object
     BrowserDetection * browser = [[self alloc] init];
     NSMutableArray * pages = [[NSMutableArray alloc] init];
@@ -254,7 +254,7 @@ NSString *const viewsterepisode = @"document.querySelector('.playing').parentEle
     }
     return pages;
 }
--(BOOL)checkIdentifier:(NSString*)identifier{
+- (BOOL)checkIdentifier:(NSString*)identifier {
     NSWorkspace * ws = [NSWorkspace sharedWorkspace];
     NSArray *runningApps = [ws runningApplications];
     NSRunningApplication *a;
@@ -265,7 +265,7 @@ NSString *const viewsterepisode = @"document.querySelector('.playing').parentEle
     }
     return false;
 }
--(NSString *)checkURL:(NSString *)url{
+- (NSString *)checkURL:(NSString *)url {
     NSString * site = [[[ezregex alloc] init] findMatch:url pattern:supportedSites rangeatindex:0];
     if ([site isEqualToString:@"32400"]) {
         //Plex local port, return plex

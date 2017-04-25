@@ -26,7 +26,7 @@
 #import <AppKit/AppKit.h>
 
 @interface BrowserDetection : NSObject
-+(NSArray *)getPages;
--(BOOL)checkIdentifier:(NSString*)identifier;
--(NSString *)checkURL:(NSString *)url;
++ (NSArray *)getPages;
+- (BOOL)checkIdentifier:(NSString*)identifier;
+- (NSString *)checkURL:(NSString *)url;
 @end

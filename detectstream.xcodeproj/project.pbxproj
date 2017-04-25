@@ -7,15 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		59E2E2761CCC1F0D009559B3 /* Safari.app in Sources */ = {isa = PBXBuildFile; fileRef = 59E2E2751CCC1E3A009559B3 /* Safari.app */; };
-		6F0592561A6C241E00C60C29 /* OmniWeb.app in Sources */ = {isa = PBXBuildFile; fileRef = 6F0592551A6C241400C60C29 /* OmniWeb.app */; };
 		6FB3BBE51A8581CC00D3A69C /* ezregex.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FB3BBE31A8581CC00D3A69C /* ezregex.m */; };
 		6FB3BBE71A8582C200D3A69C /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB3BBE61A8582C200D3A69C /* AppKit.framework */; };
-		6FB88B201A8553D400ACF806 /* Roccat.app in Sources */ = {isa = PBXBuildFile; fileRef = 6FB88B1F1A8553CB00ACF806 /* Roccat.app */; };
 		8212F76019F75BFC0029B2F4 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */; };
 		822DDD821A887BAC003D9464 /* BrowserDetection.m in Sources */ = {isa = PBXBuildFile; fileRef = 822DDD811A887BAC003D9464 /* BrowserDetection.m */; };
 		822DDD851A887CE3003D9464 /* MediaStreamParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 822DDD841A887CE3003D9464 /* MediaStreamParse.m */; };
-		8285734A19F812950004EF95 /* Google Chrome.app in Sources */ = {isa = PBXBuildFile; fileRef = 8285734819F811F60004EF95 /* Google Chrome.app */; };
 		829FB41619F7308D0026EAC2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 829FB41519F7308D0026EAC2 /* main.m */; };
 /* End PBXBuildFile section */
 
@@ -46,20 +42,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		59E2E2751CCC1E3A009559B3 /* Safari.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Safari.app; path = ../../../../../Applications/Safari.app; sourceTree = "<group>"; };
-		6F0592551A6C241400C60C29 /* OmniWeb.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = OmniWeb.app; path = ../../../../../Applications/OmniWeb.app; sourceTree = "<group>"; };
 		6FB3BBE21A8581CB00D3A69C /* ezregex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ezregex.h; sourceTree = "<group>"; };
 		6FB3BBE31A8581CC00D3A69C /* ezregex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ezregex.m; sourceTree = "<group>"; };
 		6FB3BBE61A8582C200D3A69C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		6FB88B1F1A8553CB00ACF806 /* Roccat.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Roccat.app; path = ../../../../../Applications/Roccat.app; sourceTree = "<group>"; };
 		8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		822DDD801A887BAC003D9464 /* BrowserDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserDetection.h; sourceTree = "<group>"; };
 		822DDD811A887BAC003D9464 /* BrowserDetection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserDetection.m; sourceTree = "<group>"; };
 		822DDD831A887CE3003D9464 /* MediaStreamParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaStreamParse.h; sourceTree = "<group>"; };
 		822DDD841A887CE3003D9464 /* MediaStreamParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaStreamParse.m; sourceTree = "<group>"; };
-		8285734819F811F60004EF95 /* Google Chrome.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = "Google Chrome.app"; path = "/Applications/Google Chrome.app"; sourceTree = "<absolute>"; };
 		829FB41219F7308D0026EAC2 /* detectstream */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = detectstream; sourceTree = BUILT_PRODUCTS_DIR; };
 		829FB41519F7308D0026EAC2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		91B821141EAF8A0D00C04402 /* Google Chrome.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Google Chrome.h"; path = "AppleScript/Google Chrome.h"; sourceTree = "<group>"; };
+		91B821151EAF8A0D00C04402 /* OmniWeb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OmniWeb.h; path = AppleScript/OmniWeb.h; sourceTree = "<group>"; };
+		91B821161EAF8A0D00C04402 /* Roccat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Roccat.h; path = AppleScript/Roccat.h; sourceTree = "<group>"; };
+		91B821171EAF8A0D00C04402 /* Safari.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Safari.h; path = AppleScript/Safari.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,10 +83,10 @@
 		8285734919F811FB0004EF95 /* Apple Script */ = {
 			isa = PBXGroup;
 			children = (
-				59E2E2751CCC1E3A009559B3 /* Safari.app */,
-				6FB88B1F1A8553CB00ACF806 /* Roccat.app */,
-				6F0592551A6C241400C60C29 /* OmniWeb.app */,
-				8285734819F811F60004EF95 /* Google Chrome.app */,
+				91B821141EAF8A0D00C04402 /* Google Chrome.h */,
+				91B821151EAF8A0D00C04402 /* OmniWeb.h */,
+				91B821161EAF8A0D00C04402 /* Roccat.h */,
+				91B821171EAF8A0D00C04402 /* Safari.h */,
 			);
 			name = "Apple Script";
 			sourceTree = "<group>";
@@ -186,11 +182,7 @@
 			files = (
 				822DDD821A887BAC003D9464 /* BrowserDetection.m in Sources */,
 				829FB41619F7308D0026EAC2 /* main.m in Sources */,
-				6FB88B201A8553D400ACF806 /* Roccat.app in Sources */,
 				6FB3BBE51A8581CC00D3A69C /* ezregex.m in Sources */,
-				8285734A19F812950004EF95 /* Google Chrome.app in Sources */,
-				59E2E2761CCC1F0D009559B3 /* Safari.app in Sources */,
-				6F0592561A6C241E00C60C29 /* OmniWeb.app in Sources */,
 				822DDD851A887CE3003D9464 /* MediaStreamParse.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
