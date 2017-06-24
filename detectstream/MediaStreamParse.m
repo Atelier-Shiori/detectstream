@@ -235,6 +235,29 @@
                 else
                     continue; // Invalid address
             }
+            else if ([site isEqualToString:@"hidive"]) {
+                //Add Regex Arguments for hidive
+                if ([ez checkMatch:url pattern:@"(stream\\/*.*\\/s\\d+e\\d+|stream\\/*.*\\/\\d+)"]) {
+                    if ([ez checkMatch:regextitle pattern:@"Episode \\d+"]) {
+                        // Regular TV series
+                        tmpseason = [ez findMatch:regextitle pattern:@"Season \\d+" rangeatindex:0];
+                        regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpseason withString:@""];
+                        tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"Season " withString:@""];
+                        tmpepisode = [ez findMatch:regextitle pattern:@"Episode \\d+" rangeatindex:0];
+                        regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
+                        tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"Episode " withString:@""];
+                        title = [regextitle stringByReplacingOccurrencesOfString:@"-" withString:@""];
+                    }
+                    else {
+                        // Movie or OVA
+                        tmpepisode = @"1";
+                        tmpseason = @"1";
+                        title = [ez searchreplace:regextitle pattern:@" - (OVA|Movie|Special)"];
+                    }
+                }
+                else
+                    continue; // Invalid address
+            }
             else{
                 continue;
             }
