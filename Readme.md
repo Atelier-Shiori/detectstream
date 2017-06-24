@@ -6,7 +6,7 @@ detectstream is used in [Hachidori](https://github.com/chikorita157/hachidori) a
 # Support
 detectstream currently supports these sites:
 
-Safari, Webkit, Chrome, Roccat Browser and Omniweb: Crunchyroll, Daisuki, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster, Wakanim, Funimation, Netflix and Plex.tv Media Server (locally and on the web).
+Safari, Webkit, Chrome, Roccat Browser and Omniweb: Crunchyroll, Daisuki, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster, Wakanim, Funimation, Netflix, Hidive and Plex.tv Media Server (locally and on the web).
 
 Chrome and Safari only (requires Javascript Execution): Viewster (For Safari, you need to have "Enable Javascript from Apple Events" enabled in the [Developer Menu](https://support.apple.com/kb/PH21491))
 
@@ -26,3 +26,5 @@ Get the source and then type xcodebuild. Having the applications installed is no
 
 # License
 This version is licensed under GNU Public License V3 and all older versions now is licensed under GPL V3. This is because I do not want people to steal my work and make it closed source.
+
+If you don't want to abide to these license terms, you may buy a paid license that allow you to use this helper program without following the terms of the GPL. Note that you may not distribute the source code without releasing to the GPL. You can do this by sending a request to ateliershiori at chikorita157.com.'
