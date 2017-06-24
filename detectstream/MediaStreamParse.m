@@ -258,6 +258,24 @@
                 else
                     continue; // Invalid address
             }
+            else if ([site isEqualToString:@"vrv"]) {
+                //Add Regex Arguments Here
+                if ([ez checkMatch:url pattern:@"\\/watch\\/*.*\\/*.*"]) {
+                    //Perform Sanitation
+                    regextitle = [ez searchreplace:regextitle pattern:@"VRV - Watch\\s"];
+                    regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\sMovie\\s-\\sMovie"];
+                    tmpepisode = [ez findMatch:regextitle pattern:@":\\s(EP|Ep|ep) (\\d+)" rangeatindex:0];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
+                    tmpepisode = [ez searchreplace:tmpepisode pattern:@":\\s(EP|Ep|ep) "];
+                    regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\s*.*"];
+                    title = regextitle;
+                    if ([ez checkMatch:title pattern:@"VRV"]) {
+                        continue;
+                    }
+                }
+                else
+                    continue;
+            }
             else{
                 continue;
             }
