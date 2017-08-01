@@ -40,7 +40,21 @@
             NSString * tmpseason;
             if ([site isEqualToString:@"crunchyroll"]) {
                 //Add Regex Arguments Here
-                if ([ez checkMatch:url pattern:@"[^/]+\\/episode-[0-9]+.*-[0-9]+"]||[ez checkMatch:url pattern:@"[^/]+\\/.*-movie-[0-9]+"]||[ez checkMatch:url pattern:@"[^/]+\\/.*-\\d+"]) {
+                if ([ez checkMatch:url pattern:@"\\/home\\/history"]) {
+                    // Scrobble from viewing history
+                    //Get the Document Object Model
+                    NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+                    NSArray *history = [self generateCrunchyrollHistoryQueue:DOM];
+                    if (history.count > 0) {
+                        NSDictionary *historyobject = history[0];
+                        title = historyobject[@"title"];
+                        tmpepisode = historyobject[@"episode"];
+                    }
+                    else {
+                        continue;
+                    }
+                }
+                else if ([ez checkMatch:url pattern:@"[^/]+\\/episode-[0-9]+.*-[0-9]+"]||[ez checkMatch:url pattern:@"[^/]+\\/.*-movie-[0-9]+"]||[ez checkMatch:url pattern:@"[^/]+\\/.*-\\d+"]) {
                     //Perform Sanitation
                     regextitle = [ez searchreplace:regextitle pattern:@"Crunchyroll - Watch\\s"];
                     regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\sMovie\\s-\\sMovie"];
@@ -58,6 +72,7 @@
             }
             else if ([site isEqualToString:@"daisuki"]) {
                 //Add Regex Arguments for daisuki.net
+                // To be removed October 31, 2017
                 if ([ez checkMatch:url pattern:@"^(?=.*\\banime\\b)(?=.*\\bwatch\\b).*"]) {
                     //Perform Sanitation
                     regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\sDAISUKI\\b"];
@@ -354,5 +369,30 @@
     else {
         return 1;
     }
+}
++ (NSArray *)generateCrunchyrollHistoryQueue:(NSString *)DOM {
+    // Creates an array of titles and episodes from Crunchyroll history
+    ezregex *regex = [ezregex new];
+    NSString *tmpdom = [DOM stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    NSMutableArray *tmparray = [NSMutableArray new];
+    NSArray *matches = [regex findMatches:tmpdom pattern:@"<li class=\"group-item hover-bubble\" id=\"media_group_\\d+\" group_id=\"media_group_\\d+\">(.*?)<\\/li>"];
+    for (NSString *item in matches) {
+        if ([regex checkMatch:item pattern:@"<span itemprop=\"name\" class=\"series-title block ellipsis\">(.*?)<\\/span>"]) {
+            NSString *title = [regex findMatch:item pattern:@"<span itemprop=\"name\" class=\"series-title block ellipsis\">(.*?)<\\/span>" rangeatindex:0];
+            title = [title stringByReplacingOccurrencesOfString:@"<span itemprop=\"name\" class=\"series-title block ellipsis\">" withString:@""];
+            title = [title stringByReplacingOccurrencesOfString:@"</span>" withString:@""];
+            NSString *episode = @"1";
+            if ([regex checkMatch:item pattern:@"Episode \\d+"]) {
+                episode = [regex findMatch:item pattern:@"Episode \\d+" rangeatindex:0];
+                episode = [episode stringByReplacingOccurrencesOfString:@"Episode " withString:@""];
+            }
+            [tmparray addObject:@{@"title":title, @"episode":episode}];
+        }
+        else {
+            continue;
+        }
+    }
+    return tmparray;
+    
 }
 @end
