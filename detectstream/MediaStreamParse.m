@@ -3,23 +3,7 @@
 //  detectstream
 //
 //  Created by 高町なのは on 2015/02/09.
-//  Copyright (c) 2015年 Chikorita157's Anime Blog. All rights reserved.
-//
-//  This class parses the title if it's playing an episode.
-//  It will find title, episode and season information.
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//  Copyright 2014-2018 Atelier Shiori, James Moy. All rights reserved. Code licensed under MIT License.
 //
 
 #import "MediaStreamParse.h"
@@ -69,19 +53,6 @@
                 }
                 else
                     continue;
-            }
-            else if ([site isEqualToString:@"daisuki"]) {
-                //Add Regex Arguments for daisuki.net
-                // To be removed October 31, 2017
-                if ([ez checkMatch:url pattern:@"^(?=.*\\banime\\b)(?=.*\\bwatch\\b).*"]) {
-                    //Perform Sanitation
-                    regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\sDAISUKI\\b"];
-                    regextitle = [ez searchreplace:regextitle pattern:@"\\D\\D\\s*.*\\s-"];
-                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
-                    title = [ez findMatch:regextitle pattern:@"\\b\\D([^\\n\\r]*)$" rangeatindex:0];
-                }
-                else
-                    continue; // Invalid address
             }
             // Following came from Taiga - https://github.com/erengy/taiga/ //
             else if ([site isEqualToString:@"animelab"]) {

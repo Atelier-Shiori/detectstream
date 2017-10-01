@@ -3,23 +3,10 @@
 //  detectstream
 //
 //  Created by 高町なのは on 2015/02/09.
-//  Copyright (c) 2015年 Chikorita157's Anime Blog. All rights reserved.
+//  Copyright 2014-2018 Atelier Shiori, James Moy. All rights reserved. Code licensed under MIT License.
 //
 //  This class gathers all the page titles, url and DOM (if necessary) from open browsers.
 //  Only returns applicable streaming sites.
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
 #import "BrowserDetection.h"
@@ -35,7 +22,7 @@
 
 @implementation BrowserDetection
 #pragma Constants
-NSString *const supportedSites = @"(crunchyroll|daisuki|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|32400)";
+NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|32400)";
 NSString *const requiresScraping = @"(netflix|funimation|crunchyroll)";
 NSString *const requiresJavaScript = @"(viewster)";
 
