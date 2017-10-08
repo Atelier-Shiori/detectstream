@@ -274,7 +274,7 @@
                 NSDictionary * seasondata = [MediaStreamParse checkSeason:title];
                 if (seasondata != nil) {
                     season = (NSNumber *)seasondata[@"season"];
-                    title = [NSString stringWithFormat:@"%@ %@ Season", seasondata[@"title"], [self numbertoordinal:season.intValue]];
+                    title = [NSString stringWithFormat:@"%@%@ Season", seasondata[@"title"], [self numbertoordinal:season.intValue]];
                 }
                 else{
                    season = @(1);
