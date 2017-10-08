@@ -274,7 +274,7 @@
                 NSDictionary * seasondata = [MediaStreamParse checkSeason:title];
                 if (seasondata != nil) {
                     season = (NSNumber *)seasondata[@"season"];
-                    //title = seasondata[@"title"];
+                    title = [NSString stringWithFormat:@"%@ %@ Season", seasondata[@"title"], [self numbertoordinal:season.intValue]];
                 }
                 else{
                    season = @(1);
@@ -340,6 +340,32 @@
     else {
         return 1;
     }
+}
++ (NSString *)numbertoordinal:(int)number {
+    NSString *tmpnum = [NSString stringWithFormat:@"%i", number];
+    tmpnum = [tmpnum substringFromIndex:tmpnum.length-1];
+    NSString *ordinal = @"";
+    switch (tmpnum.intValue) {
+        case 1:
+            ordinal = @"st";
+            break;
+        case 2:
+            ordinal = @"nd";
+            break;
+        case 3:
+            ordinal = @"rd";
+            break;
+        case 0:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+            ordinal = @"th";
+            break;
+    }
+    return [NSString stringWithFormat:@"%i%@", number, ordinal];
 }
 + (NSArray *)generateCrunchyrollHistoryQueue:(NSString *)DOM {
     // Creates an array of titles and episodes from Crunchyroll history
