@@ -264,7 +264,7 @@
             }
             else if ([site isEqualToString:@"amazon"]) {
                 // Amazon Prime Video/Anime Strike
-                if ([ez checkMatch:url pattern:@"\\/gp\\/video\\/detail\/*.*"]) {
+                if ([ez checkMatch:url pattern:@"\\/gp\\/video\\/detail\\/*.*"]) {
                     NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
                     regextitle = [ez findMatch:DOM pattern:@".* - " rangeatindex:0];
                     regextitle = [regextitle stringByReplacingOccurrencesOfString:@" - " withString:@""];
