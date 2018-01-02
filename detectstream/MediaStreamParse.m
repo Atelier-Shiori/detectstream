@@ -262,6 +262,20 @@
                 else
                     continue;
             }
+            else if ([site isEqualToString:@"amazon"]) {
+                // Amazon Prime Video/Anime Strike
+                if ([ez checkMatch:url pattern:@"\\/gp\\/video\\/detail\/*.*"]) {
+                    NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+                    regextitle = [ez findMatch:DOM pattern:@".* - " rangeatindex:0];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@" - " withString:@""];
+                    tmpepisode = [ez findMatch:DOM pattern:@"(Ep.|Episode|E) \\d+" rangeatindex:0];
+                    tmpepisode = [ez searchreplace:tmpepisode pattern:@"(Ep.|Episode|E) "];
+                    if ([ez checkMatch:DOM  pattern:@"Season \\d+"]) {
+                        regextitle = [NSString stringWithFormat:@"%@ %@",regextitle, [ez findMatch:DOM pattern:@"Season \\d+" rangeatindex:0]];
+                    }
+                    title = regextitle;
+                }
+            }
             else{
                 continue;
             }

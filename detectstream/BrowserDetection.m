@@ -22,14 +22,17 @@
 
 @implementation BrowserDetection
 #pragma Constants
-NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|32400)";
+NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|amazon|32400)";
 NSString *const requiresScraping = @"(netflix|funimation|crunchyroll)";
-NSString *const requiresJavaScript = @"(viewster)";
+NSString *const requiresJavaScript = @"(viewster|amazon)";
 
 #pragma Javascript Constants
 // From https://github.com/matthewdias/media-strategies/blob/master/strategies/viewster.js
 NSString *const viewstertitle = @"document.querySelector('.title').innerHTML";
 NSString *const viewsterepisode = @"document.querySelector('.playing').parentElement.parentElement.querySelector('.slide-title > .episode-title').innerHTML";
+// Amazon Prime Video/Anime Strike
+NSString *const amazontitle = @"document.querySelector('.title').innerHTML";
+NSString *const amazonsubtitle = @"document.querySelector('.subtitle').innerHTML";
 
 #pragma Methods
 + (NSArray *)getPages {
@@ -85,6 +88,9 @@ NSString *const viewsterepisode = @"document.querySelector('.playing').parentEle
                     else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
                         if ([site isEqualToString:@"viewster"]){
                             DOM = [NSString stringWithFormat:@"%@ %@", [safari doJavaScript:viewstertitle in:tab], [safari doJavaScript:viewsterepisode in:tab]];
+                        }
+                        else if ([site isEqualToString:@"amazon"]){
+                            DOM = [NSString stringWithFormat:@"%@ - %@", [safari doJavaScript:amazontitle in:tab], [safari doJavaScript:amazonsubtitle in:tab]];
                         }
                     }
                     else{
@@ -145,6 +151,9 @@ NSString *const viewsterepisode = @"document.querySelector('.playing').parentEle
                     else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
                         if ([site isEqualToString:@"viewster"]){
                             DOM = [NSString stringWithFormat:@"%@ %@", [tab executeJavascript:viewstertitle], [tab executeJavascript:viewsterepisode]];
+                        }
+                        else if ([site isEqualToString:@"amazon"]){
+                            DOM = [NSString stringWithFormat:@"%@ - %@", [tab executeJavascript:amazontitle], [tab executeJavascript:amazonsubtitle]];
                         }
                     }
                     NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", browserstring, @"browser",  site, @"site", DOM, @"DOM", nil];
