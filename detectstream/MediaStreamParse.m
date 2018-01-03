@@ -266,6 +266,10 @@
                 // Amazon Prime Video/Anime Strike
                 if ([ez checkMatch:url pattern:@"\\/gp\\/video\\/detail\\/*.*"]) {
                     NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+                    if ([DOM isEqualToString:@"(null) - (null)"]) {
+                        // Silverlight Player not supported
+                        continue;
+                    }
                     regextitle = [ez findMatch:DOM pattern:@".* - " rangeatindex:0];
                     regextitle = [regextitle stringByReplacingOccurrencesOfString:@" - " withString:@""];
                     tmpepisode = [ez findMatch:DOM pattern:@"(Ep.|Episode|E) \\d+" rangeatindex:0];
