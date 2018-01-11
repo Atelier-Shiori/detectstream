@@ -22,6 +22,7 @@
             NSString * title;
             NSString * tmpepisode;
             NSString * tmpseason;
+            bool isManga = false;
             if ([site isEqualToString:@"crunchyroll"]) {
                 //Add Regex Arguments Here
                 if ([ez checkMatch:url pattern:@"\\/home\\/history"]) {
@@ -48,6 +49,19 @@
                     regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\s*.*"];
                     title = regextitle;
                     if ([ez checkMatch:title pattern:@"Crunchyroll"]) {
+                        continue;
+                    }
+                }
+                else if ([ez checkMatch:url pattern:@"\\/comics_read\\/manga\\?volume_id=\\d+&chapter_num=\\d+"]) {
+                    isManga = true;
+                    NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+                    regextitle = [ez findMatch:DOM pattern:@"<span itemprop=\"title\">.+</span>" rangeatindex:0];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@"<span itemprop=\"title\">" withString:@""];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@"</span>" withString:@""];
+                    tmpepisode = [ez findMatch:url pattern:@"chapter_num=\\d+" rangeatindex:0];
+                    tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"chapter_num=" withString:@""];
+                    title = regextitle;
+                    if (title.length == 0) {
                         continue;
                     }
                 }
@@ -287,7 +301,7 @@
             NSNumber * episode;
             NSNumber * season;
             // Populate Season
-            if (tmpseason.length == 0) {
+            if (tmpseason.length == 0 && !isManga) {
                 // Parse Season from title
                 NSDictionary * seasondata = [MediaStreamParse checkSeason:title];
                 if (seasondata != nil) {
@@ -315,7 +329,13 @@
                 continue;
             }
             // Add to Final Array
-            NSDictionary * frecord = [[NSDictionary alloc] initWithObjectsAndKeys:title, @"title", episode, @"episode", season, @"season", [m objectForKey:@"browser"], @"browser", site, @"site", nil];
+            NSDictionary * frecord;
+            if (!isManga) {
+                frecord = @{@"title" :title, @"episode" : episode, @"season" : season, @"browser" : [m objectForKey:@"browser"], @"site" : site, @"type" : @"anime" };
+            }
+            else {
+                 frecord = @{@"title" :title, @"chapter" : episode, @"browser" : [m objectForKey:@"browser"], @"site" : site, @"type" : @"manga" };
+            }
             [final addObject:frecord];
         }
     }
