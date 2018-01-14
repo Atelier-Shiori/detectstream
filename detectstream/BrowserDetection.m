@@ -33,6 +33,8 @@ NSString *const viewsterepisode = @"document.querySelector('.playing').parentEle
 // Amazon Prime Video/Anime Strike
 NSString *const amazontitle = @"document.querySelector('.title').innerHTML";
 NSString *const amazonsubtitle = @"document.querySelector('.subtitle').innerHTML";
+NSString *const amazonplayicon = @"document.querySelector('.playIcon').innerHTML";
+NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerHTML";
 
 #pragma Methods
 + (NSArray *)getPages {
@@ -90,7 +92,14 @@ NSString *const amazonsubtitle = @"document.querySelector('.subtitle').innerHTML
                             DOM = [NSString stringWithFormat:@"%@ %@", [safari doJavaScript:viewstertitle in:tab], [safari doJavaScript:viewsterepisode in:tab]];
                         }
                         else if ([site isEqualToString:@"amazon"]){
-                            DOM = [NSString stringWithFormat:@"%@ - %@", [safari doJavaScript:amazontitle in:tab], [safari doJavaScript:amazonsubtitle in:tab]];
+                            NSString *playicon = [safari doJavaScript:amazonplayicon in:tab];
+                            NSString *pauseicon = [safari doJavaScript:amazonpauseicon in:tab];
+                            if (pauseicon || (playicon && !pauseicon)) {
+                                DOM = [NSString stringWithFormat:@"%@ - %@", [safari doJavaScript:amazontitle in:tab], [safari doJavaScript:amazonsubtitle in:tab]];
+                            }
+                            else {
+                                continue;
+                            }
                         }
                     }
                     else{
@@ -153,7 +162,14 @@ NSString *const amazonsubtitle = @"document.querySelector('.subtitle').innerHTML
                             DOM = [NSString stringWithFormat:@"%@ %@", [tab executeJavascript:viewstertitle], [tab executeJavascript:viewsterepisode]];
                         }
                         else if ([site isEqualToString:@"amazon"]){
-                            DOM = [NSString stringWithFormat:@"%@ - %@", [tab executeJavascript:amazontitle], [tab executeJavascript:amazonsubtitle]];
+                            NSString *playicon = [tab executeJavascript:amazonplayicon];
+                            NSString *pauseicon = [tab executeJavascript:amazonpauseicon];
+                            if (pauseicon || (playicon && !pauseicon)) {
+                                DOM = [NSString stringWithFormat:@"%@ - %@", [tab executeJavascript:amazontitle], [tab executeJavascript:amazonsubtitle]];
+                            }
+                            else {
+                                continue;
+                            }
                         }
                     }
                     NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", browserstring, @"browser",  site, @"site", DOM, @"DOM", nil];
