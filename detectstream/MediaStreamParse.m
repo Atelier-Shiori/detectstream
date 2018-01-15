@@ -278,7 +278,7 @@
             }
             else if ([site isEqualToString:@"amazon"]) {
                 // Amazon Prime Video/Anime Strike
-                if ([ez checkMatch:url pattern:@"(\\/gp\\/video\\/detail\\/*.*|\\/.+\\/dp\\/.*\\/)"]) {
+                if ([ez checkMatch:url pattern:@"(\\/gp\\/video\\/detail\\/*.*|\\/.+\\/dp\\/.*)"]) {
                     NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
                     if ([DOM isEqualToString:@"(null) - (null)"]) {
                         // Silverlight Player not supported
