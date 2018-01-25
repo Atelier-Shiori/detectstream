@@ -14,6 +14,6 @@
 @interface ezregex : NSObject
 -(BOOL)checkMatch:(NSString *)string pattern:(NSString *)pattern;
 -(NSString *)searchreplace:(NSString *)string pattern:(NSString *)pattern;
--(NSString *)findMatch:(NSString *)string pattern:(NSString *)pattern rangeatindex:(int)ri;
+-(NSString *)findMatch:(NSString *)string pattern:(NSString *)pattern rangeatindex:(NSUInteger)ri;
 -(NSArray *)findMatches:(NSString *)string pattern:(NSString *)pattern;
 @end

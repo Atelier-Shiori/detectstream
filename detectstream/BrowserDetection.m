@@ -75,14 +75,14 @@ NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerH
         }
         
         SBElementArray * windows = [safari windows];
-        for (int i = 0; i < [windows count]; i++) {
+        for (NSUInteger i = 0; i < [windows count]; i++) {
             SafariWindow * window = windows[i];
             SBElementArray * tabs = [window tabs];
-            for (int i = 0 ; i < [tabs count]; i++) {
-                SafariTab * tab = tabs[i];
+            for (NSUInteger t = 0 ; t < [tabs count]; t++) {
+                SafariTab * tab = tabs[t];
                 NSString * site = [browser checkURL:[tab URL]];
                 if (site.length > 0) {
-                    NSString * DOM;
+                    NSString * DOM = @"";
                     if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
                         //Include DOM
                         DOM = [tab source];
@@ -103,9 +103,9 @@ NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerH
                         }
                     }
                     else{
-                        DOM = nil;
+                        DOM = @"";
                     }
-                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab name],@"title",[tab URL], @"url",  browserstring, @"browser", site, @"site", DOM, @"DOM",  nil];
+                    NSDictionary * page = @{@"title": [tab name], @"url": [tab URL], @"browser": browserstring, @"site": site, @"DOM": DOM};
                     [pages addObject:page];
                 }
                 else{
@@ -145,13 +145,13 @@ NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerH
                     break;
             }
         SBElementArray * windows = [chrome windows];
-        for (int i = 0; i < [windows count]; i++) {
+        for (NSUInteger i = 0; i < [windows count]; i++) {
             GoogleChromeWindow * window = windows[i];
             SBElementArray * tabs = [window tabs];
-            for (int i = 0 ; i < [tabs count]; i++) {
-                GoogleChromeTab * tab = tabs[i];
+            for (NSUInteger t = 0 ; t < [tabs count]; t++) {
+                GoogleChromeTab * tab = tabs[t];
                 NSString * site  = [browser checkURL:[tab URL]];
-                NSString * DOM;
+                NSString * DOM = @"";
                 if (site.length > 0) {
                     if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
                         // Get source code using Javascript
@@ -172,7 +172,7 @@ NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerH
                             }
                         }
                     }
-                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", browserstring, @"browser",  site, @"site", DOM, @"DOM", nil];
+                    NSDictionary * page = @{@"title": [tab title], @"url": [tab URL], @"browser": browserstring, @"site": site, @"DOM": DOM};
                     [pages addObject:page];
                 }
                 else{
@@ -203,11 +203,11 @@ NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerH
                 break;
         }
         SBElementArray * browsers = [omniweb browsers];
-        for (int i = 0; i < [browsers count]; i++) {
+        for (NSUInteger i = 0; i < [browsers count]; i++) {
             OmniWebBrowser * obrowser = browsers[i];
             SBElementArray * tabs = [obrowser tabs];
-            for (int i = 0 ; i < [tabs count]; i++) {
-                OmniWebTab * tab = tabs[i];
+            for (NSUInteger t = 0 ; t < [tabs count]; t++) {
+                OmniWebTab * tab = tabs[t];
                 NSString * site  = [browser checkURL:[tab address]];
                 if (site.length > 0) {
                     NSString * DOM;
@@ -220,9 +220,9 @@ NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerH
                         continue;
                     }
                     else{
-                        DOM = nil;
+                        DOM = @"";
                     }
-                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab address], @"url", @"OmniWeb", @"browser", site, @"site", DOM, @"DOM", nil];
+                    NSDictionary * page = @{@"title": [tab title], @"url": [tab address], @"browser": @"OmniWeb", @"site": site, @"DOM": DOM};
                     [pages addObject:page];
                 }
                 else{
@@ -235,11 +235,11 @@ NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerH
     if ([browser checkIdentifier:@"org.Runecats.Roccat"]) {
         RoccatApplication * roccat = [SBApplication applicationWithBundleIdentifier:@"org.Runecats.Roccat"];
         SBElementArray * browsers = [roccat browserWindows];
-        for (int i = 0; i < [browsers count]; i++) {
+        for (NSUInteger i = 0; i < [browsers count]; i++) {
             RoccatBrowserWindow * rbrowser = browsers[i];
             SBElementArray * tabs = [rbrowser tabs];
-            for (int i = 0 ; i < [tabs count]; i++) {
-                RoccatTab * tab = tabs[i];
+            for (NSUInteger t = 0 ; t < [tabs count]; t++) {
+                RoccatTab * tab = tabs[t];
                 NSString * site  = [browser checkURL:[tab URL]];
                 if (site.length > 0) {
                     NSString * DOM;
@@ -253,9 +253,9 @@ NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerH
                         continue;
                     }
                     else{
-                        DOM = nil;
+                        DOM = @"";
                     }
-                    NSDictionary * page = [[NSDictionary alloc] initWithObjectsAndKeys:[tab title],@"title",[tab URL], @"url", @"Roccat", @"browser", site, @"site", DOM, @"DOM", nil];
+                    NSDictionary * page = @{@"title": [tab title], @"url": [tab URL], @"browser": @"Roccat", @"site": site, @"DOM": DOM};
                     [pages addObject:page];
                 }
                 else{

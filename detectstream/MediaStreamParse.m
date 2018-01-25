@@ -19,9 +19,9 @@
             NSString * regextitle = [NSString stringWithFormat:@"%@",m[@"title"]];
             NSString * url = [NSString stringWithFormat:@"%@", m[@"url"]];
             NSString * site = [NSString stringWithFormat:@"%@", m[@"site"]];
-            NSString * title;
-            NSString * tmpepisode;
-            NSString * tmpseason;
+            NSString * title = @"";
+            NSString * tmpepisode = @"";
+            NSString * tmpseason = @"";
             bool isManga = false;
             if ([site isEqualToString:@"crunchyroll"]) {
                 //Add Regex Arguments Here
@@ -157,16 +157,16 @@
                     }
                     NSError* error;
                     // Parse JSON Data
-                    NSDictionary *metadata = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+                    NSDictionary *metadata = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
                     NSDictionary *videodata = metadata[@"video"];
                     // Set Title
                     title = videodata[@"title"];
                     // Search to get the right Episode Number
                     NSArray * seasondata = videodata[@"seasons"];
-                    for (int i = 0; i < [seasondata count]; i++) {
+                    for (NSUInteger i = 0; i < [seasondata count]; i++) {
                         NSDictionary * season = seasondata[i];
                         NSArray *episodes = season[@"episodes"];
-                        for (int e = 0; e < [episodes count]; e++) {
+                        for (NSUInteger e = 0; e < [episodes count]; e++) {
                             NSDictionary * episode = episodes[e];
                             if (![videoid isEqualTo:[NSString stringWithFormat:@"%@", episode[@"id"]]]) {
                                 continue;
@@ -174,7 +174,7 @@
                             else{
                                 //Set Episode Number and Season
                                 tmpepisode = [NSString stringWithFormat:@"%@", episode[@"seq"]];
-                                tmpseason = [NSString stringWithFormat:@"%i", i+1];
+                                tmpseason = [NSString stringWithFormat:@"%lu", (i + 1)];
                                 break;
                             }
                         }
@@ -312,7 +312,7 @@
                    season = @(1);
                 }
             }
-            else{
+            else {
                 season = [[[NSNumberFormatter alloc] init] numberFromString:tmpseason];
             }
             //Trim Whitespace
@@ -331,10 +331,10 @@
             // Add to Final Array
             NSDictionary * frecord;
             if (!isManga) {
-                frecord = @{@"title" :title, @"episode" : episode, @"season" : season, @"browser" : [m objectForKey:@"browser"], @"site" : site, @"type" : @"anime" };
+                frecord = @{@"title" :title, @"episode" : episode, @"season" : season, @"browser" : m[@"browser"], @"site" : site, @"type" : @"anime" };
             }
             else {
-                 frecord = @{@"title" :title, @"chapter" : episode, @"browser" : [m objectForKey:@"browser"], @"site" : site, @"type" : @"manga" };
+                 frecord = @{@"title" :title, @"chapter" : episode, @"browser" : m[@"browser"], @"site" : site, @"type" : @"manga" };
             }
             [final addObject:frecord];
         }
@@ -351,14 +351,14 @@
         tmpseason = [ez findMatch:title pattern:pattern rangeatindex:0];
         title = [title stringByReplacingOccurrencesOfString:tmpseason withString:@""];
         tmpseason = [ez findMatch:tmpseason pattern:@"\\d+" rangeatindex:0];
-        result = [[NSDictionary alloc] initWithObjectsAndKeys:title, @"title", [[NSNumberFormatter alloc] numberFromString:tmpseason], @"season", nil];
+        result = @{@"title": title, @"season": [[NSNumberFormatter alloc] numberFromString:tmpseason]};
         
     }
     pattern = @"(first|season|third|fourth|fifth) season";
     if ([ez checkMatch:title pattern:@"(first|season|third|fourth|fifth) season"] && tmpseason.length == 0) {
         tmpseason = [ez findMatch:title pattern:pattern rangeatindex:0];
         title = [title stringByReplacingOccurrencesOfString:tmpseason withString:@""];
-        result = [[NSDictionary alloc] initWithObjectsAndKeys:title, @"title",@([MediaStreamParse recognizeseason:tmpseason]), @"season", nil];
+        result = @{@"title": title, @"season": @([MediaStreamParse recognizeseason:tmpseason])};
     }
     return result;
 }

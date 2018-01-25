@@ -33,7 +33,7 @@
     NSString * newString = [regex stringByReplacingMatchesInString:string options:0 range:NSMakeRange(0, [string length]) withTemplate:@""];
     return newString;
 }
--(NSString *)findMatch:(NSString *)string pattern:(NSString *)pattern rangeatindex:(int)ri{
+-(NSString *)findMatch:(NSString *)string pattern:(NSString *)pattern rangeatindex:(NSUInteger)ri{
     if (string == nil)
         return @""; // Can't check a match of a nil string.
     NSError *errRegex = NULL;
@@ -58,7 +58,7 @@
                                   options:NSRegularExpressionCaseInsensitive
                                   error:&errRegex];
     NSRange  searchrange = NSMakeRange(0, [string length]);
-    NSArray * a = [regex matchesInString:string options:kNilOptions range:searchrange];
+    NSArray * a = [regex matchesInString:string options:0 range:searchrange];
     NSMutableArray * results = [[NSMutableArray alloc] init];
     for (NSTextCheckingResult * result in a ) {
         [results addObject:[string substringWithRange:[result rangeAtIndex:0]]];
