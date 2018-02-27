@@ -6,7 +6,7 @@ detectstream is used in [Hachidori](https://github.com/chikorita157/hachidori) a
 # Support
 detectstream currently supports these sites:
 ## Anime
-Safari, Webkit, Chrome, Roccat Browser and Omniweb: Crunchyroll, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster, Wakanim, Funimation, Netflix, Hidive, VRV,  and Plex.tv Media Server (locally and on the web).
+Safari, Webkit, Chrome, Roccat Browser and Omniweb: Crunchyroll, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster, Wakanim, Funimation, Netflix, Hidive, VRV,  Yahoo View, and Plex.tv Media Server (locally and on the web).
 
 Chrome and Safari only (requires Javascript Execution): Viewster, Amazon Prime Video (For Safari, you need to have "Enable Javascript from Apple Events" enabled in the [Developer Menu](https://support.apple.com/kb/PH21491))
 
