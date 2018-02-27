@@ -313,6 +313,23 @@
                 else
                     continue;
             }
+            else if ([site isEqualToString:@"tubitv"]) {
+                //Add Regex Arguments Here
+                if ([ez checkMatch:url pattern:@"\\/*.+\\/\\d+\\/s\\d+_e\\d+"]) {
+                    //Perform Sanitation
+                    regextitle = [ez searchreplace:regextitle pattern:@"(Watch | - *.* \\| Tubi)"];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@":" withString:@" "];
+                    tmpseason = [ez findMatch:regextitle pattern:@"S\\d+" rangeatindex:0];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpseason withString:@""];
+                    tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"S" withString:@""];
+                    tmpepisode = [ez findMatch:regextitle pattern:@"E\\d+" rangeatindex:0];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
+                    tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"E" withString:@""];
+                    title = regextitle;
+                }
+                else
+                    continue;
+            }
             else {
                 continue;
             }

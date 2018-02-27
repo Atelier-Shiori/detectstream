@@ -49,7 +49,7 @@
 		822DDD801A887BAC003D9464 /* BrowserDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserDetection.h; sourceTree = "<group>"; };
 		822DDD811A887BAC003D9464 /* BrowserDetection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserDetection.m; sourceTree = "<group>"; };
 		822DDD831A887CE3003D9464 /* MediaStreamParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaStreamParse.h; sourceTree = "<group>"; };
-		822DDD841A887CE3003D9464 /* MediaStreamParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaStreamParse.m; sourceTree = "<group>"; };
+		822DDD841A887CE3003D9464 /* MediaStreamParse.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 0; lastKnownFileType = sourcecode.c.objc; path = MediaStreamParse.m; sourceTree = "<group>"; };
 		829FB41219F7308D0026EAC2 /* detectstream */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = detectstream; sourceTree = BUILT_PRODUCTS_DIR; };
 		829FB41519F7308D0026EAC2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		91B821141EAF8A0D00C04402 /* Google Chrome.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Google Chrome.h"; path = "AppleScript/Google Chrome.h"; sourceTree = "<group>"; };
