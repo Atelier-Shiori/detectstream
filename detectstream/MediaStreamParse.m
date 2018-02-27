@@ -238,6 +238,8 @@
             else if ([site isEqualToString:@"hidive"]) {
                 //Add Regex Arguments for hidive
                 if ([ez checkMatch:url pattern:@"(stream\\/*.*\\/s\\d+e\\d+|stream\\/*.*\\/\\d+)"]) {
+                    // Clean title
+                    regextitle = [ez searchreplace:regextitle pattern:@"(Stream |\\sof| on HIDIVE)"];
                     if ([ez checkMatch:regextitle pattern:@"Episode \\d+"]) {
                         // Regular TV series
                         tmpseason = [ez findMatch:regextitle pattern:@"Season \\d+" rangeatindex:0];
