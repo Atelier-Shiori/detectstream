@@ -296,7 +296,24 @@
                     title = regextitle;
                 }
             }
-            else{
+            else if ([site isEqualToString:@"view.yahoo.com"]) {
+                //Add Regex Arguments Here
+                if ([ez checkMatch:url pattern:@"\\/show\\/*.+\\/episode\\/\\d+\\/*.*"]) {
+                    //Perform Sanitation
+                    regextitle = [ez searchreplace:regextitle pattern:@"(Watch \\((Dub|Sub)\\) *.+ Free Online - | \\| Yahoo View)"];
+                    tmpseason = [ez findMatch:regextitle pattern:@"Season \\d+" rangeatindex:0];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpseason withString:@""];
+                    tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"Season " withString:@""];
+                    tmpepisode = [ez findMatch:regextitle pattern:@"Episode \\d+" rangeatindex:0];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
+                    tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"Episode " withString:@""];
+                    title = [regextitle stringByReplacingOccurrencesOfString:@"-" withString:@""];
+                    site = @"yahoo";
+                }
+                else
+                    continue;
+            }
+            else {
                 continue;
             }
         
