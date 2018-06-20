@@ -213,13 +213,16 @@
                     continue; // Invalid address
             }
             else if ([site isEqualToString:@"wakanim"]) {
-                if ([ez checkMatch:url pattern:@"video(-premium)?/[^/]+/"]) {
-                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@" - Wakanim.TV" withString:@""];
-                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@"de " withString:@""];
-                    regextitle = [ez searchreplace:regextitle pattern:@"en\\sVOSTFR\\s\\/\\sStreaming"];
-                    regextitle = [ez searchreplace:regextitle pattern:@"Episode\\s"];
-                    tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
-                    title = [ez findMatch:regextitle pattern:@"\\s.*" rangeatindex:0];
+                if ([ez checkMatch:url pattern:@"/[^/]+/v2/catalogue/episode/[^/]+/"]) {
+                    NSArray *matches = [ez findMatches:regextitle pattern:@"(?:Episode (\\d+)|Film|Movie) - (?:ENGDUB - )?(.+)"];
+                    if (matches.count > 2) {
+                      regextitle = matches[1];
+                      tmpepisode = matches[0];
+                    }
+                    else {
+                      regextitle = matches[0];
+                    }
+                    title = regextitle;
                 }
                 else
                     continue; // Invalid address
