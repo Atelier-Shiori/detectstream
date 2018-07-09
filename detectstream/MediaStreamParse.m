@@ -65,8 +65,9 @@
                         continue;
                     }
                 }
-                else
+                else {
                     continue;
+                }
             }
             // Following came from Taiga - https://github.com/erengy/taiga/ //
             else if ([site isEqualToString:@"animelab"]) {
@@ -81,8 +82,9 @@
                     tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                     tmpseason = @"0"; //not supported
                 }
-                else
+                else {
                     continue; // Invalid address
+                }
             }
             else if ([site isEqualToString:@"animenewsnetwork"]) {
                 if ([ez checkMatch:url pattern:@"video\\/[0-9]+"]) {
@@ -92,8 +94,9 @@
                     tmpepisode = [ez findMatch:regextitle pattern:@"(\\d+)" rangeatindex:0];
                     title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
                 }
-                else
+                else {
                     continue; // Invalid address
+                }
             }
             else if ([site isEqualToString:@"viz"]) {
                 if ([ez checkMatch:url pattern:@"watch\\/streaming\\/[^/]+-episode-[0-9]+\\/"]||[ez checkMatch:url pattern:@"watch\\/streaming\\/[^/]+-movie\\/"]) {
@@ -102,8 +105,9 @@
                     regextitle = [ez searchreplace:regextitle pattern:@"#\\d+\\s\\w+"];
                     title = [ez findMatch:regextitle pattern:@"\\b.*\\s" rangeatindex:0];
                 }
-                else
+                else {
                     continue; // Invalid address
+                }
             }
             else if ([site isEqualToString:@"funimation"]) {
                 if ([ez checkMatch:url pattern:@"shows\\/*.*\\/"]) {
@@ -116,8 +120,9 @@
                     title = [title stringByReplacingOccurrencesOfString:@"</a>" withString:@""];
                     title = [ez searchreplace:title pattern:@"\\s-\\s*.*"];
                 }
-                else
+                else {
                     continue; // Invalid address
+                }
             }
             else if ([site isEqualToString:@"netflix"]){
                 if([ez checkMatch:url pattern:@"WiPlayer"]){
@@ -180,8 +185,9 @@
                         }
                     }
                 }
-                else
+                else {
                     continue;
+                }
             }
             else if ([site isEqualToString:@"plex"]){
                 if ([ez checkMatch:url pattern:@"web\\/app"]||[ez checkMatch:url pattern:@"web\\/index.html"]) {
@@ -192,11 +198,11 @@
                         title = regextitle;
                         tmpepisode = @"0";
                     }
-                    else{
+                    else {
                         continue;
                     }
                 }
-                else{
+                else {
                     continue;
                 }
             }
@@ -209,8 +215,9 @@
                     title = [regextitle stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@:",tmpepisode] withString:@""];
 					tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"Episode " withString:@""];
                 }
-                else
+                else {
                     continue; // Invalid address
+                }
             }
             else if ([site isEqualToString:@"wakanim"]) {
                 if ([ez checkMatch:url pattern:@"/[^/]+/v2/catalogue/episode/[^/]+/"]) {
@@ -224,8 +231,9 @@
                     }
                     title = regextitle;
                 }
-                else
+                else {
                     continue; // Invalid address
+                }
             }
             else if ([site isEqualToString:@"myanimelist"]) {
                 if ([ez checkMatch:url pattern:@"anime\\/\\d+\\/*.*\\/episode\\/\\d+"]) {
@@ -235,8 +243,9 @@
                     regextitle = [ez searchreplace:regextitle pattern:@"\\D-\\s*.*$"];
                     title = [ez findMatch:regextitle pattern:@"\\b.*\\D" rangeatindex:0];
                 }
-                else
+                else {
                     continue; // Invalid address
+                }
             }
             else if ([site isEqualToString:@"hidive"]) {
                 //Add Regex Arguments for hidive
@@ -260,8 +269,9 @@
                         title = [ez searchreplace:regextitle pattern:@" - (OVA|Movie|Special)"];
                     }
                 }
-                else
+                else {
                     continue; // Invalid address
+                }
             }
             else if ([site isEqualToString:@"vrv"]) {
                 //Add Regex Arguments Here
@@ -278,8 +288,9 @@
                         continue;
                     }
                 }
-                else
+                else {
                     continue;
+                }
             }
             else if ([site isEqualToString:@"amazon"]) {
                 // Amazon Prime Video/Anime Strike
@@ -313,8 +324,9 @@
                     title = [regextitle stringByReplacingOccurrencesOfString:@"-" withString:@""];
                     site = @"yahoo";
                 }
-                else
+                else {
                     continue;
+                }
             }
             else if ([site isEqualToString:@"tubitv"]) {
                 //Add Regex Arguments Here
@@ -330,8 +342,24 @@
                     tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"E" withString:@""];
                     title = regextitle;
                 }
-                else
+                else {
                     continue;
+                }
+            }
+            else if ([site isEqualToString:@"asiancrush"]) {
+                if ([ez checkMatch:url pattern:@"\\/video\\/*.+\\/\\d+v"]) {
+                    regextitle = [ez searchreplace:regextitle pattern:@"(Subbed|Dubbed)"];
+                    regextitle = [ez findMatch:regextitle pattern:@".* S\\d+E\\d+" rangeatindex:0];
+                    regextitle = [ez searchreplace:regextitle pattern:@"\\(.*\\)"];
+                    tmpseason = [ez findMatch:regextitle pattern:@"S\\d+" rangeatindex:0];
+                    tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"S" withString:@""];
+                    tmpepisode = [ez findMatch:regextitle pattern:@"E\\d+" rangeatindex:0];
+                    tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"E" withString:@""];
+                    title = [ez searchreplace:regextitle pattern:@"S\\d+E\\d+"];
+                }
+                else {
+                   continue;
+                }
             }
             else {
                 continue;
