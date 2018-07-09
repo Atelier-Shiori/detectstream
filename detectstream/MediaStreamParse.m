@@ -347,15 +347,22 @@
                 }
             }
             else if ([site isEqualToString:@"asiancrush"]) {
-                if ([ez checkMatch:url pattern:@"\\/video\\/*.+\\/\\d+v"]) {
+                if ([ez checkMatch:url pattern:@"(\\/video\\/*.+\\/\\d+v|\\/video\\/\\d+v)"]) {
                     regextitle = [ez searchreplace:regextitle pattern:@"(Subbed|Dubbed)"];
-                    regextitle = [ez findMatch:regextitle pattern:@".* S\\d+E\\d+" rangeatindex:0];
-                    regextitle = [ez searchreplace:regextitle pattern:@"\\(.*\\)"];
-                    tmpseason = [ez findMatch:regextitle pattern:@"S\\d+" rangeatindex:0];
-                    tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"S" withString:@""];
-                    tmpepisode = [ez findMatch:regextitle pattern:@"E\\d+" rangeatindex:0];
-                    tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"E" withString:@""];
-                    title = [ez searchreplace:regextitle pattern:@"S\\d+E\\d+"];
+                    if ([ez checkMatch:regextitle pattern:@".* S\\d+E\\d+"]) {
+                        regextitle = [ez findMatch:regextitle pattern:@".* S\\d+E\\d+" rangeatindex:0];
+                        regextitle = [ez searchreplace:regextitle pattern:@"\\(.*\\)"];
+                        tmpseason = [ez findMatch:regextitle pattern:@"S\\d+" rangeatindex:0];
+                        tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"S" withString:@""];
+                        tmpepisode = [ez findMatch:regextitle pattern:@"E\\d+" rangeatindex:0];
+                        tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"E" withString:@""];
+                        title = [ez searchreplace:regextitle pattern:@"S\\d+E\\d+"];
+                    }
+                    else {
+                        regextitle = [ez searchreplace:regextitle pattern:@"(Subbed|Dubbed)"];
+                        regextitle = [regextitle stringByReplacingOccurrencesOfString:@" | Watch Full Movie Free | AsianCrush" withString:@""];
+                        title = regextitle;
+                    }
                 }
                 else {
                    continue;
