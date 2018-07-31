@@ -368,6 +368,21 @@
                    continue;
                 }
             }
+            else if ([site isEqualToString:@"animedigitalnetwork"]) {
+                if ([ez checkMatch:url pattern:@"\\/video\\/.*\\/\\d+"]) {
+                       regextitle = [ez searchreplace:regextitle pattern:@" - streaming -.* ADN"];
+                       if ([ez checkMatch:regextitle pattern:@".*-.*\\d+"]) {
+                          regextitle = [ez findMatch:regextitle pattern:@".*-.*\\d+" rangeatindex:0];
+                          tmpepisode = [ez findMatch:regextitle pattern:@" -.*\\d+" rangeatindex:0];
+                          regextitle = [ez searchreplace:regextitle pattern:@" -.*\\d+"];
+                          tmpepisode = [ez findMatch:tmpepisode pattern:@"\\d+" rangeatindex:0];
+                       }
+                       title = regextitle;
+                }
+                else {
+                       continue;
+                }
+            }
             else {
                 continue;
             }
