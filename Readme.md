@@ -1,5 +1,5 @@
 # What is detectstream
-This is an open source command line helper tool that detects Web Stream presence in Safari, Webkit, OmniWeb and Chrome using the Scripting framework (other browsers are unsupported as they don't support Applescript)
+This is an open source command line helper tool/Cocoa Framework that detects Web Stream presence in Safari, Webkit, OmniWeb and Chrome using the Scripting framework (other browsers are unsupported as they don't support Applescript)
 
 detectstream is used in [Hachidori](https://github.com/chikorita157/hachidori) and [MAL Updater OS X](https://github.com/chikorita157/malupdaterosx-cocoa)
 

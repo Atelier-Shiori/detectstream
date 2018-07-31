@@ -11,8 +11,8 @@
 
 #import <Foundation/Foundation.h>
 // Support Classes
-#import "BrowserDetection.h"
-#import "MediaStreamParse.h"
+#import <DetectStreamKit/BrowserDetection.h>
+#import <DetectStreamKit/MediaStreamParse.h>
 
 
 int main(int argc, const char * argv[]) {

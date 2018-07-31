@@ -7,12 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6FB3BBE51A8581CC00D3A69C /* ezregex.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FB3BBE31A8581CC00D3A69C /* ezregex.m */; };
 		6FB3BBE71A8582C200D3A69C /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB3BBE61A8582C200D3A69C /* AppKit.framework */; };
 		8212F76019F75BFC0029B2F4 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */; };
-		822DDD821A887BAC003D9464 /* BrowserDetection.m in Sources */ = {isa = PBXBuildFile; fileRef = 822DDD811A887BAC003D9464 /* BrowserDetection.m */; };
-		822DDD851A887CE3003D9464 /* MediaStreamParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 822DDD841A887CE3003D9464 /* MediaStreamParse.m */; };
-		829FB41619F7308D0026EAC2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 829FB41519F7308D0026EAC2 /* main.m */; };
+		918D8BCF210FE9ED002DCD7B /* DetectStreamKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 918D8BCD210FE9ED002DCD7B /* DetectStreamKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		918D8BD4210FE9F6002DCD7B /* ezregex.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FB3BBE31A8581CC00D3A69C /* ezregex.m */; };
+		918D8BD9210FEA52002DCD7B /* DetectStreamManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 918D8BD7210FEA52002DCD7B /* DetectStreamManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		918D8BDA210FEA52002DCD7B /* DetectStreamManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 918D8BD8210FEA52002DCD7B /* DetectStreamManager.m */; };
+		918D8BE1210FEAAC002DCD7B /* BrowserDetection.h in Headers */ = {isa = PBXBuildFile; fileRef = 822DDD801A887BAC003D9464 /* BrowserDetection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		918D8BE2210FEAAC002DCD7B /* BrowserDetection.m in Sources */ = {isa = PBXBuildFile; fileRef = 822DDD811A887BAC003D9464 /* BrowserDetection.m */; };
+		918D8BE3210FEAAC002DCD7B /* MediaStreamParse.h in Headers */ = {isa = PBXBuildFile; fileRef = 822DDD831A887CE3003D9464 /* MediaStreamParse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		918D8BE4210FEAAC002DCD7B /* MediaStreamParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 822DDD841A887CE3003D9464 /* MediaStreamParse.m */; };
+		918D8BE5210FEAB3002DCD7B /* ezregex.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FB3BBE21A8581CB00D3A69C /* ezregex.h */; };
+		918D8BE7210FEAD8002DCD7B /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */; };
+		918D8BE8210FEAE2002DCD7B /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB3BBE61A8582C200D3A69C /* AppKit.framework */; };
+		918D8BED210FEC58002DCD7B /* DetectStreamKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 918D8BCB210FE9ED002DCD7B /* DetectStreamKit.framework */; };
+		918D8BEE210FEC6D002DCD7B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 829FB41519F7308D0026EAC2 /* main.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -28,6 +37,16 @@
 			script = "sdef \"$INPUT_FILE_PATH\" | sdp -fh -o \"$DERIVED_FILES_DIR\" --basename \"$INPUT_FILE_BASE\" --bundleid `defaults read \"$INPUT_FILE_PATH/Contents/Info\" CFBundleIdentifier`";
 		};
 /* End PBXBuildRule section */
+
+/* Begin PBXContainerItemProxy section */
+		918D8BEB210FEC51002DCD7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 829FB40A19F7308D0026EAC2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 918D8BCA210FE9ED002DCD7B;
+			remoteInfo = DetectStreamKit;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		829FB41019F7308D0026EAC2 /* CopyFiles */ = {
@@ -52,6 +71,11 @@
 		822DDD841A887CE3003D9464 /* MediaStreamParse.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 0; lastKnownFileType = sourcecode.c.objc; path = MediaStreamParse.m; sourceTree = "<group>"; };
 		829FB41219F7308D0026EAC2 /* detectstream */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = detectstream; sourceTree = BUILT_PRODUCTS_DIR; };
 		829FB41519F7308D0026EAC2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		918D8BCB210FE9ED002DCD7B /* DetectStreamKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DetectStreamKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		918D8BCD210FE9ED002DCD7B /* DetectStreamKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetectStreamKit.h; sourceTree = "<group>"; };
+		918D8BCE210FE9ED002DCD7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		918D8BD7210FEA52002DCD7B /* DetectStreamManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DetectStreamManager.h; path = detectstream/DetectStreamManager.h; sourceTree = SOURCE_ROOT; };
+		918D8BD8210FEA52002DCD7B /* DetectStreamManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = DetectStreamManager.m; path = detectstream/DetectStreamManager.m; sourceTree = SOURCE_ROOT; };
 		91B821141EAF8A0D00C04402 /* Google Chrome.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Google Chrome.h"; path = "AppleScript/Google Chrome.h"; sourceTree = "<group>"; };
 		91B821151EAF8A0D00C04402 /* OmniWeb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OmniWeb.h; path = AppleScript/OmniWeb.h; sourceTree = "<group>"; };
 		91B821161EAF8A0D00C04402 /* Roccat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Roccat.h; path = AppleScript/Roccat.h; sourceTree = "<group>"; };
@@ -63,8 +87,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				918D8BED210FEC58002DCD7B /* DetectStreamKit.framework in Frameworks */,
 				6FB3BBE71A8582C200D3A69C /* AppKit.framework in Frameworks */,
 				8212F76019F75BFC0029B2F4 /* ScriptingBridge.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		918D8BC7210FE9ED002DCD7B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				918D8BE8210FEAE2002DCD7B /* AppKit.framework in Frameworks */,
+				918D8BE7210FEAD8002DCD7B /* ScriptingBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +123,7 @@
 				91B821171EAF8A0D00C04402 /* Safari.h */,
 			);
 			name = "Apple Script";
+			path = ../detectstream;
 			sourceTree = "<group>";
 		};
 		829FB40919F7308D0026EAC2 = {
@@ -96,7 +131,9 @@
 			children = (
 				822DDD861A887E93003D9464 /* Linked Frameworks */,
 				829FB41419F7308D0026EAC2 /* detectstream */,
+				918D8BCC210FE9ED002DCD7B /* DetectStream */,
 				829FB41319F7308D0026EAC2 /* Products */,
+				918D8BE6210FEAD8002DCD7B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -104,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				829FB41219F7308D0026EAC2 /* detectstream */,
+				918D8BCB210FE9ED002DCD7B /* DetectStreamKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -111,19 +149,52 @@
 		829FB41419F7308D0026EAC2 /* detectstream */ = {
 			isa = PBXGroup;
 			children = (
-				6FB3BBE21A8581CB00D3A69C /* ezregex.h */,
-				6FB3BBE31A8581CC00D3A69C /* ezregex.m */,
-				822DDD801A887BAC003D9464 /* BrowserDetection.h */,
-				822DDD811A887BAC003D9464 /* BrowserDetection.m */,
 				829FB41519F7308D0026EAC2 /* main.m */,
-				822DDD831A887CE3003D9464 /* MediaStreamParse.h */,
-				822DDD841A887CE3003D9464 /* MediaStreamParse.m */,
-				8285734919F811FB0004EF95 /* Apple Script */,
 			);
 			path = detectstream;
 			sourceTree = "<group>";
 		};
+		918D8BCC210FE9ED002DCD7B /* DetectStream */ = {
+			isa = PBXGroup;
+			children = (
+				6FB3BBE21A8581CB00D3A69C /* ezregex.h */,
+				6FB3BBE31A8581CC00D3A69C /* ezregex.m */,
+				822DDD801A887BAC003D9464 /* BrowserDetection.h */,
+				822DDD811A887BAC003D9464 /* BrowserDetection.m */,
+				822DDD831A887CE3003D9464 /* MediaStreamParse.h */,
+				822DDD841A887CE3003D9464 /* MediaStreamParse.m */,
+				8285734919F811FB0004EF95 /* Apple Script */,
+				918D8BCD210FE9ED002DCD7B /* DetectStreamKit.h */,
+				918D8BD7210FEA52002DCD7B /* DetectStreamManager.h */,
+				918D8BD8210FEA52002DCD7B /* DetectStreamManager.m */,
+				918D8BCE210FE9ED002DCD7B /* Info.plist */,
+			);
+			path = DetectStream;
+			sourceTree = "<group>";
+		};
+		918D8BE6210FEAD8002DCD7B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		918D8BC8210FE9ED002DCD7B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				918D8BCF210FE9ED002DCD7B /* DetectStreamKit.h in Headers */,
+				918D8BE5210FEAB3002DCD7B /* ezregex.h in Headers */,
+				918D8BE3210FEAAC002DCD7B /* MediaStreamParse.h in Headers */,
+				918D8BE1210FEAAC002DCD7B /* BrowserDetection.h in Headers */,
+				918D8BD9210FEA52002DCD7B /* DetectStreamManager.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		829FB41119F7308D0026EAC2 /* detectstream */ = {
@@ -138,11 +209,30 @@
 				8212F76119F75DF30029B2F4 /* PBXBuildRule */,
 			);
 			dependencies = (
+				918D8BEC210FEC51002DCD7B /* PBXTargetDependency */,
 			);
 			name = detectstream;
 			productName = detectstream;
 			productReference = 829FB41219F7308D0026EAC2 /* detectstream */;
 			productType = "com.apple.product-type.tool";
+		};
+		918D8BCA210FE9ED002DCD7B /* DetectStreamKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 918D8BD2210FE9ED002DCD7B /* Build configuration list for PBXNativeTarget "DetectStreamKit" */;
+			buildPhases = (
+				918D8BC6210FE9ED002DCD7B /* Sources */,
+				918D8BC7210FE9ED002DCD7B /* Frameworks */,
+				918D8BC8210FE9ED002DCD7B /* Headers */,
+				918D8BC9210FE9ED002DCD7B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DetectStreamKit;
+			productName = DetectStream;
+			productReference = 918D8BCB210FE9ED002DCD7B /* DetectStreamKit.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -155,6 +245,11 @@
 				TargetAttributes = {
 					829FB41119F7308D0026EAC2 = {
 						CreatedOnToolsVersion = 6.1;
+					};
+					918D8BCA210FE9ED002DCD7B = {
+						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = 9HDZTER525;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -171,23 +266,50 @@
 			projectRoot = "";
 			targets = (
 				829FB41119F7308D0026EAC2 /* detectstream */,
+				918D8BCA210FE9ED002DCD7B /* DetectStreamKit */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		918D8BC9210FE9ED002DCD7B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		829FB40E19F7308D0026EAC2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				822DDD821A887BAC003D9464 /* BrowserDetection.m in Sources */,
-				829FB41619F7308D0026EAC2 /* main.m in Sources */,
-				6FB3BBE51A8581CC00D3A69C /* ezregex.m in Sources */,
-				822DDD851A887CE3003D9464 /* MediaStreamParse.m in Sources */,
+				918D8BEE210FEC6D002DCD7B /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		918D8BC6210FE9ED002DCD7B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				918D8BD4210FE9F6002DCD7B /* ezregex.m in Sources */,
+				918D8BE2210FEAAC002DCD7B /* BrowserDetection.m in Sources */,
+				918D8BE4210FEAAC002DCD7B /* MediaStreamParse.m in Sources */,
+				918D8BDA210FEA52002DCD7B /* DetectStreamManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		918D8BEC210FEC51002DCD7B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 918D8BCA210FE9ED002DCD7B /* DetectStreamKit */;
+			targetProxy = 918D8BEB210FEC51002DCD7B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		829FB41719F7308D0026EAC2 /* Debug */ = {
@@ -268,6 +390,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				FRAMEWORK_SEARCH_PATHS = "@executable_path/";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -277,9 +400,93 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				FRAMEWORK_SEARCH_PATHS = "@executable_path/";
 				GCC_OPTIMIZATION_LEVEL = fast;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		918D8BD0210FE9ED002DCD7B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 9HDZTER525;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = DetectStream/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = pro.moyit.DetectStream;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		918D8BD1210FE9ED002DCD7B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 9HDZTER525;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = DetectStream/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = pro.moyit.DetectStream;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -300,6 +507,15 @@
 			buildConfigurations = (
 				829FB41A19F7308D0026EAC2 /* Debug */,
 				829FB41B19F7308D0026EAC2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		918D8BD2210FE9ED002DCD7B /* Build configuration list for PBXNativeTarget "DetectStreamKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				918D8BD0210FE9ED002DCD7B /* Debug */,
+				918D8BD1210FE9ED002DCD7B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
