@@ -22,6 +22,10 @@
 		918D8BE8210FEAE2002DCD7B /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB3BBE61A8582C200D3A69C /* AppKit.framework */; };
 		918D8BED210FEC58002DCD7B /* DetectStreamKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 918D8BCB210FE9ED002DCD7B /* DetectStreamKit.framework */; };
 		918D8BEE210FEC6D002DCD7B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 829FB41519F7308D0026EAC2 /* main.m */; };
+		918D8BEF210FEE5D002DCD7B /* Google Chrome.h in Headers */ = {isa = PBXBuildFile; fileRef = 91B821141EAF8A0D00C04402 /* Google Chrome.h */; };
+		918D8BF0210FEE5D002DCD7B /* OmniWeb.h in Headers */ = {isa = PBXBuildFile; fileRef = 91B821151EAF8A0D00C04402 /* OmniWeb.h */; };
+		918D8BF1210FEE5D002DCD7B /* Roccat.h in Headers */ = {isa = PBXBuildFile; fileRef = 91B821161EAF8A0D00C04402 /* Roccat.h */; };
+		918D8BF2210FEE5D002DCD7B /* Safari.h in Headers */ = {isa = PBXBuildFile; fileRef = 91B821171EAF8A0D00C04402 /* Safari.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -188,9 +192,13 @@
 			files = (
 				918D8BCF210FE9ED002DCD7B /* DetectStreamKit.h in Headers */,
 				918D8BE5210FEAB3002DCD7B /* ezregex.h in Headers */,
+				918D8BF1210FEE5D002DCD7B /* Roccat.h in Headers */,
+				918D8BEF210FEE5D002DCD7B /* Google Chrome.h in Headers */,
 				918D8BE3210FEAAC002DCD7B /* MediaStreamParse.h in Headers */,
 				918D8BE1210FEAAC002DCD7B /* BrowserDetection.h in Headers */,
 				918D8BD9210FEA52002DCD7B /* DetectStreamManager.h in Headers */,
+				918D8BF2210FEE5D002DCD7B /* Safari.h in Headers */,
+				918D8BF0210FEE5D002DCD7B /* OmniWeb.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
