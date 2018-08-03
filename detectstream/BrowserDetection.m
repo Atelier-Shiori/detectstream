@@ -23,7 +23,7 @@
 @implementation BrowserDetection
 #pragma Constants
 NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|amazon|view.yahoo.com|tubitv|asiancrush|animedigitalnetwork|32400)";
-NSString *const requiresScraping = @"(netflix|funimation|crunchyroll)";
+NSString *const requiresScraping = @"(netflix|crunchyroll)";
 NSString *const requiresJavaScript = @"(viewster|amazon)";
 
 #pragma Javascript Constants
@@ -172,7 +172,7 @@ NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerH
                             }
                         }
                     }
-                    NSDictionary * page = @{@"title": [tab title], @"url": [tab URL], @"browser": browserstring, @"site": site, @"DOM": DOM};
+                    NSDictionary * page = @{@"title": [tab title], @"url": [tab URL], @"browser": browserstring, @"site": site, @"DOM": DOM ? DOM : @""};
                     [pages addObject:page];
                 }
                 else{
