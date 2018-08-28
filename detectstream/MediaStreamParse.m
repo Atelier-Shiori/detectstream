@@ -379,8 +379,27 @@
                        title = regextitle;
                 }
                 else {
-                       continue;
+                      continue;
                 }
+            }
+            else if ([site isEqualToString:@"sonycrackle"]) {
+                      if ([ez checkMatch:regextitle pattern:@"Watch *.+ Online Free - Sony Crackle"]) {
+                      regextitle = [ez searchreplace:regextitle pattern:@"(Watch |Online Free - Sony Crackle)"];
+                      if ([ez findMatch:regextitle pattern:@", Episode \\d+" rangeatindex:0]) {
+                                tmpepisode = [ez findMatch:regextitle pattern:@", Episode \\d+" rangeatindex:0];
+                                regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
+                                tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@", Episode " withString:@""];
+                      }
+                      if ([ez findMatch:regextitle pattern:@", Season \\d+" rangeatindex:0]) {
+                                tmpseason = [ez findMatch:regextitle pattern:@", Season \\d+" rangeatindex:0];
+                                regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpseason withString:@""];
+                                tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@", Season " withString:@""];
+                      }
+                      title = regextitle;
+            }
+            else {
+                     continue;
+            }
             }
             else {
                 continue;
