@@ -22,9 +22,9 @@
 
 @implementation BrowserDetection
 #pragma Constants
-NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|amazon|view.yahoo.com|tubitv|asiancrush|animedigitalnetwork|sonycrackle|32400)";
+NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|amazon|view.yahoo.com|tubitv|asiancrush|animedigitalnetwork|sonycrackle|adultswim|32400)";
 NSString *const requiresScraping = @"(netflix|crunchyroll)";
-NSString *const requiresJavaScript = @"(viewster|amazon)";
+NSString *const requiresJavaScript = @"(viewster|amazon|adultswim)";
 
 #pragma Javascript Constants
 // From https://github.com/matthewdias/media-strategies/blob/master/strategies/viewster.js
@@ -35,6 +35,7 @@ NSString *const amazontitle = @"document.querySelector('.title').innerHTML";
 NSString *const amazonsubtitle = @"document.querySelector('.subtitle').innerHTML";
 NSString *const amazonplayicon = @"document.querySelector('.playIcon').innerHTML";
 NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerHTML";
+NSString *const adultswimepisode = @"document.querySelector('.show-content__seasons').innerHTML";
 
 #pragma Methods
 + (NSArray *)getPages {
@@ -91,11 +92,20 @@ NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerH
                         if ([site isEqualToString:@"viewster"]){
                             DOM = [NSString stringWithFormat:@"%@ %@", [safari doJavaScript:viewstertitle in:tab], [safari doJavaScript:viewsterepisode in:tab]];
                         }
-                        else if ([site isEqualToString:@"amazon"]){
+                        else if ([site isEqualToString:@"amazon"] ){
                             NSString *playicon = [safari doJavaScript:amazonplayicon in:tab];
                             NSString *pauseicon = [safari doJavaScript:amazonpauseicon in:tab];
                             if (pauseicon || (playicon && !pauseicon)) {
                                 DOM = [NSString stringWithFormat:@"%@ - %@", [safari doJavaScript:amazontitle in:tab], [safari doJavaScript:amazonsubtitle in:tab]];
+                            }
+                            else {
+                                continue;
+                            }
+                        }
+                        else if ([site isEqualToString:@"adultswim"]) {
+                            NSString *seasonidentifier = [safari doJavaScript:adultswimepisode in:tab];
+                            if (seasonidentifier) {
+                                DOM = seasonidentifier;
                             }
                             else {
                                 continue;
@@ -166,6 +176,15 @@ NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerH
                             NSString *pauseicon = [tab executeJavascript:amazonpauseicon];
                             if (pauseicon || (playicon && !pauseicon)) {
                                 DOM = [NSString stringWithFormat:@"%@ - %@", [tab executeJavascript:amazontitle], [tab executeJavascript:amazonsubtitle]];
+                            }
+                            else {
+                                continue;
+                            }
+                        }
+                        else if ([site isEqualToString:@"adultswim"]) {
+                            NSString *seasonidentifier = [tab executeJavascript:adultswimepisode];
+                            if (seasonidentifier) {
+                                DOM = seasonidentifier;
                             }
                             else {
                                 continue;

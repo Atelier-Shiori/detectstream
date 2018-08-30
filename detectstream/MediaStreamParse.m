@@ -401,6 +401,38 @@
                      continue;
             }
             }
+            else if ([site isEqualToString:@"adultswim"]) {
+                 if ([ez checkMatch:url pattern:@"\\/videos\\/*.+\\/*.+\\/"]) {
+                      NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+                      // Parse title
+                      regextitle = [regextitle stringByReplacingOccurrencesOfString:@" - Adult Swim Shows" withString:@""];
+                      regextitle = [ez searchreplace:regextitle pattern:@".+ - "];
+                      NSArray *seasons = [ez findMatches:DOM pattern:@"<div class=\"season__root show-content__season\">*.+<\\/div>"];
+                      if (seasons.count > 0) {
+                           for (NSString *season in seasons) {
+                                  // Get Temp Season
+                                  tmpseason = [ez findMatch:season pattern:@"Season \\d+" rangeatindex:0];
+                                  tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"Season " withString:@""];
+                                  NSString *currentepisodedomregex = @"<div class=\"episode__root episode__selected\">*.+Ep \\d+";
+                                  if ([ez checkMatch:DOM pattern:currentepisodedomregex]) {
+                                        NSString *epdom = [ez findMatch:DOM pattern:currentepisodedomregex rangeatindex:0];
+                                        tmpepisode = [ez findMatch:epdom pattern:@"Ep \\d+" rangeatindex:0];
+                                        tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"Ep " withString:@""];
+                                         title = regextitle;
+                                  }
+                                  else {
+                                        continue;
+                                  }
+                           }
+                      }
+                      else {
+                           continue;
+                      }
+                 }
+                 else {
+                      continue;
+                 }
+            }
             else {
                 continue;
             }
