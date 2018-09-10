@@ -305,4 +305,85 @@ NSString *const adultswimepisode = @"document.querySelector('.show-content__seas
     return site;
 }
 
+- (void)getAutomationPermission {
+    // This method will launch the installed browsers on the user's system to obtain Automation Permissions under macOS 10.14 Mojave
+    for (int s = 0; s < 3; s++) {
+        SafariApplication* safari;
+        switch (s) {
+            case 0:
+                safari = [SBApplication applicationWithBundleIdentifier:@"com.apple.Safari"];
+                break;
+            case 1:
+                safari  = [SBApplication applicationWithBundleIdentifier:@"org.webkit.nightly.WebKit"];
+                break;
+            case 2:
+                safari  = [SBApplication applicationWithBundleIdentifier:@"com.apple.SafariTechnologyPreview"];
+                break;
+            default:
+                break;
+        }
+        
+        SBElementArray * windows = [safari windows];
+        if (windows) {
+            NSLog(@"Launch successful");
+        }
+        else {
+            NSLog(@"Application not installed;");
+        }
+    }
+    for (int s = 0; s < 3; s++) {
+        GoogleChromeApplication * chrome;
+        switch (s) {
+            case 0:
+                chrome = [SBApplication applicationWithBundleIdentifier:@"com.google.Chrome"];
+                break;
+            case 1:
+                chrome  = [SBApplication applicationWithBundleIdentifier:@"org.chromium.Chromium"];
+                break;
+            case 2:
+                chrome  = [SBApplication applicationWithBundleIdentifier:@"com.google.Chrome.canary"];
+                break;
+            default:
+                break;
+        }
+        SBElementArray * windows = [chrome windows];
+        if (windows) {
+            NSLog(@"Launch successful");
+        }
+        else {
+            NSLog(@"Application not installed;");
+        }
+    }
+    RoccatApplication * roccat = [SBApplication applicationWithBundleIdentifier:@"org.Runecats.Roccat"];
+    SBElementArray * browsers = [roccat browserWindows];
+    if (browsers) {
+        NSLog(@"Launch successful");
+    }
+    else {
+        NSLog(@"Application not installed;");
+    }
+    for (int s = 0; s < 2; s++) {
+        OmniWebApplication * omniweb;
+        switch (s) {
+            case 0:
+                // For version 5
+                omniweb = [SBApplication applicationWithBundleIdentifier:@"com.omnigroup.OmniWeb5"];
+                break;
+            case 1:
+                // For version 6
+                omniweb = [SBApplication applicationWithBundleIdentifier:@"com.omnigroup.OmniWeb6"];
+                break;
+            default:
+                break;
+        }
+        SBElementArray * obrowsers = [omniweb browsers];
+        if (obrowsers) {
+            NSLog(@"Launch successful");
+        }
+        else {
+            NSLog(@"Application not installed;");
+        }
+    }
+}
+
 @end

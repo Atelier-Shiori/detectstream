@@ -16,4 +16,5 @@
 + (NSArray *)getPages;
 - (BOOL)checkIdentifier:(NSString*)identifier;
 - (NSString *)checkURL:(NSString *)url;
+- (void)getAutomationPermission;
 @end
