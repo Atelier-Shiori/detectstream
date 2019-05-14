@@ -126,7 +126,7 @@ NSString *const adultswimepisode = @"document.querySelector('.show-content__seas
         }
     }
     // Check to see Chrome is running. If so, add tab's title and url to the array
-    for (int s = 0; s <3; s++) {
+    for (int s = 0; s < 5; s++) {
             GoogleChromeApplication * chrome;
             NSString * browserstring;
             switch (s) {
@@ -150,6 +150,20 @@ NSString *const adultswimepisode = @"document.querySelector('.show-content__seas
                     }
                     chrome  = [SBApplication applicationWithBundleIdentifier:@"com.google.Chrome.canary"];
                     browserstring = @"Chrome Canary";
+                    break;
+                case 3:
+                    if (![browser checkIdentifier:@"com.microsoft.Edge.Canary"]) {
+                        continue;
+                    }
+                    chrome  = [SBApplication applicationWithBundleIdentifier:@"com.microsoft.Edge.Canary"];
+                    browserstring = @"Microsoft Edge Canary";
+                    break;
+                case 4:
+                    if (![browser checkIdentifier:@"com.microsoft.Edge"]) {
+                        continue;
+                    }
+                    chrome  = [SBApplication applicationWithBundleIdentifier:@"com.microsoft.Edge"];
+                    browserstring = @"Microsoft Edge";
                     break;
                 default:
                     break;
