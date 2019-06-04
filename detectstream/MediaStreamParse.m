@@ -45,6 +45,7 @@
                     tmpepisode = [ez findMatch:regextitle pattern:@"\\sEpisode (\\d+)" rangeatindex:0];
                     regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
                     tmpepisode = [ez searchreplace:tmpepisode pattern:@"\\sEpisode"];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@"(Movie)" withString:@""];
                     title = regextitle;
                     if ([ez checkMatch:title pattern:@"Crunchyroll"]) {
                         continue;
