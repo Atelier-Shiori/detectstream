@@ -10,7 +10,7 @@ detectstream is used in [Hachidori](https://github.com/Atelier-Shiori/hachidori)
 # Support
 detectstream currently supports these sites:
 ## Anime
-Safari, Webkit, Chrome, Edge, Roccat Browser and Omniweb: Crunchyroll, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster, Wakanim, Funimation, Netflix, Hidive, VRV,  Tubitv, Yahoo View, AsianCrush, AnimeDigitalNetwork, Sony Crackle, Adult Swim, and Plex.tv Media Server (locally and on the web).
+Safari, Webkit, Chrome, Edge, Roccat Browser and Omniweb: Crunchyroll, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster, Wakanim, Funimation, Netflix, Hidive, VRV,  Tubitv, AsianCrush, AnimeDigitalNetwork, Sony Crackle, Adult Swim, and Plex.tv Media Server (locally and on the web).
 
 Chrome, Edge and Safari only (requires Javascript Execution): Viewster, Amazon Prime Video, Adult Swim (For Safari, you need to have "Enable Javascript from Apple Events" enabled in the [Developer Menu](https://support.apple.com/kb/PH21491). For Google Chrome, View > Developer > Allow JavaScript from Apple Events)
 
@@ -34,4 +34,4 @@ Get the source and then type xcodebuild. Having the applications installed is no
 To include in your project, drag the DetectStreamKit.framework.
 
 # License
-This version is licensed under MIT License. Older versions are GPL Version 3 license.
+This version is licensed under MIT License.
