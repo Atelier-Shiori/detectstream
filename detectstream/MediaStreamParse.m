@@ -8,6 +8,7 @@
 
 #import "MediaStreamParse.h"
 #import "ezregex.h"
+#import "NSString+HTML.h"
 
 @implementation MediaStreamParse
 + (NSArray *)parse:(NSArray *)pages {
@@ -458,6 +459,8 @@
             //Trim Whitespace
             title = [title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             tmpepisode = [tmpepisode stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            // Decode HTML
+            title = [title kv_decodeHTMLCharacterEntities];
             // Final Checks
             if ([tmpepisode length] ==0){
                 episode = @(0);

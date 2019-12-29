@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		59F3D65923B95687005E3E40 /* NSString+HTML.h in Headers */ = {isa = PBXBuildFile; fileRef = 59F3D65723B95686005E3E40 /* NSString+HTML.h */; };
+		59F3D65A23B95687005E3E40 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 59F3D65823B95686005E3E40 /* NSString+HTML.m */; };
 		6FB3BBE71A8582C200D3A69C /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB3BBE61A8582C200D3A69C /* AppKit.framework */; };
 		8212F76019F75BFC0029B2F4 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */; };
 		918D8BCF210FE9ED002DCD7B /* DetectStreamKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 918D8BCD210FE9ED002DCD7B /* DetectStreamKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -34,6 +36,8 @@
 			compilerSpec = com.apple.compilers.proxy.script;
 			filePatterns = "*.app";
 			fileType = pattern.proxy;
+			inputFiles = (
+			);
 			isEditable = 1;
 			outputFiles = (
 				"$(DERIVED_FILES_DIR)/$(INPUT_FILE_BASE).h",
@@ -65,6 +69,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		59F3D65723B95686005E3E40 /* NSString+HTML.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
+		59F3D65823B95686005E3E40 /* NSString+HTML.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		6FB3BBE21A8581CB00D3A69C /* ezregex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ezregex.h; sourceTree = "<group>"; };
 		6FB3BBE31A8581CC00D3A69C /* ezregex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ezregex.m; sourceTree = "<group>"; };
 		6FB3BBE61A8582C200D3A69C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -109,6 +115,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		59F3D65623B9565E005E3E40 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				59F3D65723B95686005E3E40 /* NSString+HTML.h */,
+				59F3D65823B95686005E3E40 /* NSString+HTML.m */,
+			);
+			path = Dependencies;
+			sourceTree = "<group>";
+		};
 		822DDD861A887E93003D9464 /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +148,7 @@
 		829FB40919F7308D0026EAC2 = {
 			isa = PBXGroup;
 			children = (
+				59F3D65623B9565E005E3E40 /* Dependencies */,
 				822DDD861A887E93003D9464 /* Linked Frameworks */,
 				829FB41419F7308D0026EAC2 /* detectstream */,
 				918D8BCC210FE9ED002DCD7B /* DetectStream */,
@@ -197,6 +213,7 @@
 				918D8BE3210FEAAC002DCD7B /* MediaStreamParse.h in Headers */,
 				918D8BE1210FEAAC002DCD7B /* BrowserDetection.h in Headers */,
 				918D8BD9210FEA52002DCD7B /* DetectStreamManager.h in Headers */,
+				59F3D65923B95687005E3E40 /* NSString+HTML.h in Headers */,
 				918D8BF2210FEE5D002DCD7B /* Safari.h in Headers */,
 				918D8BF0210FEE5D002DCD7B /* OmniWeb.h in Headers */,
 			);
@@ -266,6 +283,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 829FB40919F7308D0026EAC2;
@@ -304,6 +322,7 @@
 			files = (
 				918D8BD4210FE9F6002DCD7B /* ezregex.m in Sources */,
 				918D8BE2210FEAAC002DCD7B /* BrowserDetection.m in Sources */,
+				59F3D65A23B95687005E3E40 /* NSString+HTML.m in Sources */,
 				918D8BE4210FEAAC002DCD7B /* MediaStreamParse.m in Sources */,
 				918D8BDA210FEA52002DCD7B /* DetectStreamManager.m in Sources */,
 			);
