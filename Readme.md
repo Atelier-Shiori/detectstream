@@ -12,7 +12,7 @@ detectstream currently supports these sites:
 ## Anime
 Safari, Webkit, Chrome, Edge, Roccat Browser and Omniweb: Crunchyroll, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster, Wakanim, Funimation, Netflix, Hidive, VRV,  Tubitv, AsianCrush, AnimeDigitalNetwork, Sony Crackle, Adult Swim, and Plex.tv Media Server (locally and on the web).
 
-Chrome, Edge and Safari only (requires Javascript Execution): Viewster, Amazon Prime Video, Adult Swim (For Safari, you need to have "Enable Javascript from Apple Events" enabled in the [Developer Menu](https://support.apple.com/kb/PH21491). For Google Chrome, View > Developer > Allow JavaScript from Apple Events)
+Chrome, Edge and Safari only (requires Javascript Execution): Viewster, Amazon Prime Video, Adult Swim, Funimation (detection from user's watch history on the My Account page) (For Safari, you need to have "Enable Javascript from Apple Events" enabled in the [Developer Menu](https://support.apple.com/kb/PH21491). For Google Chrome, View > Developer > Allow JavaScript from Apple Events)
 
 ## Manga
 Safari, Webkit, Chrome, Edge, Roccat Browser and Omniweb: Crunchyroll
