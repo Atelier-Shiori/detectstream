@@ -152,17 +152,24 @@ NSString *const adultswimepisode = @"document.querySelector('.show-content__seas
                     browserstring = @"Chrome Canary";
                     break;
                 case 3:
-                    if (![browser checkIdentifier:@"com.microsoft.Edge.Canary"]) {
+                    if (![browser checkIdentifier:@"com.microsoft.edgemac.Canary"]) {
                         continue;
                     }
-                    chrome  = [SBApplication applicationWithBundleIdentifier:@"com.microsoft.Edge.Canary"];
+                    chrome  = [SBApplication applicationWithBundleIdentifier:@"com.microsoft.edgemac.Canary"];
                     browserstring = @"Microsoft Edge Canary";
                     break;
                 case 4:
-                    if (![browser checkIdentifier:@"com.microsoft.Edge"]) {
+                    if (![browser checkIdentifier:@"com.microsoft.edgemac"]) {
                         continue;
                     }
-                    chrome  = [SBApplication applicationWithBundleIdentifier:@"com.microsoft.Edge"];
+                    chrome  = [SBApplication applicationWithBundleIdentifier:@"com.microsoft.edgemac"];
+                    browserstring = @"Microsoft Edge";
+                    break;
+                case 5:
+                    if (![browser checkIdentifier:@"com.microsoft.edgemac.Beta"]) {
+                        continue;
+                    }
+                    chrome  = [SBApplication applicationWithBundleIdentifier:@"com.microsoft.edgemac.Beta"];
                     browserstring = @"Microsoft Edge";
                     break;
                 default:
