@@ -36,6 +36,7 @@ NSString *const amazonsubtitle = @"document.querySelector('.subtitle').innerHTML
 NSString *const amazonplayicon = @"document.querySelector('.playIcon').innerHTML";
 NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerHTML";
 NSString *const adultswimepisode = @"document.querySelector('.show-content__seasons').innerHTML";
+NSString *const funimationhistory = @"document.querySelector('.history-item').innerHTML;";
 
 #pragma Methods
 + (NSArray *)getPages {
@@ -110,6 +111,16 @@ NSString *const adultswimepisode = @"document.querySelector('.show-content__seas
                             else {
                                 continue;
                             }
+                        }
+                    }
+                    else if ([site isEqualToString:@"funimation"] && [tab.URL rangeOfString:@"funimation.com/account" options:NSCaseInsensitiveSearch].length != NSNotFound) {
+                        NSString *historyitem = [safari doJavaScript:funimationhistory in:tab];
+                        if (historyitem) {
+                            DOM = historyitem;
+                            site = @"funimation";
+                        }
+                        else {
+                            continue;
                         }
                     }
                     else{
@@ -215,7 +226,17 @@ NSString *const adultswimepisode = @"document.querySelector('.show-content__seas
                     NSDictionary * page = @{@"title": [tab title], @"url": [tab URL], @"browser": browserstring, @"site": site, @"DOM": DOM ? DOM : @""};
                     [pages addObject:page];
                 }
-                else{
+                else if ([site isEqualToString:@"funimation"] && [tab.URL rangeOfString:@"funimation.com/account" options:NSCaseInsensitiveSearch].length != NSNotFound) {
+                    NSString *historyitem = (NSString *)[tab executeJavascript:funimationhistory];
+                    if (historyitem) {
+                        DOM = historyitem;
+                        site = @"funimation";
+                    }
+                    else {
+                        continue;
+                    }
+                }
+                else {
                     continue;
                 }
             }
@@ -255,6 +276,9 @@ NSString *const adultswimepisode = @"document.querySelector('.show-content__seas
                         // Add Source
                         DOM = [tab source];
                     }
+                    else if ([tab.address rangeOfString:@"funimation.com/account" options:NSCaseInsensitiveSearch].length != NSNotFound) {
+                        continue;
+                    }
                     else if ([[[ezregex alloc] init] checkMatch:[tab address] pattern:requiresJavaScript]){
                         // Can't return javascript output, continue
                         continue;
@@ -287,6 +311,9 @@ NSString *const adultswimepisode = @"document.querySelector('.show-content__seas
                         // Include DOM
                         DOM = [tab source];
              
+                    }
+                    else if ([tab.URL rangeOfString:@"funimation.com/account" options:NSCaseInsensitiveSearch].length != NSNotFound) {
+                        continue;
                     }
                     else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
                         // Javascript Applescript function does not return value, continue

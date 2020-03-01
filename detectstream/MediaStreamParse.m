@@ -111,13 +111,24 @@
             }
             else if ([site isEqualToString:@"funimation"]) {
                 if ([ez checkMatch:url pattern:@"shows\\/.*\\/.*\\/"]) {
-                regextitle = [regextitle stringByReplacingOccurrencesOfString:@"Watch " withString:@""];
-                regextitle = [ez findMatch:regextitle pattern:@".* Season \\d+ Episode \\d+" rangeatindex:0];
-                tmpepisode = [ez findMatch:regextitle pattern:@"Episode \\d+" rangeatindex:0];
-                tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"Episode " withString:@""];
-                tmpseason = [ez findMatch:regextitle pattern:@"Season \\d+" rangeatindex:0];
-                tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"Season "  withString:@""];
-                title = [ez searchreplace:regextitle pattern:@"Season \\d+ Episode \\d+"];
+	                regextitle = [regextitle stringByReplacingOccurrencesOfString:@"Watch " withString:@""];
+	                regextitle = [ez findMatch:regextitle pattern:@".* Season \\d+ Episode \\d+" rangeatindex:0];
+	                tmpepisode = [ez findMatch:regextitle pattern:@"Episode \\d+" rangeatindex:0];
+	                tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"Episode " withString:@""];
+	                tmpseason = [ez findMatch:regextitle pattern:@"Season \\d+" rangeatindex:0];
+	                tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"Season "  withString:@""];
+	                title = [ez searchreplace:regextitle pattern:@"Season \\d+ Episode \\d+"];
+                }
+                else if ([url.lowercaseString containsString:@"/account/"]) {
+	                NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+	                regextitle = [ez findMatch:DOM pattern:@"<a href=\"\\/shows\\/.*\\/.*\\/?qid=\">.*<\\/a>" rangeatindex:0];
+					regextitle = [ez searchreplace:regextitle pattern:@"<a href=\"\\/shows\\/.*\\/.*\\/?qid=\">"];
+					regextitle = [ez searchreplace:regextitle pattern:@"<\\/a>"];
+					tmpepisode = [ez findMatch:DOM pattern:@"Episode \\d+" rangeatindex:0];
+					tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"Episode " withString:@""];
+					tmpseason = [ez findMatch:DOM pattern:@"Season \\d+" rangeatindex:0];
+					tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"Season "  withString:@""];
+					title = regextitle;
                 }
                 else {
                     continue; // Invalid address
