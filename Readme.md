@@ -1,5 +1,5 @@
 # What is detectstream
-This is an open source command line helper tool/Cocoa Framework that detects Web Stream presence in Safari, Webkit, OmniWeb, Chrome and Edge using the Scripting framework (other browsers are unsupported as they don't support Applescript)
+This is an open source command line helper tool/Cocoa Framework that detects Web Stream presence in Safari, Webkit, OmniWeb, Chrome, Edge, and Brave Browser using the Scripting framework (other browsers are unsupported as they don't support Applescript)
 
 detectstream only works on macOS 10.11 El Capitan or later. Built against the macOS 10.14 SDK.
 
@@ -10,9 +10,9 @@ detectstream is used in [Hachidori](https://github.com/Atelier-Shiori/hachidori)
 # Support
 detectstream currently supports these sites:
 ## Anime
-Safari, Webkit, Chrome, Edge, Roccat Browser and Omniweb: Crunchyroll, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster, Wakanim, Funimation, Netflix, Hidive, VRV,  Tubitv, AsianCrush, AnimeDigitalNetwork, Sony Crackle, Adult Swim, and Plex.tv Media Server (locally and on the web).
+Safari, Webkit, Chrome, Edge, Brave Browser, Roccat Browser and Omniweb: Crunchyroll, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster, Wakanim, Funimation, Netflix, Hidive, VRV,  Tubitv, AsianCrush, AnimeDigitalNetwork, Sony Crackle, Adult Swim, and Plex.tv Media Server (locally and on the web).
 
-Chrome, Edge and Safari only (requires Javascript Execution): Viewster, Amazon Prime Video, Adult Swim, Funimation (detection from user's watch history on the My Account page) (For Safari, you need to have "Enable Javascript from Apple Events" enabled in the [Developer Menu](https://support.apple.com/kb/PH21491). For Google Chrome, View > Developer > Allow JavaScript from Apple Events)
+Chrome, Edge, Brave Browser and Safari only (requires Javascript Execution): Viewster, Amazon Prime Video, Adult Swim, Funimation (detection from user's watch history on the My Account page) (For Safari, you need to have "Enable Javascript from Apple Events" enabled in the [Developer Menu](https://support.apple.com/kb/PH21491). For Google Chrome, View > Developer > Allow JavaScript from Apple Events)
 
 ## Manga
 Safari, Webkit, Chrome, Edge, Roccat Browser and Omniweb: Crunchyroll

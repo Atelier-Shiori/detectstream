@@ -137,7 +137,7 @@ NSString *const funimationhistory = @"document.querySelector('.history-item').in
         }
     }
     // Check to see Chrome is running. If so, add tab's title and url to the array
-    for (int s = 0; s < 5; s++) {
+    for (int s = 0; s < 7; s++) {
             GoogleChromeApplication * chrome;
             NSString * browserstring;
             switch (s) {
@@ -183,6 +183,13 @@ NSString *const funimationhistory = @"document.querySelector('.history-item').in
                     chrome  = [SBApplication applicationWithBundleIdentifier:@"com.microsoft.edgemac.Beta"];
                     browserstring = @"Microsoft Edge";
                     break;
+                case 6:
+                    if (![browser checkIdentifier:@"com.brave.Browser"]) {
+                        continue;
+                    }
+                    chrome  = [SBApplication applicationWithBundleIdentifier:@"com.brave.Browser"];
+                    browserstring = @"Brave Browser";
+                    break;
                 default:
                     break;
             }
@@ -223,10 +230,7 @@ NSString *const funimationhistory = @"document.querySelector('.history-item').in
                             }
                         }
                     }
-                    NSDictionary * page = @{@"title": [tab title], @"url": [tab URL], @"browser": browserstring, @"site": site, @"DOM": DOM ? DOM : @""};
-                    [pages addObject:page];
-                }
-                else if ([site isEqualToString:@"funimation"] && [tab.URL rangeOfString:@"funimation.com/account" options:NSCaseInsensitiveSearch].length != NSNotFound) {
+                    else if ([site isEqualToString:@"funimation"] && [tab.URL rangeOfString:@"funimation.com/account" options:NSCaseInsensitiveSearch].length != NSNotFound) {
                     NSString *historyitem = (NSString *)[tab executeJavascript:funimationhistory];
                     if (historyitem) {
                         DOM = historyitem;
@@ -235,6 +239,9 @@ NSString *const funimationhistory = @"document.querySelector('.history-item').in
                     else {
                         continue;
                     }
+                    NSDictionary * page = @{@"title": [tab title], @"url": [tab URL], @"browser": browserstring, @"site": site, @"DOM": DOM ? DOM : @""};
+                    [pages addObject:page];
+                }
                 }
                 else {
                     continue;
