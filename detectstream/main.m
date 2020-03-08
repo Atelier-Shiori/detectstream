@@ -3,7 +3,7 @@
 //  detectstream
 //
 //  Created by 高町なのは on 2014/10/21.
-//  Copyright 2014-2018 Atelier Shiori, James Moy. All rights reserved. Code licensed under MIT License.
+//  Copyright 2014-2020 Atelier Shiori, James Moy. All rights reserved. Code licensed under MIT License.
 //
 // Do not want to output timestamp for the output
 

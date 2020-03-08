@@ -3,7 +3,7 @@
 //  detectstream
 //
 //  Created by 高町なのは on 2015/02/09.
-//  Copyright 2014-2018 Atelier Shiori, James Moy. All rights reserved. Code licensed under MIT License.
+//  Copyright 2014-2020 Atelier Shiori, James Moy. All rights reserved. Code licensed under MIT License.
 //
 //  This class gathers all the page titles, url and DOM (if necessary) from open browsers.
 //  Only returns applicable streaming sites.
@@ -137,7 +137,7 @@ NSString *const funimationhistory = @"document.querySelector('.history-item').in
         }
     }
     // Check to see Chrome is running. If so, add tab's title and url to the array
-    for (int s = 0; s < 7; s++) {
+    for (int s = 0; s < 8; s++) {
             GoogleChromeApplication * chrome;
             NSString * browserstring;
             switch (s) {
@@ -190,6 +190,13 @@ NSString *const funimationhistory = @"document.querySelector('.history-item').in
                     chrome  = [SBApplication applicationWithBundleIdentifier:@"com.brave.Browser"];
                     browserstring = @"Brave Browser";
                     break;
+                case 7:
+                    if (![browser checkIdentifier:@"com.operasoftware.Opera"]) {
+                        continue;
+                    }
+                    chrome  = [SBApplication applicationWithBundleIdentifier:@"com.operasoftware.Opera"];
+                    browserstring = @"Opera";
+                    break;
                 default:
                     break;
             }
@@ -202,46 +209,49 @@ NSString *const funimationhistory = @"document.querySelector('.history-item').in
                 NSString * site  = [browser checkURL:[tab URL]];
                 NSString * DOM = @"";
                 if (site.length > 0) {
-                    if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
-                        // Get source code using Javascript
-                        DOM = (NSString *)[tab executeJavascript:@"document.documentElement.innerHTML"];
-                    }
-                    else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
-                        if ([site isEqualToString:@"viewster"]){
-                            DOM = [NSString stringWithFormat:@"%@ %@", [tab executeJavascript:viewstertitle], [tab executeJavascript:viewsterepisode]];
+                    if (![browserstring isEqualToString:@"Opera"]) {
+                        // Note: Opera can't do Javascript execution via Apple Script
+                        if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
+                            // Get source code using Javascript
+                            DOM = (NSString *)[tab executeJavascript:@"document.documentElement.innerHTML"];
                         }
-                        else if ([site isEqualToString:@"amazon"]){
-                            NSString *playicon = [tab executeJavascript:amazonplayicon];
-                            NSString *pauseicon = [tab executeJavascript:amazonpauseicon];
-                            if (pauseicon || (playicon && !pauseicon)) {
-                                DOM = [NSString stringWithFormat:@"%@ - %@", [tab executeJavascript:amazontitle], [tab executeJavascript:amazonsubtitle]];
+                        else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
+                            if ([site isEqualToString:@"viewster"]){
+                                DOM = [NSString stringWithFormat:@"%@ %@", [tab executeJavascript:viewstertitle], [tab executeJavascript:viewsterepisode]];
+                            }
+                            else if ([site isEqualToString:@"amazon"]){
+                                NSString *playicon = [tab executeJavascript:amazonplayicon];
+                                NSString *pauseicon = [tab executeJavascript:amazonpauseicon];
+                                if (pauseicon || (playicon && !pauseicon)) {
+                                    DOM = [NSString stringWithFormat:@"%@ - %@", [tab executeJavascript:amazontitle], [tab executeJavascript:amazonsubtitle]];
+                                }
+                                else {
+                                    continue;
+                                }
+                            }
+                            else if ([site isEqualToString:@"adultswim"]) {
+                                NSString *seasonidentifier = [tab executeJavascript:adultswimepisode];
+                                if (seasonidentifier) {
+                                    DOM = seasonidentifier;
+                                }
+                                else {
+                                    continue;
+                                }
+                            }
+                        }
+                        else if ([site isEqualToString:@"funimation"] && [tab.URL rangeOfString:@"funimation.com/account" options:NSCaseInsensitiveSearch].length != NSNotFound && ![browserstring isEqualToString:@"Opera"]) {
+                            NSString *historyitem = (NSString *)[tab executeJavascript:funimationhistory];
+                            if (historyitem) {
+                                DOM = historyitem;
+                                site = @"funimation";
                             }
                             else {
                                 continue;
                             }
                         }
-                        else if ([site isEqualToString:@"adultswim"]) {
-                            NSString *seasonidentifier = [tab executeJavascript:adultswimepisode];
-                            if (seasonidentifier) {
-                                DOM = seasonidentifier;
-                            }
-                            else {
-                                continue;
-                            }
-                        }
-                    }
-                    else if ([site isEqualToString:@"funimation"] && [tab.URL rangeOfString:@"funimation.com/account" options:NSCaseInsensitiveSearch].length != NSNotFound) {
-                    NSString *historyitem = (NSString *)[tab executeJavascript:funimationhistory];
-                    if (historyitem) {
-                        DOM = historyitem;
-                        site = @"funimation";
-                    }
-                    else {
-                        continue;
                     }
                     NSDictionary * page = @{@"title": [tab title], @"url": [tab URL], @"browser": browserstring, @"site": site, @"DOM": DOM ? DOM : @""};
                     [pages addObject:page];
-                }
                 }
                 else {
                     continue;
