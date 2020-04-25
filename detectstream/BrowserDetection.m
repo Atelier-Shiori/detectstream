@@ -113,7 +113,7 @@ NSString *const funimationhistory = @"document.querySelector('.history-item').in
                             }
                         }
                     }
-                    else if ([site isEqualToString:@"funimation"] && [tab.URL rangeOfString:@"funimation.com/account" options:NSCaseInsensitiveSearch].length != NSNotFound) {
+                    else if ([site isEqualToString:@"funimation"] && [[ezregex alloc] findMatches:tab.URL pattern:@"account"].count > 0) {
                         NSString *historyitem = [safari doJavaScript:funimationhistory in:tab];
                         if (historyitem) {
                             DOM = historyitem;
@@ -239,7 +239,7 @@ NSString *const funimationhistory = @"document.querySelector('.history-item').in
                                 }
                             }
                         }
-                        else if ([site isEqualToString:@"funimation"] && [tab.URL rangeOfString:@"funimation.com/account" options:NSCaseInsensitiveSearch].length != NSNotFound && ![browserstring isEqualToString:@"Opera"]) {
+                        else if ([site isEqualToString:@"funimation"] && [[ezregex alloc] findMatches:tab.URL pattern:@"account"].count > 0 && ![browserstring isEqualToString:@"Opera"]) {
                             NSString *historyitem = (NSString *)[tab executeJavascript:funimationhistory];
                             if (historyitem) {
                                 DOM = historyitem;
