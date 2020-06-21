@@ -413,7 +413,7 @@
                                         NSString *epdom = [ez findMatch:DOM pattern:currentepisodedomregex rangeatindex:0];
                                         tmpepisode = [ez findMatch:epdom pattern:@"Ep \\d+" rangeatindex:0];
                                         tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"Ep " withString:@""];
-                                         title = regextitle;
+                                        title = regextitle;
                                   }
                                   else {
                                         continue;
@@ -428,6 +428,43 @@
                       continue;
                  }
             }
+			else if ([site isEqualToString:@"hbomax"]) {
+				if ([ez checkMatch:url pattern:@"https:\\/\\/play.hbomax.com\\/(episode|feature)\\/urn\\:hbo\\:(episode|feature):"]) {
+					NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+					if ([url containsString:@"episode"]) {
+						NSString *titlepattern = @"<span style=\"font-family: street2_bold; font-size: 12px; font-style: normal; text-decoration: none; text-transform: uppercase; line-height: 18px; letter-spacing: 0px; color: rgb\\(255, 255, 255\\);\">.*<\\/span><\\/span><\\/div><\\/a><div class=\"default\" style=\"width\\: 313px; top\\: 33px;\">";
+						if ([ez checkMatch:DOM pattern:titlepattern]) {
+							regextitle = [ez findMatch:DOM pattern:titlepattern rangeatindex:0];
+							regextitle = [ez searchreplace:regextitle pattern:@"<span style=\"font-family: street2_bold; font-size: 12px; font-style: normal; text-decoration: none; text-transform: uppercase; line-height: 18px; letter-spacing: 0px; color: rgb\\(255, 255, 255\\);\">"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"<\\/span><\\/span><\\/div><\\/a><div class=\"default\" style=\"width\\: 313px; top\\: 33px;\">"];
+							tmpepisode = [ez findMatch:DOM pattern:@"Ep \\d+" rangeatindex:0];
+							tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"Ep " withString:@""];
+							tmpseason = [ez findMatch:DOM pattern:@"Sn \\d+" rangeatindex:0];
+							tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"Sn " withString:@""];
+							title = regextitle;
+						}
+						else {
+							continue;
+						}
+					}
+					else if ([url containsString:@"feature"]) {
+                    NSString *titlepattern = @"<span style=\"font-family: street2_medium; font-size: 28px; font-style: normal; text-decoration: none; text-transform: none; line-height: 36px; letter-spacing: 0px; color: rgb\\(240, 240, 240\\);\">.*<\\/span><\\/span><\\/div><div class=\"default\" style=\"width: 313px; top: (5[1-9]|[6-9][0-9]|1[01][0-9]|12[0-3])px;\">";
+						if ([ez checkMatch:DOM pattern:titlepattern]) {
+							regextitle = [ez findMatch:DOM pattern:titlepattern rangeatindex:0];
+							regextitle = [ez searchreplace:regextitle pattern:@"<span style=\"font-family: street2_medium; font-size: 28px; font-style: normal; text-decoration: none; text-transform: none; line-height: 36px; letter-spacing: 0px; color: rgb\\(240, 240, 240\\);\">"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"<\\/span><\\/span><\\/div><div class=\"default\" style=\"width: 313px; top: (5[1-9]|[6-9][0-9]|1[01][0-9]|12[0-3])px;\">"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"((G|PG-13|PG|R|TV-14|NC-17) \\| (2.0|Stereo|5.1) \\| (HD|SD).*|(G|PG-13|PG|R|TV-14|NC-17) \\| (HD|SD).*)"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"<span style=\"*.*\">"];
+							tmpepisode = @"1";
+							tmpseason = @"1";
+							title = regextitle;
+						}
+						else {
+							continue;
+						}
+					}
+				}
+			}
             else {
                 continue;
             }
