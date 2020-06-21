@@ -436,7 +436,7 @@
 						if ([ez checkMatch:DOM pattern:titlepattern]) {
 							regextitle = [ez findMatch:DOM pattern:titlepattern rangeatindex:0];
 							regextitle = [ez searchreplace:regextitle pattern:@"<span style=\"font-family: street2_bold; font-size: 12px; font-style: normal; text-decoration: none; text-transform: uppercase; line-height: 18px; letter-spacing: 0px; color: rgb\\(255, 255, 255\\);\">"];
-                        regextitle = [ez searchreplace:regextitle pattern:@"<\\/span><\\/span><\\/div><\\/a><div class=\"default\" style=\"width\\: 313px; top\\: (3[3-9]|4[0-9]|5[01])px;\">"];
+                        	regextitle = [ez searchreplace:regextitle pattern:@"<\\/span><\\/span><\\/div><\\/a><div class=\"default\" style=\"width\\: 313px; top\\: (3[3-9]|4[0-9]|5[01])px;\">"];
 							tmpepisode = [ez findMatch:DOM pattern:@"Ep \\d+" rangeatindex:0];
 							tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"Ep " withString:@""];
 							tmpseason = [ez findMatch:DOM pattern:@"Sn \\d+" rangeatindex:0];
@@ -452,9 +452,9 @@
 						if ([ez checkMatch:DOM pattern:titlepattern]) {
 							regextitle = [ez findMatch:DOM pattern:titlepattern rangeatindex:0];
 							regextitle = [ez searchreplace:regextitle pattern:@"<span style=\"font-family: street2_medium; font-size: 28px; font-style: normal; text-decoration: none; text-transform: none; line-height: 36px; letter-spacing: 0px; color: rgb\\(240, 240, 240\\);\">"];
-                        regextitle = [ez searchreplace:regextitle pattern:@"<\\/span><\\/span><\\/div><div class=\"default\" style=\"width: 313px; top: (5[1-9]|[6-9][0-9]|1[01][0-9]|12[0-3])px;\">"];
-                        regextitle = [ez searchreplace:regextitle pattern:@"((G|PG-13|PG|R|TV-14|NC-17) \\| (2.0|Stereo|5.1) \\| (HD|SD).*|(G|PG-13|PG|R|TV-14|NC-17) \\| (HD|SD).*)"];
-                        regextitle = [ez searchreplace:regextitle pattern:@"<span style=\"*.*\">"];
+                        	regextitle = [ez searchreplace:regextitle pattern:@"<\\/span><\\/span><\\/div><div class=\"default\" style=\"width: 313px; top: (5[1-9]|[6-9][0-9]|1[01][0-9]|12[0-3])px;\">"];
+                        	regextitle = [ez searchreplace:regextitle pattern:@"((G|PG-13|PG|R|TV-14|NC-17) \\| (2.0|Stereo|5.1) \\| (HD|SD).*|(G|PG-13|PG|R|TV-14|NC-17) \\| (HD|SD).*)"];
+                        	regextitle = [ez searchreplace:regextitle pattern:@"<span style=\"*.*\">"];
 							tmpepisode = @"1";
 							tmpseason = @"1";
 							title = regextitle;
