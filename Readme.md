@@ -1,11 +1,11 @@
 # What is detectstream
 This is an open source command line helper tool/Cocoa Framework that detects Web Stream presence in Safari, Webkit, OmniWeb, Chrome, Edge, and Brave Browser using the Scripting framework (other browsers are unsupported as they don't support Applescript)
 
-detectstream only works on macOS 10.11 El Capitan or later. Built against the macOS 10.14 SDK.
+detectstream only works on macOS 10.11 El Capitan or later. Built against the macOS 11 SDK and is Universal Binary 2 compatible for Intel and Apple Silicon.
 
 detectstream is used in [Hachidori](https://github.com/Atelier-Shiori/hachidori) and [MAL Updater OS X](https://github.com/Atelier-Shiori/malupdaterosx-cocoa)
 
-**macOS Mojave Considerations**: Due to security changes, you must specify the key: "NSAppleEventsUsageDescription" with a description on usage and also enable Apple Events under Resource Acces with Hardened Runtime enabled under Capabilities. This is required in order for stream detection and App Notarization to work.
+**macOS Mojave or later Considerations**: Due to security changes, you must specify the key: "NSAppleEventsUsageDescription" with a description on usage and also enable Apple Events under Resource Acces with Hardened Runtime enabled under Capabilities. This is required in order for stream detection and App Notarization to work.
 
 # Support
 detectstream currently supports these sites:
