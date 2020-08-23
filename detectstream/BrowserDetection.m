@@ -22,9 +22,9 @@
 
 @implementation BrowserDetection
 #pragma Constants
-NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|amazon|tubitv|asiancrush|animedigitalnetwork|sonycrackle|adultswim|hbomax|32400)";
+NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|amazon|tubitv|asiancrush|animedigitalnetwork|sonycrackle|adultswim|hbomax|retrocrush|32400)";
 NSString *const requiresScraping = @"(netflix|crunchyroll)";
-NSString *const requiresJavaScript = @"(viewster|amazon|adultswim|hbomax)";
+NSString *const requiresJavaScript = @"(viewster|amazon|adultswim|hbomax|retrocrush)";
 
 #pragma Javascript Constants
 // From https://github.com/matthewdias/media-strategies/blob/master/strategies/viewster.js
@@ -37,6 +37,7 @@ NSString *const amazonplayicon = @"document.querySelector('.playIcon').innerHTML
 NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerHTML";
 NSString *const adultswimepisode = @"document.querySelector('.show-content__seasons').innerHTML";
 NSString *const funimationhistory = @"document.querySelector('.history-item').innerHTML;";
+NSString *const retrocrushtitle = @"document.querySelector('.title-info').innerHTML;";
 
 #pragma Methods
 + (NSArray *)getPages {
@@ -114,6 +115,15 @@ NSString *const funimationhistory = @"document.querySelector('.history-item').in
                         }
                         else if ([site isEqualToString:@"hbomax"]) {
                             NSString *tmpdom = [safari doJavaScript:@"document.documentElement.innerHTML" in:tab];
+                            if (tmpdom) {
+                                DOM = tmpdom;
+                            }
+                            else {
+                                continue;
+                            }
+                        }
+                        else if ([site isEqualToString:@"retrocrush"]){
+                            NSString *tmpdom = [safari doJavaScript:retrocrushtitle in:tab];
                             if (tmpdom) {
                                 DOM = tmpdom;
                             }
@@ -249,6 +259,15 @@ NSString *const funimationhistory = @"document.querySelector('.history-item').in
                             }
                             else if ([site isEqualToString:@"hbomax"]) {
                                 NSString *tmpdom = [tab executeJavascript:@"document.documentElement.innerHTML"];
+                                if (tmpdom) {
+                                    DOM = tmpdom;
+                                }
+                                else {
+                                    continue;
+                                }
+                            }
+                            else if ([site isEqualToString:@"retrocrush"]){
+                                NSString *tmpdom = [tab executeJavascript:retrocrushtitle];
                                 if (tmpdom) {
                                     DOM = tmpdom;
                                 }

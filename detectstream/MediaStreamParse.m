@@ -464,6 +464,19 @@
 						}
 					}
 				}
+            }
+            else if ([site isEqualToString:@"retrocrush"]) {
+            	if ([ez checkMatch:url pattern:@"\\/video\\/.*\\/\\d+.*"]) {
+            		NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+            		regextitle = [ez findMatch:DOM pattern:@"<a href=\"\\/series\\/.*\">.*<\\/a>" rangeatindex:0];
+            		regextitle = [ez searchreplace:regextitle pattern:@"<a href=\"\\/series\\/.*\">"];
+            		regextitle = [regextitle stringByReplacingOccurrencesOfString:@"</a>" withString:@""];
+            		tmpepisode = [ez findMatch:DOM pattern:@"Episode \\d+" rangeatindex:0];
+            		tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"Episode " withString:@""];
+            		tmpseason = [ez findMatch:DOM pattern:@"Season \\d+" rangeatindex:0];
+            		tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"Season " withString:@""];
+            		title = regextitle;
+            	}
 			}
             else {
                 continue;
