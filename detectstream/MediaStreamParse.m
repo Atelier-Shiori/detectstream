@@ -478,6 +478,21 @@
             		title = regextitle;
             	}
 			}
+            else if ([site isEqualToString:@"hulu"]) {
+	            if ([ez checkMatch:url pattern:@"\\/watch\\/.*"]) {
+		            if (m[@"DOM"]) {
+			            NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+			            regextitle = [ez findMatch:DOM pattern:@"<div class=\"ClampedText\" *.+><span>.*<\\/span>" rangeatindex:0];
+			            regextitle = [ez searchreplace:regextitle pattern:@"<div class=\"ClampedText\" *.+><span>"];
+			            regextitle = [regextitle stringByReplacingOccurrencesOfString:@"</span>" withString:@""];
+			            tmpepisode = [ez findMatch:DOM pattern:@"E\\d+" rangeatindex:0];
+			            tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"E" withString:@""];
+			            tmpseason = [ez findMatch:DOM pattern:@"S\\d+" rangeatindex:0];
+			            tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"S" withString:@""];
+			            title = regextitle;
+		            }
+	            }
+            }
             else {
                 continue;
             }
