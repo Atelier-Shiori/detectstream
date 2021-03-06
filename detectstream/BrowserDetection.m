@@ -39,7 +39,7 @@ NSString *const adultswimepisode = @"document.querySelector('.show-content__seas
 NSString *const funimationhistory = @"document.querySelector('.history-item').innerHTML;";
 NSString *const retrocrushtitle = @"document.querySelector('.title-info').innerHTML;";
 NSString *const hulumetadata = @"document.querySelector('.PlayerMetadata__hitRegion').innerHTML";
-
+NSString *const betacrunchyrollmeta = @"document.querySelector('.erc-current-media-info').innerHTML;";
 #pragma Methods
 + (NSArray *)getPages {
     //Initalize Browser Check Object
@@ -87,7 +87,16 @@ NSString *const hulumetadata = @"document.querySelector('.PlayerMetadata__hitReg
                 NSString * site = [browser checkURL:[tab URL]];
                 if (site.length > 0) {
                     NSString * DOM = @"";
-                    if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
+                    if ([site isEqualToString:@"crunchyroll"] && [tab.URL containsString:@"beta"]){
+                        NSString *tmpdom = [safari doJavaScript:betacrunchyrollmeta in:tab];
+                        if (tmpdom) {
+                            DOM = tmpdom;
+                        }
+                        else {
+                            continue;
+                        }
+                    }
+                    else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
                         //Include DOM
                         DOM = [tab source];
                     }
@@ -240,7 +249,16 @@ NSString *const hulumetadata = @"document.querySelector('.PlayerMetadata__hitReg
                 if (site.length > 0) {
                     if (![browserstring isEqualToString:@"Opera"]) {
                         // Note: Opera can't do Javascript execution via Apple Script
-                        if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
+                        if ([site isEqualToString:@"crunchyroll"] && [tab.URL containsString:@"beta"]){
+                            NSString *tmpdom = [tab executeJavascript:betacrunchyrollmeta];
+                            if (tmpdom) {
+                                DOM = tmpdom;
+                            }
+                            else {
+                                continue;
+                            }
+                        }
+                        else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
                             // Get source code using Javascript
                             DOM = (NSString *)[tab executeJavascript:@"document.documentElement.innerHTML"];
                         }
