@@ -40,6 +40,7 @@ NSString *const funimationhistory = @"document.querySelector('.history-item').in
 NSString *const retrocrushtitle = @"document.querySelector('.title-info').innerHTML;";
 NSString *const hulumetadata = @"document.querySelector('.PlayerMetadata__hitRegion').innerHTML";
 NSString *const betacrunchyrollmeta = @"document.querySelector('.erc-current-media-info').innerHTML;";
+NSString *const betacrunchyrollhistory = @"document.querySelector('.history-collection').innerHTML;";
 #pragma Methods
 + (NSArray *)getPages {
     //Initalize Browser Check Object
@@ -88,12 +89,23 @@ NSString *const betacrunchyrollmeta = @"document.querySelector('.erc-current-med
                 if (site.length > 0) {
                     NSString * DOM = @"";
                     if ([site isEqualToString:@"crunchyroll"] && [tab.URL containsString:@"beta"]){
-                        NSString *tmpdom = [safari doJavaScript:betacrunchyrollmeta in:tab];
-                        if (tmpdom) {
-                            DOM = tmpdom;
+                        if ([tab.URL containsString:@"history"]) {
+                            NSString *tmpdom = [safari doJavaScript:betacrunchyrollhistory in:tab];
+                            if (tmpdom) {
+                                DOM = tmpdom;
+                            }
+                            else {
+                                continue;
+                            }
                         }
                         else {
-                            continue;
+                            NSString *tmpdom = [safari doJavaScript:betacrunchyrollmeta in:tab];
+                            if (tmpdom) {
+                                DOM = tmpdom;
+                            }
+                            else {
+                                continue;
+                            }
                         }
                     }
                     else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){

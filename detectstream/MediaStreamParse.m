@@ -40,6 +40,21 @@
                         regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpeptitle withString:@""];
                         title = regextitle;
                     }
+                    else if ([url containsString:@"history"]) {
+                        // Crunchyroll Beta History Page
+                        // Requires Javascript Scraping
+                        NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+                        NSArray *history = [self generateBetaCrunchyrollHistoryQueue:DOM];
+                        if (history.count > 0) {
+                            NSDictionary *historyobject = history[0];
+                            title = historyobject[@"title"];
+                            tmpepisode = historyobject[@"episode"];
+                            tmpseason = historyobject[@"season"];
+                        }
+                        else {
+                            continue;
+                        }
+                    }
                 }
                 else {
                     //Add Regex Arguments Here
@@ -615,6 +630,37 @@
                 episode = [episode stringByReplacingOccurrencesOfString:@"Episode " withString:@""];
             }
             [tmparray addObject:@{@"title":title, @"episode":episode}];
+        }
+        else {
+            continue;
+        }
+    }
+    return tmparray;
+    
+}
+
++ (NSArray *)generateBetaCrunchyrollHistoryQueue:(NSString *)DOM {
+    // Creates an array of titles and episodes from Crunchyroll history (Beta)
+    ezregex *regex = [ezregex new];
+    NSString *tmpdom = [DOM stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    NSMutableArray *tmparray = [NSMutableArray new];
+    NSArray *matches = [regex findMatches:tmpdom pattern:@"<div class=\"erc-my-lists-item\">(.*?)<\\/svg><\\/div><\\/div><\\/div><\\/div><\\/div>"];
+    for (NSString *item in matches) {
+        if ([regex checkMatch:item pattern:@"<small class=\"c-text c-text--xs c-text--heavy c-playable-card__show-title\">(.*?)<\\/small>"]) {
+            NSString *title = [regex findMatch:item pattern:@"<small class=\"c-text c-text--xs c-text--heavy c-playable-card__show-title\">(.*?)<\\/small>" rangeatindex:0];
+            title = [title stringByReplacingOccurrencesOfString:@"<small class=\"c-text c-text--xs c-text--heavy c-playable-card__show-title\">" withString:@""];
+            title = [title stringByReplacingOccurrencesOfString:@"</small>" withString:@""];
+            NSString *episode = @"1";
+            NSString *season = @"1";
+            if ([regex checkMatch:item pattern:@"E\\d+"]) {
+                episode = [regex findMatch:item pattern:@"E\\d+" rangeatindex:0];
+                episode = [episode stringByReplacingOccurrencesOfString:@"E" withString:@""];
+            }
+            if ([regex checkMatch:item pattern:@"S\\d+"]) {
+                season = [regex findMatch:item pattern:@"S\\d+" rangeatindex:0];
+                season = [season stringByReplacingOccurrencesOfString:@"S" withString:@""];
+            }
+            [tmparray addObject:@{@"title":title, @"episode":episode, @"season":season}];
         }
         else {
             continue;
