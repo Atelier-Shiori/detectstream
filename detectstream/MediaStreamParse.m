@@ -325,9 +325,9 @@
                     tmpepisode = [ez findMatch:regextitle pattern:@"\\s(Episode) (\\d+)" rangeatindex:0];
                     regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
                     tmpepisode = [ez searchreplace:tmpepisode pattern:@"\\s(Episode) "];
-                tmpseason  = [ez findMatch:regextitle pattern:@"Season (\\d+)" rangeatindex:0];
-                regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpseason withString:@""];
-                tmpseason  = [ez searchreplace:tmpseason pattern:@"Season "];                    regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\s*.*"];
+                    tmpseason  = [ez findMatch:regextitle pattern:@"Season (\\d+)" rangeatindex:0];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpseason withString:@""];
+                    tmpseason  = [ez searchreplace:tmpseason pattern:@"Season "];                    regextitle = [ez searchreplace:regextitle pattern:@"\\s-\\s*.*"];
                     title = regextitle;
                     if ([ez checkMatch:title pattern:@"VRV"]) {
                         continue;
@@ -525,6 +525,28 @@
 			            title = regextitle;
 		            }
 	            }
+            }
+            else if ([site isEqualToString:@"peacocktv"]){
+                if ([ez checkMatch:url pattern:@"\\/watch\\/playback\\/"]) {
+                    NSString *DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+                    NSError *error;
+                    NSDictionary *metadata = [NSJSONSerialization JSONObjectWithData:[DOM dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+                    if (error) {
+                        continue;
+                    }
+                    else {
+                        regextitle = metadata[@"title"];
+                        tmpepisode = metadata[@"episode"];
+                        tmpseason = [ez findMatch:tmpepisode pattern:@"S\\d+" rangeatindex:0];
+                        tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"S" withString:@""];
+                        tmpepisode = [ez findMatch:tmpepisode pattern:@"E\\d+" rangeatindex:0];
+                        tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"E" withString:@""];
+                        title = regextitle;
+                    }
+                }
+                else {
+                    continue;
+                }
             }
             else {
                 continue;

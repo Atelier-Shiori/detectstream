@@ -10,9 +10,9 @@ detectstream is used in [Hachidori](https://github.com/Atelier-Shiori/hachidori)
 # Support
 detectstream currently supports these sites:
 ## Anime
-Safari, Webkit, Chrome, Edge, Brave Browser, Opera, Roccat Browser and Omniweb: Crunchyroll, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster, Wakanim, Funimation, Netflix, Hidive, VRV,  Tubitv, AsianCrush, AnimeDigitalNetwork, Sony Crackle, Adult Swim, HBO Max, Retrocrush, Hulu. and Plex.tv Media Server (locally and on the web).
+Safari, Webkit, Chrome, Edge, Brave Browser, Opera, Roccat Browser and Omniweb: Crunchyroll, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster, Wakanim, Funimation, Netflix, Hidive, VRV,  Tubitv, AsianCrush, AnimeDigitalNetwork, Sony Crackle, Adult Swim, HBO Max, Retrocrush, Hulu, Peacocktv. and Plex.tv Media Server (locally and on the web).
 
-Chrome, Edge, Brave Browser and Safari only (requires Javascript Execution): Viewster, Amazon Prime Video, Adult Swim, Funimation (detection from user's watch history on the My Account page), HBO Max, Retrocrush, Hulu, Crunchyroll (Beta) (For Safari, you need to have "Enable Javascript from Apple Events" enabled in the [Developer Menu](https://support.apple.com/kb/PH21491). For Google Chrome, View > Developer > Allow JavaScript from Apple Events)
+Chrome, Edge, Brave Browser and Safari only (requires Javascript Execution): Viewster, Amazon Prime Video, Adult Swim, Funimation (detection from user's watch history on the My Account page), HBO Max, Retrocrush, Hulu, Crunchyroll, Peacocktv (For Safari, you need to have "Enable Javascript from Apple Events" enabled in the [Developer Menu](https://support.apple.com/kb/PH21491). For Google Chrome, View > Developer > Allow JavaScript from Apple Events)
 
 Note: Detection does not support non-anime titles
 

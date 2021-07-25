@@ -22,9 +22,9 @@
 
 @implementation BrowserDetection
 #pragma Constants
-NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|amazon|tubitv|asiancrush|animedigitalnetwork|sonycrackle|adultswim|hbomax|retrocrush|hulu|32400)";
+NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|amazon|tubitv|asiancrush|animedigitalnetwork|sonycrackle|adultswim|hbomax|retrocrush|hulu|peacocktv|32400)";
 NSString *const requiresScraping = @"(netflix|crunchyroll)";
-NSString *const requiresJavaScript = @"(viewster|amazon|adultswim|hbomax|retrocrush|hulu)";
+NSString *const requiresJavaScript = @"(viewster|amazon|adultswim|hbomax|retrocrush|hulu|peacocktv)";
 
 #pragma Javascript Constants
 // From https://github.com/matthewdias/media-strategies/blob/master/strategies/viewster.js
@@ -41,6 +41,9 @@ NSString *const retrocrushtitle = @"document.querySelector('.title-info').innerH
 NSString *const hulumetadata = @"document.querySelector('.PlayerMetadata__hitRegion').innerHTML";
 NSString *const betacrunchyrollmeta = @"document.querySelector('.erc-current-media-info').innerHTML;";
 NSString *const betacrunchyrollhistory = @"document.querySelector('.history-collection').innerHTML;";
+NSString *const peacocktitle = @"document.querySelector('.playback-metadata__container-title').innerHTML";
+NSString *const peacockepisode = @"document.querySelector('.playback-metadata__container-episode-metadata-info').innerHTML";
+
 #pragma Methods
 + (NSArray *)getPages {
     //Initalize Browser Check Object
@@ -121,6 +124,16 @@ NSString *const betacrunchyrollhistory = @"document.querySelector('.history-coll
                             NSString *pauseicon = [safari doJavaScript:amazonpauseicon in:tab];
                             if (pauseicon || (playicon && !pauseicon)) {
                                 DOM = [NSString stringWithFormat:@"%@ - %@", [safari doJavaScript:amazontitle in:tab], [safari doJavaScript:amazonsubtitle in:tab]];
+                            }
+                            else {
+                                continue;
+                            }
+                        }
+                        else if ([site isEqualToString:@"peacocktv"] ){
+                            NSString *title = [safari doJavaScript:peacocktitle in:tab];
+                            NSString *episode = [safari doJavaScript:peacockepisode in:tab];
+                            if (title) {
+                                DOM = [NSString stringWithFormat:@"{\"title\":\"%@\",\"episode\":\"%@\",}",title, episode ? episode : @""];
                             }
                             else {
                                 continue;
@@ -277,6 +290,16 @@ NSString *const betacrunchyrollhistory = @"document.querySelector('.history-coll
                         else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
                             if ([site isEqualToString:@"viewster"]){
                                 DOM = [NSString stringWithFormat:@"%@ %@", [tab executeJavascript:viewstertitle], [tab executeJavascript:viewsterepisode]];
+                            }
+                            else if ([site isEqualToString:@"peacocktv"] ){
+                                NSString *title = [tab executeJavascript:peacocktitle];
+                                NSString *episode = [tab executeJavascript:peacockepisode];
+                                if (title) {
+                                    DOM = [NSString stringWithFormat:@"{\"title\":\"%@\",\"episode\":\"%@\",}",title, episode ? episode : @""];
+                                }
+                                else {
+                                    continue;
+                                }
                             }
                             else if ([site isEqualToString:@"amazon"]){
                                 NSString *playicon = [tab executeJavascript:amazonplayicon];
