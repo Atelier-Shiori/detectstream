@@ -37,6 +37,7 @@ NSString *const amazonplayicon = @"document.querySelector('.playIcon').innerHTML
 NSString *const amazonpauseicon = @"document.querySelector('.pausedIcon').innerHTML";
 NSString *const adultswimepisode = @"document.querySelector('.show-content__seasons').innerHTML";
 NSString *const funimationhistory = @"document.querySelector('.history-item').innerHTML;";
+NSString *const funimationnewplayer = @"document.querySelector('.meta-overlay__data-block--title').innerHTML + ' | ' + document.querySelector('.meta-overlay__data-block--episode-and-season').innerHTML;";
 NSString *const retrocrushtitle = @"document.querySelector('.title-info').innerHTML;";
 NSString *const hulumetadata = @"document.querySelector('.PlayerMetadata__hitRegion').innerHTML";
 NSString *const betacrunchyrollmeta = @"document.querySelector('.erc-current-media-info').innerHTML;";
@@ -180,6 +181,16 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                         NSString *historyitem = [safari doJavaScript:funimationhistory in:tab];
                         if (historyitem) {
                             DOM = historyitem;
+                            site = @"funimation";
+                        }
+                        else {
+                            continue;
+                        }
+                    }
+                    else if ([site isEqualToString:@"funimation"] && [[ezregex alloc] findMatches:tab.URL pattern:@"v\\/.*\\/.*"].count > 0) {
+                        NSString *metadata = [safari doJavaScript:funimationnewplayer in:tab];
+                        if (metadata) {
+                            DOM = metadata;
                             site = @"funimation";
                         }
                         else {
@@ -352,6 +363,16 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                             NSString *historyitem = (NSString *)[tab executeJavascript:funimationhistory];
                             if (historyitem) {
                                 DOM = historyitem;
+                                site = @"funimation";
+                            }
+                            else {
+                                continue;
+                            }
+                        }
+                        else if ([site isEqualToString:@"funimation"] && [[ezregex alloc] findMatches:tab.URL pattern:@"v\\/.*\\/.*"].count > 0 && ![browserstring isEqualToString:@"Opera"]) {
+                            NSString *metadata = (NSString *)[tab executeJavascript:funimationnewplayer];
+                            if (metadata) {
+                                DOM = metadata;
                                 site = @"funimation";
                             }
                             else {

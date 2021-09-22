@@ -152,6 +152,16 @@
 	                tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"Season "  withString:@""];
 	                title = [ez searchreplace:regextitle pattern:@"Season \\d+ Episode \\d+"];
                 }
+                else if ([ez checkMatch:url pattern:@"v\\/.*\\/.*"]) {
+                    NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+                    regextitle = [ez findMatch:DOM pattern:@".* \\|" rangeatindex:0];
+                    regextitle = [regextitle stringByReplacingOccurrencesOfString:@" |" withString:@""];
+                    tmpepisode = [ez findMatch:DOM pattern:@"Episode\\n\\s+\\d+" rangeatindex:0];
+                    tmpepisode = [ez searchreplace:tmpepisode pattern:@"Episode\\n\\s+"];
+                    tmpseason = [ez findMatch:DOM pattern:@"Season\\n\\s+\\d+" rangeatindex:0];
+                    tmpseason = [ez searchreplace:tmpseason pattern:@"Season\\n\\s+"];
+                    title = regextitle;
+                }
                 else if ([url.lowercaseString containsString:@"/account/"]) {
 	                NSString * DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
 	                regextitle = [ez findMatch:DOM pattern:@"<a href=\"\\/shows\\/.*\\/.*\\/?qid=\">.*<\\/a>" rangeatindex:0];
@@ -216,7 +226,7 @@
                         NSArray *episodes = season[@"episodes"];
                         for (NSUInteger e = 0; e < [episodes count]; e++) {
                             NSDictionary * episode = episodes[e];
-                            if (![videoid isEqualTo:[NSString stringWithFormat:@"%@", episode[@"id"]]]) {
+                            if (![videoid isEqualToString:[NSString stringWithFormat:@"%@", episode[@"id"]]]) {
                                 continue;
                             }
                             else{
