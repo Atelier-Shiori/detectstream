@@ -22,7 +22,7 @@
 
 @implementation BrowserDetection
 #pragma Constants
-NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|amazon|tubitv|asiancrush|animedigitalnetwork|sonycrackle|adultswim|hbomax|retrocrush|hulu|peacocktv|32400)";
+NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|amazon|tubitv|asiancrush|animedigitalnetwork|sonycrackle|adultswim|hbomax|retrocrush|hulu|peacocktv|youtube|32400)";
 NSString *const requiresScraping = @"(netflix|crunchyroll)";
 NSString *const requiresJavaScript = @"(viewster|amazon|adultswim|hbomax|retrocrush|hulu|peacocktv)";
 

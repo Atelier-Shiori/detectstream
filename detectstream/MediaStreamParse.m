@@ -259,6 +259,18 @@
                     continue;
                 }
             }
+            else if ([site isEqualToString:@"youtube"]){
+                if ([ez checkMatch:url pattern:@"\\/watch\\?v="]) {
+                    // Check if there is a usable episode number
+                        regextitle = [ez searchreplace:regextitle pattern:@" - YouTube"];
+                        // Just return title, let Anitomy pharse the rest
+                        title = regextitle;
+                        tmpepisode = @"0";
+                }
+                else {
+                    continue;
+                }
+            }
             else if ([site isEqualToString:@"viewster"]) {
                 if ([ez checkMatch:url pattern:@"\\/serie\\/\\d+-\\d+-\\d+\\/*.*\\/"]) {
                     //Get the Document Object Model
