@@ -32,8 +32,9 @@
                         NSString *DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
                         NSString *metastring = [ez findMatch:DOM pattern:@"E\\d+ - .+<\\/h2>" rangeatindex:0];
                         metastring = [metastring stringByReplacingOccurrencesOfString:@"</h2>" withString:@""];
-                        tmpepisode = [ez findMatch:DOM pattern:@"E\\d+" rangeatindex:0];
+                        tmpepisode = [ez findMatch:DOM pattern:@"E\\d+ -" rangeatindex:0];
                         tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"E" withString:@""];
+                        tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@" -" withString:@""];
                         NSString *tmpeptitle = [ez findMatch:metastring pattern:@"- .+" rangeatindex:0];
                         tmpeptitle = [tmpeptitle stringByReplacingOccurrencesOfString:@"- " withString:@""];
                         regextitle = [regextitle stringByReplacingOccurrencesOfString:@" - Watch on Crunchyroll" withString:@""];
