@@ -41,6 +41,7 @@ NSString *const funimationnewplayer = @"document.querySelector('.meta-overlay__d
 NSString *const retrocrushtitle = @"document.querySelector('.title-info').innerHTML;";
 NSString *const hulumetadata = @"document.querySelector('.PlayerMetadata__hitRegion').innerHTML";
 NSString *const betacrunchyrollmeta = @"document.querySelector('.erc-current-media-info').innerHTML;";
+NSString *const betacrunchyrolltitle = @"document.querySelector('.show-title-link').innerHTML;";
 NSString *const betacrunchyrollhistory = @"document.querySelector('.history-collection').innerHTML;";
 NSString *const peacocktitle = @"document.querySelector('.playback-metadata__container-title').innerHTML";
 NSString *const peacockepisode = @"document.querySelector('.playback-metadata__container-episode-metadata-info').innerHTML";
@@ -91,12 +92,12 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                 SafariTab * tab = tabs[t];
                 NSString * site = [browser checkURL:[tab URL]];
                 if (site.length > 0) {
-                    NSString * DOM = @"";
+                    NSMutableString * DOM = [NSMutableString new];
                     if ([site isEqualToString:@"crunchyroll"] && [tab.URL containsString:@"beta"]){
                         if ([tab.URL containsString:@"history"]) {
                             NSString *tmpdom = [safari doJavaScript:betacrunchyrollhistory in:tab];
                             if (tmpdom) {
-                                DOM = tmpdom;
+                                [DOM appendString:tmpdom];
                             }
                             else {
                                 continue;
@@ -105,7 +106,8 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                         else {
                             NSString *tmpdom = [safari doJavaScript:betacrunchyrollmeta in:tab];
                             if (tmpdom) {
-                                DOM = tmpdom;
+                                [DOM appendString:tmpdom];
+                                [DOM appendString:[NSString stringWithFormat:@"<title>%@</title>",[safari doJavaScript:betacrunchyrolltitle in:tab]]];
                             }
                             else {
                                 continue;
@@ -114,17 +116,17 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                     }
                     else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
                         //Include DOM
-                        DOM = [tab source];
+                        [DOM appendString:[tab source]];
                     }
                     else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
                         if ([site isEqualToString:@"viewster"]){
-                            DOM = [NSString stringWithFormat:@"%@ %@", [safari doJavaScript:viewstertitle in:tab], [safari doJavaScript:viewsterepisode in:tab]];
+                            [DOM appendString:[NSString stringWithFormat:@"%@ %@", [safari doJavaScript:viewstertitle in:tab], [safari doJavaScript:viewsterepisode in:tab]]];
                         }
                         else if ([site isEqualToString:@"amazon"] ){
                             NSString *playicon = [safari doJavaScript:amazonplayicon in:tab];
                             NSString *pauseicon = [safari doJavaScript:amazonpauseicon in:tab];
                             if (pauseicon || (playicon && !pauseicon)) {
-                                DOM = [NSString stringWithFormat:@"%@ - %@", [safari doJavaScript:amazontitle in:tab], [safari doJavaScript:amazonsubtitle in:tab]];
+                                [DOM appendString:[NSString stringWithFormat:@"%@ - %@", [safari doJavaScript:amazontitle in:tab], [safari doJavaScript:amazonsubtitle in:tab]]];
                             }
                             else {
                                 continue;
@@ -134,7 +136,7 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                             NSString *title = [safari doJavaScript:peacocktitle in:tab];
                             NSString *episode = [safari doJavaScript:peacockepisode in:tab];
                             if (title) {
-                                DOM = [NSString stringWithFormat:@"{\"title\":\"%@\",\"episode\":\"%@\",}",title, episode ? episode : @""];
+                                [DOM appendString:[NSString stringWithFormat:@"{\"title\":\"%@\",\"episode\":\"%@\",}",title, episode ? episode : @""]];
                             }
                             else {
                                 continue;
@@ -143,7 +145,7 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                         else if ([site isEqualToString:@"adultswim"]) {
                             NSString *seasonidentifier = [safari doJavaScript:adultswimepisode in:tab];
                             if (seasonidentifier) {
-                                DOM = seasonidentifier;
+                                [DOM appendString:seasonidentifier];
                             }
                             else {
                                 continue;
@@ -152,7 +154,7 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                         else if ([site isEqualToString:@"hbomax"]) {
                             NSString *tmpdom = [safari doJavaScript:@"document.documentElement.innerHTML" in:tab];
                             if (tmpdom) {
-                                DOM = tmpdom;
+                                [DOM appendString:tmpdom];
                             }
                             else {
                                 continue;
@@ -161,7 +163,7 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                         else if ([site isEqualToString:@"retrocrush"]){
                             NSString *tmpdom = [safari doJavaScript:retrocrushtitle in:tab];
                             if (tmpdom) {
-                                DOM = tmpdom;
+                                [DOM appendString:tmpdom];
                             }
                             else {
                                 continue;
@@ -170,7 +172,7 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                         else if ([site isEqualToString:@"hulu"]){
                             NSString *tmpdom = [safari doJavaScript:hulumetadata in:tab];
                             if (tmpdom) {
-                                DOM = tmpdom;
+                                [DOM appendString:tmpdom];
                             }
                             else {
                                 continue;
@@ -180,7 +182,7 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                     else if ([site isEqualToString:@"funimation"] && [[ezregex alloc] findMatches:tab.URL pattern:@"account"].count > 0) {
                         NSString *historyitem = [safari doJavaScript:funimationhistory in:tab];
                         if (historyitem) {
-                            DOM = historyitem;
+                            [DOM appendString:historyitem];
                             site = @"funimation";
                         }
                         else {
@@ -190,15 +192,12 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                     else if ([site isEqualToString:@"funimation"] && [[ezregex alloc] findMatches:tab.URL pattern:@"v\\/.*\\/.*"].count > 0) {
                         NSString *metadata = [safari doJavaScript:funimationnewplayer in:tab];
                         if (metadata) {
-                            DOM = metadata;
+                            [DOM appendString:metadata];
                             site = @"funimation";
                         }
                         else {
                             continue;
                         }
-                    }
-                    else{
-                        DOM = @"";
                     }
                     NSDictionary * page = @{@"title": [tab name], @"url": [tab URL], @"browser": browserstring, @"site": site, @"DOM": DOM};
                     [pages addObject:page];
@@ -281,14 +280,15 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
             for (NSUInteger t = 0 ; t < [tabs count]; t++) {
                 GoogleChromeTab * tab = tabs[t];
                 NSString * site  = [browser checkURL:[tab URL]];
-                NSString * DOM = @"";
+                NSMutableString * DOM = [NSMutableString new];
                 if (site.length > 0) {
                     if (![browserstring isEqualToString:@"Opera"]) {
                         // Note: Opera can't do Javascript execution via Apple Script
                         if ([site isEqualToString:@"crunchyroll"] && [tab.URL containsString:@"beta"]){
                             NSString *tmpdom = [tab executeJavascript:betacrunchyrollmeta];
                             if (tmpdom) {
-                                DOM = tmpdom;
+                                [DOM appendString:tmpdom];
+                                [DOM appendString:[NSString stringWithFormat:@"<title>%@</title>",[tab executeJavascript:betacrunchyrolltitle]]];
                             }
                             else {
                                 continue;
@@ -296,17 +296,17 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                         }
                         else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
                             // Get source code using Javascript
-                            DOM = (NSString *)[tab executeJavascript:@"document.documentElement.innerHTML"];
+                            [DOM appendString:(NSString *)[tab executeJavascript:@"document.documentElement.innerHTML"]];
                         }
                         else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
                             if ([site isEqualToString:@"viewster"]){
-                                DOM = [NSString stringWithFormat:@"%@ %@", [tab executeJavascript:viewstertitle], [tab executeJavascript:viewsterepisode]];
+                                [DOM appendString:[NSString stringWithFormat:@"%@ %@", [tab executeJavascript:viewstertitle], [tab executeJavascript:viewsterepisode]]];
                             }
                             else if ([site isEqualToString:@"peacocktv"] ){
                                 NSString *title = [tab executeJavascript:peacocktitle];
                                 NSString *episode = [tab executeJavascript:peacockepisode];
                                 if (title) {
-                                    DOM = [NSString stringWithFormat:@"{\"title\":\"%@\",\"episode\":\"%@\",}",title, episode ? episode : @""];
+                                    [DOM appendString:[NSString stringWithFormat:@"{\"title\":\"%@\",\"episode\":\"%@\",}",title, episode ? episode : @""]];
                                 }
                                 else {
                                     continue;
@@ -316,7 +316,7 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                                 NSString *playicon = [tab executeJavascript:amazonplayicon];
                                 NSString *pauseicon = [tab executeJavascript:amazonpauseicon];
                                 if (pauseicon || (playicon && !pauseicon)) {
-                                    DOM = [NSString stringWithFormat:@"%@ - %@", [tab executeJavascript:amazontitle], [tab executeJavascript:amazonsubtitle]];
+                                    [DOM appendString:[NSString stringWithFormat:@"%@ - %@", [tab executeJavascript:amazontitle], [tab executeJavascript:amazonsubtitle]]];
                                 }
                                 else {
                                     continue;
@@ -325,7 +325,7 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                             else if ([site isEqualToString:@"adultswim"]) {
                                 NSString *seasonidentifier = [tab executeJavascript:adultswimepisode];
                                 if (seasonidentifier) {
-                                    DOM = seasonidentifier;
+                                    [DOM appendString:seasonidentifier];
                                 }
                                 else {
                                     continue;
@@ -334,7 +334,7 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                             else if ([site isEqualToString:@"hbomax"]) {
                                 NSString *tmpdom = [tab executeJavascript:@"document.documentElement.innerHTML"];
                                 if (tmpdom) {
-                                    DOM = tmpdom;
+                                    [DOM appendString:tmpdom];
                                 }
                                 else {
                                     continue;
@@ -343,7 +343,7 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                             else if ([site isEqualToString:@"retrocrush"]){
                                 NSString *tmpdom = [tab executeJavascript:retrocrushtitle];
                                 if (tmpdom) {
-                                    DOM = tmpdom;
+                                    [DOM appendString:tmpdom];
                                 }
                                 else {
                                     continue;
@@ -352,7 +352,7 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                             else if ([site isEqualToString:@"hulu"]){
                                 NSString *tmpdom = [tab executeJavascript:hulumetadata];
                                 if (tmpdom) {
-                                    DOM = tmpdom;
+                                    [DOM appendString:tmpdom];
                                 }
                                 else {
                                     continue;
@@ -362,7 +362,7 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                         else if ([site isEqualToString:@"funimation"] && [[ezregex alloc] findMatches:tab.URL pattern:@"account"].count > 0 && ![browserstring isEqualToString:@"Opera"]) {
                             NSString *historyitem = (NSString *)[tab executeJavascript:funimationhistory];
                             if (historyitem) {
-                                DOM = historyitem;
+                                [DOM appendString:historyitem];
                                 site = @"funimation";
                             }
                             else {
@@ -372,7 +372,7 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                         else if ([site isEqualToString:@"funimation"] && [[ezregex alloc] findMatches:tab.URL pattern:@"v\\/.*\\/.*"].count > 0 && ![browserstring isEqualToString:@"Opera"]) {
                             NSString *metadata = (NSString *)[tab executeJavascript:funimationnewplayer];
                             if (metadata) {
-                                DOM = metadata;
+                                [DOM appendString:metadata];
                                 site = @"funimation";
                             }
                             else {

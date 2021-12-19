@@ -35,10 +35,9 @@
                         tmpepisode = [ez findMatch:DOM pattern:@"E\\d+ -" rangeatindex:0];
                         tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"E" withString:@""];
                         tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@" -" withString:@""];
-                        NSString *tmpeptitle = [ez findMatch:metastring pattern:@"- .+" rangeatindex:0];
-                        tmpeptitle = [tmpeptitle stringByReplacingOccurrencesOfString:@"- " withString:@""];
-                        regextitle = [regextitle stringByReplacingOccurrencesOfString:@" - Watch on Crunchyroll" withString:@""];
-                        regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpeptitle withString:@""];
+                        regextitle = [ez findMatch:DOM pattern:@"<title><h4 class=\".*\">.*<\\/h4><\\/title>" rangeatindex:0];
+                        regextitle = [ez searchreplace:regextitle pattern:@"<title><h4 class=\".*\">"];
+                        regextitle = [ez searchreplace:regextitle pattern:@"<\\/h4><\\/title>"];
                         title = regextitle;
                     }
                     else if ([url containsString:@"history"]) {
