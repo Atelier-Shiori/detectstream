@@ -41,8 +41,7 @@ NSString *const funimationnewplayer = @"document.querySelector('.meta-overlay__d
 NSString *const retrocrushtitle = @"document.querySelector('.title-info').innerHTML;";
 NSString *const hulumetadata = @"document.querySelector('.PlayerMetadata__hitRegion').innerHTML";
 NSString *const betacrunchyrollmeta = @"document.querySelector('.erc-current-media-info').innerHTML;";
-NSString *const betacrunchyrolltitle = @"document.querySelector('.show-title-link').innerHTML;";
-NSString *const betacrunchyrollhistory = @"document.querySelector('.history-collection').innerHTML;";
+NSString *const betacrunchyrollhistory = @"document.querySelector('.c-playable-card').innerHTML;";
 NSString *const peacocktitle = @"document.querySelector('.playback-metadata__container-title').innerHTML";
 NSString *const peacockepisode = @"document.querySelector('.playback-metadata__container-episode-metadata-info').innerHTML";
 
@@ -107,7 +106,6 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                             NSString *tmpdom = [safari doJavaScript:betacrunchyrollmeta in:tab];
                             if (tmpdom) {
                                 [DOM appendString:tmpdom];
-                                [DOM appendString:[NSString stringWithFormat:@"<title>%@</title>",[safari doJavaScript:betacrunchyrolltitle in:tab]]];
                             }
                             else {
                                 continue;
@@ -285,13 +283,23 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                     if (![browserstring isEqualToString:@"Opera"]) {
                         // Note: Opera can't do Javascript execution via Apple Script
                         if ([site isEqualToString:@"crunchyroll"] && [tab.URL containsString:@"beta"]){
-                            NSString *tmpdom = [tab executeJavascript:betacrunchyrollmeta];
-                            if (tmpdom) {
-                                [DOM appendString:tmpdom];
-                                [DOM appendString:[NSString stringWithFormat:@"<title>%@</title>",[tab executeJavascript:betacrunchyrolltitle]]];
+                            if ([tab.URL containsString:@"history"]) {
+                                NSString *tmpdom = [tab executeJavascript:betacrunchyrollhistory];
+                                if (tmpdom) {
+                                    [DOM appendString:tmpdom];
+                                }
+                                else {
+                                    continue;
+                                }
                             }
                             else {
-                                continue;
+                            NSString *tmpdom = [tab executeJavascript:betacrunchyrollmeta];
+                                if (tmpdom) {
+                                    [DOM appendString:tmpdom];
+                                }
+                                else {
+                                    continue;
+                                }
                             }
                         }
                         else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
