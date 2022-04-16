@@ -321,15 +321,16 @@
                 //Add Regex Arguments for hidive
                 if ([ez checkMatch:url pattern:@"(stream\\/*.*\\/s\\d+e\\d+|stream\\/*.*\\/\\d+)"]) {
                     // Clean title
-                    regextitle = [ez searchreplace:regextitle pattern:@"(Stream |\\sof| on HIDIVE)"];
+                    regextitle = [ez searchreplace:regextitle pattern:@"(Stream | on HIDIVE)"];
                     if ([ez checkMatch:regextitle pattern:@"Episode \\d+"]) {
                         // Regular TV series
                         tmpseason = [ez findMatch:regextitle pattern:@"Season \\d+" rangeatindex:0];
                         regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpseason withString:@""];
                         tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"Season " withString:@""];
-                        tmpepisode = [ez findMatch:regextitle pattern:@"Episode \\d+" rangeatindex:0];
+                        tmpepisode = [ez findMatch:regextitle pattern:@"Episode \\d+ of" rangeatindex:0];
                         regextitle = [regextitle stringByReplacingOccurrencesOfString:tmpepisode withString:@""];
                         tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"Episode " withString:@""];
+                        tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@" of" withString:@""];
                         title = [regextitle stringByReplacingOccurrencesOfString:@"-" withString:@""];
                     }
                     else {
