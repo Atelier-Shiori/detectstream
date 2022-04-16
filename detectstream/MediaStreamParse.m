@@ -37,9 +37,9 @@
                         tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@" -" withString:@""];
                     
                         NSString *tmpeptitle = [ez findMatch:DOM pattern:@"<h1 class=\"c-heading c-heading--xs c-heading--family-type-one title\">.*<\\/h1><div class=\"c-meta-tags media-tags\">" rangeatindex:0];
-                    tmpeptitle = [tmpeptitle stringByReplacingOccurrencesOfString:@"<h1 class=\"c-heading c-heading--xs c-heading--family-type-one title\">" withString:@""];
-                    tmpeptitle = [tmpeptitle stringByReplacingOccurrencesOfString:@"</h1><div class=\"c-meta-tags media-tags\">" withString:@""];
-                    tmpeptitle = [ez searchreplace:tmpeptitle pattern:@"E\\d+ - "];
+                        tmpeptitle = [tmpeptitle stringByReplacingOccurrencesOfString:@"<h1 class=\"c-heading c-heading--xs c-heading--family-type-one title\">" withString:@""];
+                        tmpeptitle = [tmpeptitle stringByReplacingOccurrencesOfString:@"</h1><div class=\"c-meta-tags media-tags\">" withString:@""];
+                        tmpeptitle = [ez searchreplace:tmpeptitle pattern:@"E\\d+ - "];
                         tmpeptitle = [tmpeptitle stringByReplacingOccurrencesOfString:@"- " withString:@""];
                         regextitle = [regextitle stringByReplacingOccurrencesOfString:@" - Watch on Crunchyroll" withString:@""];
                         if ([ez findMatches:regextitle pattern:tmpeptitle].count > 0) {
