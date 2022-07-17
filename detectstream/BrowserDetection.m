@@ -22,9 +22,9 @@
 
 @implementation BrowserDetection
 #pragma Constants
-NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|amazon|tubitv|asiancrush|animedigitalnetwork|sonycrackle|adultswim|hbomax|retrocrush|hulu|peacocktv|youtube|32400)";
+NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|amazon|tubitv|asiancrush|animedigitalnetwork|sonycrackle|adultswim|hbomax|retrocrush|hulu|peacocktv|disneyplus|youtube|32400)";
 NSString *const requiresScraping = @"(netflix|crunchyroll)";
-NSString *const requiresJavaScript = @"(viewster|amazon|adultswim|hbomax|retrocrush|hulu|peacocktv)";
+NSString *const requiresJavaScript = @"(viewster|amazon|adultswim|hbomax|retrocrush|hulu|peacocktv|disneyplus)";
 
 #pragma Javascript Constants
 // From https://github.com/matthewdias/media-strategies/blob/master/strategies/viewster.js
@@ -44,6 +44,8 @@ NSString *const betacrunchyrollmeta = @"document.querySelector('.erc-current-med
 NSString *const betacrunchyrollhistory = @"document.querySelector('.c-playable-card').innerHTML;";
 NSString *const peacocktitle = @"document.querySelector('.playback-metadata__container-title').innerHTML";
 NSString *const peacockepisode = @"document.querySelector('.playback-metadata__container-episode-metadata-info').innerHTML";
+NSString *const disneyplustitle = @"document.querySelector('.title-field').innerHTML";
+NSString *const disneyplusmeta = @"document.querySelector('.subtitle-field').innerHTML";
 
 #pragma Methods
 + (NSArray *)getPages {
@@ -171,6 +173,16 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                             NSString *tmpdom = [safari doJavaScript:hulumetadata in:tab];
                             if (tmpdom) {
                                 [DOM appendString:tmpdom];
+                            }
+                            else {
+                                continue;
+                            }
+                        }
+                        else if ([site isEqualToString:@"disneyplus"]) {
+                            NSString *title = [safari doJavaScript:disneyplustitle in:tab];
+                            NSString *metadata = [safari doJavaScript:disneyplusmeta in:tab];
+                            if (title) {
+                                [DOM appendString:[NSString stringWithFormat:@"{\"title\":\"%@\",\"meta\":\"%@\",}",title, metadata ? metadata : @""]];
                             }
                             else {
                                 continue;
@@ -361,6 +373,16 @@ NSString *const peacockepisode = @"document.querySelector('.playback-metadata__c
                                 NSString *tmpdom = [tab executeJavascript:hulumetadata];
                                 if (tmpdom) {
                                     [DOM appendString:tmpdom];
+                                }
+                                else {
+                                    continue;
+                                }
+                            }
+                            else if ([site isEqualToString:@"disneyplus"]) {
+                                NSString *title = [tab executeJavascript:disneyplustitle];
+                                NSString *metadata = [tab executeJavascript:disneyplusmeta];
+                                if (title) {
+                                    [DOM appendString:[NSString stringWithFormat:@"{\"title\":\"%@\",\"meta\":\"%@\",}",title, metadata ? metadata : @""]];
                                 }
                                 else {
                                     continue;

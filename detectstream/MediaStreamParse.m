@@ -579,6 +579,28 @@
                     continue;
                 }
             }
+            else if ([site isEqualToString:@"disneyplus"]) {
+                if ([ez checkMatch:url pattern:@"\\/video\\/.+"]) {
+                    NSString *DOM = [NSString stringWithFormat:@"%@",m[@"DOM"]];
+                    NSError *error;
+                    NSDictionary *metadata = [NSJSONSerialization JSONObjectWithData:[DOM dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+                    if (error) {
+                        continue;
+                    }
+                    else {
+                        regextitle = metadata[@"title"];
+                        tmpepisode = metadata[@"meta"];
+                        tmpseason = [ez findMatch:tmpepisode pattern:@"S\\d+" rangeatindex:0];
+                        tmpseason = [tmpseason stringByReplacingOccurrencesOfString:@"S" withString:@""];
+                        tmpepisode = [ez findMatch:tmpepisode pattern:@"E\\d+" rangeatindex:0];
+                        tmpepisode = [tmpepisode stringByReplacingOccurrencesOfString:@"E" withString:@""];
+                        title = regextitle;
+                    }
+                }
+                else {
+                    continue;
+                }
+            }
             else {
                 continue;
             }
