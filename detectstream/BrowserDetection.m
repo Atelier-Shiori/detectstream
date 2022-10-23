@@ -24,7 +24,7 @@
 #pragma Constants
 NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|amazon|tubitv|asiancrush|animedigitalnetwork|sonycrackle|adultswim|hbomax|retrocrush|hulu|peacocktv|disneyplus|youtube|32400)";
 NSString *const requiresScraping = @"(netflix|crunchyroll)";
-NSString *const requiresJavaScript = @"(viewster|amazon|adultswim|hbomax|retrocrush|hulu|peacocktv|disneyplus)";
+NSString *const requiresJavaScript = @"(viewster|amazon|adultswim|hbomax|retrocrush|hulu|peacocktv|disneyplus|crunchyroll)";
 
 #pragma Javascript Constants
 // From https://github.com/matthewdias/media-strategies/blob/master/strategies/viewster.js
@@ -41,7 +41,7 @@ NSString *const funimationnewplayer = @"document.querySelector('.meta-overlay__d
 NSString *const retrocrushtitle = @"document.querySelector('.title-info').innerHTML;";
 NSString *const hulumetadata = @"document.querySelector('.PlayerMetadata__hitRegion').innerHTML";
 NSString *const betacrunchyrollmeta = @"document.querySelector('.erc-current-media-info').innerHTML;";
-NSString *const betacrunchyrollhistory = @"document.querySelector('.c-playable-card').innerHTML;";
+NSString *const betacrunchyrollhistory = @"document.querySelector('.erc-history-content').innerHTML;";
 NSString *const peacocktitle = @"document.querySelector('.playback-metadata__container-title').innerHTML";
 NSString *const peacockepisode = @"document.querySelector('.playback-metadata__container-episode-metadata-info').innerHTML";
 NSString *const disneyplustitle = @"document.querySelector('.title-field').innerHTML";
@@ -94,7 +94,7 @@ NSString *const disneyplusmeta = @"document.querySelector('.subtitle-field').inn
                 NSString * site = [browser checkURL:[tab URL]];
                 if (site.length > 0) {
                     NSMutableString * DOM = [NSMutableString new];
-                    if ([site isEqualToString:@"crunchyroll"] && [tab.URL containsString:@"beta"]){
+                    if ([site isEqualToString:@"crunchyroll"]){
                         if ([tab.URL containsString:@"history"]) {
                             NSString *tmpdom = [safari doJavaScript:betacrunchyrollhistory in:tab];
                             if (tmpdom) {
@@ -294,7 +294,7 @@ NSString *const disneyplusmeta = @"document.querySelector('.subtitle-field').inn
                 if (site.length > 0) {
                     if (![browserstring isEqualToString:@"Opera"]) {
                         // Note: Opera can't do Javascript execution via Apple Script
-                        if ([site isEqualToString:@"crunchyroll"] && [tab.URL containsString:@"beta"]){
+                        if ([site isEqualToString:@"crunchyroll"]){
                             if ([tab.URL containsString:@"history"]) {
                                 NSString *tmpdom = [tab executeJavascript:betacrunchyrollhistory];
                                 if (tmpdom) {
