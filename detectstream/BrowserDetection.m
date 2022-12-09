@@ -23,8 +23,8 @@
 @implementation BrowserDetection
 #pragma Constants
 NSString *const supportedSites = @"(crunchyroll|animelab|animenewsnetwork|viz|netflix|plex|viewster|funimation|wakanim|myanimelist|hidive|vrv|amazon|tubitv|asiancrush|animedigitalnetwork|sonycrackle|adultswim|hbomax|retrocrush|hulu|peacocktv|disneyplus|youtube|32400)";
-NSString *const requiresScraping = @"(netflix|crunchyroll)";
-NSString *const requiresJavaScript = @"(viewster|amazon|adultswim|hbomax|retrocrush|hulu|peacocktv|disneyplus|crunchyroll)";
+NSString *const requiresScraping = @"(crunchyroll)";
+NSString *const requiresJavaScript = @"(viewster|amazon|adultswim|hbomax|retrocrush|hulu|peacocktv|disneyplus|crunchyroll|netflix)";
 
 #pragma Javascript Constants
 // From https://github.com/matthewdias/media-strategies/blob/master/strategies/viewster.js
@@ -46,7 +46,11 @@ NSString *const peacocktitle = @"document.querySelector('.playback-metadata__con
 NSString *const peacockepisode = @"document.querySelector('.playback-metadata__container-episode-metadata-info').innerHTML";
 NSString *const disneyplustitle = @"document.querySelector('.title-field').innerHTML";
 NSString *const disneyplusmeta = @"document.querySelector('.subtitle-field').innerHTML";
-
+NSString *const netflixcreaterequest = @"var request = new XMLHttpRequest();";
+NSString *const netflixrequestfunctions = @"request.open('GET', 'https://www.netflix.com/api/shakti/mre/viewingactivity', true);request.onload = function () {    if (request.status >= 200 && request.status < 400) {        console.log(this.response);    }}";
+NSString *const netflixmetadatafunctions = @"request.open('GET', 'https://www.netflix.com/api/shakti/mre/metadata?movieid=(id)', true);request.onload = function () {    if (request.status >= 200 && request.status < 400) {        console.log(this.response);    }}";
+NSString *const netflixdorequest = @"request.send();";
+NSString *const netflixgetresponse = @"request.response;";
 #pragma Methods
 + (NSArray *)getPages {
     //Initalize Browser Check Object
@@ -155,6 +159,24 @@ NSString *const disneyplusmeta = @"document.querySelector('.subtitle-field').inn
                             NSString *tmpdom = [safari doJavaScript:@"document.documentElement.innerHTML" in:tab];
                             if (tmpdom) {
                                 [DOM appendString:tmpdom];
+                            }
+                            else {
+                                continue;
+                            }
+                        }
+                        else if ([site isEqualToString:@"netflix"] && [[ezregex alloc] findMatches:tab.URL pattern:@"\\/watch\\/\\d+"].count > 0) {
+                            [safari doJavaScript:netflixcreaterequest in:tab];
+                            [safari doJavaScript:netflixrequestfunctions in:tab];
+                            [safari doJavaScript:netflixdorequest in:tab];
+                            sleep(1);
+                            long episodenum = [self getNetflixMovieID:(NSString *)[safari doJavaScript:netflixgetresponse in:tab]];
+                            NSString *njavascript = [netflixmetadatafunctions stringByReplacingOccurrencesOfString:@"(id)" withString:@(episodenum).stringValue];
+                            [safari doJavaScript:njavascript in:tab];
+                            [safari doJavaScript:netflixdorequest in:tab];
+                            sleep(1);
+                            NSString *tmpdom = [safari doJavaScript:netflixgetresponse in:tab];
+                            if (tmpdom) {
+                                [DOM appendString:[self parseMetaData:tmpdom]];
                             }
                             else {
                                 continue;
@@ -389,6 +411,24 @@ NSString *const disneyplusmeta = @"document.querySelector('.subtitle-field').inn
                                 }
                             }
                         }
+                        else if ([site isEqualToString:@"netflix"] && [[ezregex alloc] findMatches:tab.URL pattern:@"\\/watch\\/\\d+"].count > 0) {
+                            [tab executeJavascript:netflixcreaterequest];
+                            [tab executeJavascript:netflixrequestfunctions];
+                            [tab executeJavascript:netflixdorequest];
+                            sleep(1);
+                            long episodenum = [self getNetflixMovieID:(NSString *)[tab executeJavascript:netflixgetresponse]];
+                            NSString *njavascript = [netflixmetadatafunctions stringByReplacingOccurrencesOfString:@"(id)" withString:@(episodenum).stringValue];
+                            [tab executeJavascript:njavascript];
+                            [tab executeJavascript:netflixdorequest];
+                            sleep(1);
+                            NSString *tmpdom = [tab executeJavascript:netflixgetresponse];
+                            if (tmpdom) {
+                                [DOM appendString:[self parseMetaData:tmpdom]];
+                            }
+                            else {
+                                continue;
+                            }
+                        }
                         else if ([site isEqualToString:@"funimation"] && [[ezregex alloc] findMatches:tab.URL pattern:@"account"].count > 0 && ![browserstring isEqualToString:@"Opera"]) {
                             NSString *historyitem = (NSString *)[tab executeJavascript:funimationhistory];
                             if (historyitem) {
@@ -530,4 +570,58 @@ NSString *const disneyplusmeta = @"document.querySelector('.subtitle-field').inn
     return site;
 }
 
++ (long)getNetflixMovieID:(NSString *)viewhistory {
+    NSError *error;
+    NSDictionary *metadata = [NSJSONSerialization JSONObjectWithData:[viewhistory dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+    if (error) {
+        return -1;
+    }
+    else {
+    NSArray *vieweditems = metadata[@"viewedItems"];
+        if (vieweditems.count > 0) {
+            return ((NSNumber *)vieweditems[0][@"movieID"]).longValue;
+        }
+    }
+    return -1;
+}
+
++ (NSString *)parseMetaData:(NSString *)metadatajson {
+    NSMutableDictionary *tmp = [NSMutableDictionary new];
+    NSError *error;
+    NSDictionary *metadata = [NSJSONSerialization JSONObjectWithData:[metadatajson dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+    if (error) {
+        return nil;
+    }
+    else {
+        long currentepisode = ((NSNumber *)metadata[@"video"][@"currentEpisode"]).longValue;
+        NSArray *seasons = metadata[@"video"][@"seasons"];
+        bool finish = false;
+        for (int i=0; i < seasons.count; i++) {
+            NSDictionary *season = seasons[i];
+            for (NSDictionary * episode in season[@"episodes"]) {
+                if (currentepisode == ((NSNumber *)episode[@"episodeId"]).longValue) {
+                    tmp[@"title"] = metadata[@"video"][@"title"];
+                    tmp[@"season"] = season[@"seq"];
+                    tmp[@"episode"] = episode[@"seq"];
+                    finish = true;
+                    break;
+                }
+            }
+            if (finish) {
+                break;
+            }
+        }
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:tmp
+                                                           options:NSJSONWritingPrettyPrinted // Pass 0 if you don't care about the readability of the generated string
+                                                             error:&error];
+
+        if (!jsonData) {
+            NSLog(@"Got an error: %@", error);
+            return nil;
+        } else {
+           return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        }
+    }
+    return nil;
+}
 @end
