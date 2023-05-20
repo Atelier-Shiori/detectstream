@@ -28,6 +28,7 @@
 		918D8BF0210FEE5D002DCD7B /* OmniWeb.h in Headers */ = {isa = PBXBuildFile; fileRef = 91B821151EAF8A0D00C04402 /* OmniWeb.h */; };
 		918D8BF1210FEE5D002DCD7B /* Roccat.h in Headers */ = {isa = PBXBuildFile; fileRef = 91B821161EAF8A0D00C04402 /* Roccat.h */; };
 		918D8BF2210FEE5D002DCD7B /* Safari.h in Headers */ = {isa = PBXBuildFile; fileRef = 91B821171EAF8A0D00C04402 /* Safari.h */; };
+		FF997A552A196DCB00E32F6B /* Orion.h in Headers */ = {isa = PBXBuildFile; fileRef = FF997A542A196DCB00E32F6B /* Orion.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -76,7 +77,7 @@
 		6FB3BBE61A8582C200D3A69C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		8212F75F19F75BFC0029B2F4 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		822DDD801A887BAC003D9464 /* BrowserDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserDetection.h; sourceTree = "<group>"; };
-		822DDD811A887BAC003D9464 /* BrowserDetection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserDetection.m; sourceTree = "<group>"; };
+		822DDD811A887BAC003D9464 /* BrowserDetection.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 5; lastKnownFileType = sourcecode.c.objc; path = BrowserDetection.m; sourceTree = "<group>"; };
 		822DDD831A887CE3003D9464 /* MediaStreamParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaStreamParse.h; sourceTree = "<group>"; };
 		822DDD841A887CE3003D9464 /* MediaStreamParse.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 0; lastKnownFileType = sourcecode.c.objc; path = MediaStreamParse.m; sourceTree = "<group>"; };
 		829FB41219F7308D0026EAC2 /* detectstream */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = detectstream; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,6 +91,7 @@
 		91B821151EAF8A0D00C04402 /* OmniWeb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OmniWeb.h; path = AppleScript/OmniWeb.h; sourceTree = "<group>"; };
 		91B821161EAF8A0D00C04402 /* Roccat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Roccat.h; path = AppleScript/Roccat.h; sourceTree = "<group>"; };
 		91B821171EAF8A0D00C04402 /* Safari.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Safari.h; path = AppleScript/Safari.h; sourceTree = "<group>"; };
+		FF997A542A196DCB00E32F6B /* Orion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Orion.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +138,7 @@
 		8285734919F811FB0004EF95 /* Apple Script */ = {
 			isa = PBXGroup;
 			children = (
+				FF997A542A196DCB00E32F6B /* Orion.h */,
 				91B821141EAF8A0D00C04402 /* Google Chrome.h */,
 				91B821151EAF8A0D00C04402 /* OmniWeb.h */,
 				91B821161EAF8A0D00C04402 /* Roccat.h */,
@@ -206,6 +209,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF997A552A196DCB00E32F6B /* Orion.h in Headers */,
 				918D8BCF210FE9ED002DCD7B /* DetectStreamKit.h in Headers */,
 				918D8BE5210FEAB3002DCD7B /* ezregex.h in Headers */,
 				918D8BF1210FEE5D002DCD7B /* Roccat.h in Headers */,

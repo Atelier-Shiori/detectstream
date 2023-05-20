@@ -1,5 +1,5 @@
 # What is detectstream
-This is an open source Cocoa Framework that detects Web Stream presence in Safari, Webkit, OmniWeb, Chrome, Edge, and Brave Browser using the Scripting framework (other browsers are unsupported as they don't support AppleScript)
+This is an open source Cocoa Framework that detects Web Stream presence in Safari, Webkit, OmniWeb, Orion, Chrome, Edge, and Brave Browser using the Scripting framework (other browsers are unsupported as they don't support AppleScript)
 
 detectstream only works on macOS 10.11 El Capitan or later. Built against the macOS 13 SDK and is Universal Binary 2 compatible for Intel and Apple Silicon.
 
@@ -10,13 +10,11 @@ detectstream is used in [Hachidori](https://github.com/Atelier-Shiori/hachidori)
 # Support
 detectstream currently supports these sites:
 ## Anime
-Safari, Webkit, Chrome, Edge, Brave Browser, Opera, Roccat Browser and Omniweb: Crunchyroll, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster, Wakanim, Funimation, Netflix, Hidive, VRV,  Tubitv, AsianCrush, AnimeDigitalNetwork, Sony Crackle, Adult Swim, HBO Max, Retrocrush, Hulu, Peacocktv, YouTube and Plex.tv Media Server (locally and on the web).
+Safari, Webkit, Orion, Chrome, Edge, Brave Browser, Opera, Roccat Browser and Omniweb: Crunchyroll, AnimeNewsNetwork, AnimeLab, Viz Neon Valley, Viewster, Wakanim, Funimation, Netflix, Hidive, VRV,  Tubitv, AsianCrush, AnimeDigitalNetwork, Sony Crackle, Adult Swim, HBO Max, Retrocrush, Hulu, Peacocktv, YouTube and Plex.tv Media Server (locally and on the web).
 
-Chrome, Edge, Brave Browser and Safari only (requires Javascript Execution): Viewster, Amazon Prime Video, Adult Swim, Funimation (detection from user's watch history on the My Account page), HBO Max, Retrocrush, Hulu, Crunchyroll, Peacocktv, Disney Plus, Netflix (For Safari, you need to have "Enable Javascript from Apple Events" enabled in the [Developer Menu](https://support.apple.com/kb/PH21491). For Google Chrome, View > Developer > Allow JavaScript from Apple Events)
+Chrome, Edge, Brave Browser, Orion, and Safari only (requires Javascript Execution): Viewster, Amazon Prime Video, Adult Swim, Funimation (detection from user's watch history on the My Account page), HBO Max, Retrocrush, Hulu, Crunchyroll, Peacocktv, Disney Plus, Netflix (For Safari, you need to have "Enable Javascript from Apple Events" enabled in the [Developer Menu](https://support.apple.com/kb/PH21491). For Google Chrome, View > Developer > Allow JavaScript from Apple Events)
 
 Note: Detection does not support non-anime titles
-
-Note 2: [Orion](https://browser.kagi.com) support will be added once Javascript support via AppleScript is added.
 
 ## Manga
 Safari, Webkit, Chrome, Edge, Brave Browser, Opera, Roccat Browser and Omniweb: Crunchyroll
