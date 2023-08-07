@@ -522,16 +522,17 @@ NSString *const netflixgetresponse = @"request.response;";
           for (NSUInteger i = 0; i < [windows count]; i++) {
                OrionWindow * window = windows[i];
                SBElementArray * tabs = [window tabs];
-               for (NSUInteger t = 0 ; t < [tabs count]; t++) {
-                    OrionTab * tab = tabs[t];
+                    OrionTab * tab = tabs[0];
                     NSString * site = [browser checkURL:tab.URL];
                     if (site.length > 0) {
                          NSMutableString * DOM = [NSMutableString new];
                          OrionDocument *doc = window.document;
-                         bool isActiveTabInWindow = [window.document.URL isEqualToString:tab.URL];
+                         bool isActiveTabInWindow = true;
                          if ([site isEqualToString:@"crunchyroll"]){
                               if ([tab.URL containsString:@"history"] && isActiveTabInWindow) {
-                                   NSString *tmpdom = [orion doJavaScript:betacrunchyrollhistory in:doc];
+                                   id test = [orion doJavaScript:betacrunchyrollhistory in:doc];
+                                   NSLog(@"%@", test);
+                                   NSString *tmpdom = [self doJavascriptOrion:betacrunchyrollhistory withTOrionTab:tab withOrion:orion];
                                    if (tmpdom) {
                                         [DOM appendString:tmpdom];
                                    }
@@ -541,7 +542,7 @@ NSString *const netflixgetresponse = @"request.response;";
                               }
                               else {
                                    if (isActiveTabInWindow) {
-                                        NSString *tmpdom = [orion doJavaScript:betacrunchyrollmeta in:doc];
+                                        NSString *tmpdom = [self doJavascriptOrion:betacrunchyrollmeta withTOrionTab:tab withOrion:orion];
                                         if (tmpdom) {
                                              [DOM appendString:tmpdom];
                                         }
@@ -557,7 +558,7 @@ NSString *const netflixgetresponse = @"request.response;";
                          else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresScraping]){
                               if (isActiveTabInWindow) {
                                    //Include DOM
-                                   [DOM appendString:[orion doJavaScript:@"document.documentElement.innerHTML" in:doc]];
+                                   [DOM appendString:[self doJavascriptOrion:@"document.documentElement.innerHTML" withTOrionTab:tab withOrion:orion]];
                               }
                               else {
                                    continue;
@@ -567,7 +568,7 @@ NSString *const netflixgetresponse = @"request.response;";
                          else if ([[[ezregex alloc] init] checkMatch:[tab URL] pattern:requiresJavaScript]){
                               if ([site isEqualToString:@"viewster"]){
                                    if (isActiveTabInWindow) {
-                                        [DOM appendString:[NSString stringWithFormat:@"%@ %@", [orion doJavaScript:viewstertitle in:doc], [orion doJavaScript:viewsterepisode in:doc]]];
+                                        [DOM appendString:[NSString stringWithFormat:@"%@ %@", [self doJavascriptOrion:viewstertitle withTOrionTab:tab withOrion:orion], [self doJavascriptOrion:viewsterepisode withTOrionTab:tab withOrion:orion]]];
                                    }
                                    else {
                                         continue;
@@ -578,7 +579,7 @@ NSString *const netflixgetresponse = @"request.response;";
                                         NSString *playicon = [orion doJavaScript:amazonplayicon in:doc];
                                         NSString *pauseicon = [orion doJavaScript:amazonpauseicon in:doc];
                                         if (pauseicon || (playicon && !pauseicon)) {
-                                             [DOM appendString:[NSString stringWithFormat:@"%@ - %@", [orion doJavaScript:amazontitle in:doc], [orion doJavaScript:amazonsubtitle in:doc]]];
+                                             [DOM appendString:[NSString stringWithFormat:@"%@ - %@", [self doJavascriptOrion:amazontitle withTOrionTab:tab withOrion:orion], [self doJavascriptOrion:amazonsubtitle withTOrionTab:tab withOrion:orion]]];
                                         }
                                         else {
                                              continue;
@@ -590,8 +591,8 @@ NSString *const netflixgetresponse = @"request.response;";
                               }
                               else if ([site isEqualToString:@"peacocktv"] ){
                                    if (isActiveTabInWindow) {
-                                        NSString *title = [orion doJavaScript:peacocktitle in:doc];
-                                        NSString *episode = [orion doJavaScript:peacockepisode in:doc];
+                                        NSString *title = [self doJavascriptOrion:peacocktitle withTOrionTab:tab withOrion:orion];
+                                        NSString *episode = [self doJavascriptOrion:peacockepisode withTOrionTab:tab withOrion:orion];
                                         if (title) {
                                              [DOM appendString:[NSString stringWithFormat:@"{\"title\":\"%@\",\"episode\":\"%@\",}",title, episode ? episode : @""]];
                                         }
@@ -605,7 +606,7 @@ NSString *const netflixgetresponse = @"request.response;";
                               }
                               else if ([site isEqualToString:@"adultswim"]) {
                                    if (isActiveTabInWindow) {
-                                        NSString *seasonidentifier = [orion doJavaScript:adultswimepisode in:doc];
+                                        NSString *seasonidentifier = [self doJavascriptOrion:adultswimepisode withTOrionTab:tab withOrion:orion];
                                         if (seasonidentifier) {
                                              [DOM appendString:seasonidentifier];
                                         }
@@ -619,7 +620,7 @@ NSString *const netflixgetresponse = @"request.response;";
                               }
                               else if ([site isEqualToString:@"hbomax"]) {
                                    if (isActiveTabInWindow) {
-                                        NSString *tmpdom = [orion doJavaScript:@"document.documentElement.innerHTML" in:doc];
+                                        NSString *tmpdom = [self doJavascriptOrion:@"document.documentElement.innerHTML" withTOrionTab:tab withOrion:orion];
                                         if (tmpdom) {
                                              [DOM appendString:tmpdom];
                                         }
@@ -633,16 +634,16 @@ NSString *const netflixgetresponse = @"request.response;";
                               }
                               else if ([site isEqualToString:@"netflix"] && [[ezregex alloc] findMatches:tab.URL pattern:@"\\/watch\\/\\d+"].count > 0) {
                                    if (isActiveTabInWindow) {
-                                        [orion doJavaScript:netflixcreaterequest in:doc];
-                                        [orion doJavaScript:netflixrequestfunctions in:doc];
-                                        [orion doJavaScript:netflixdorequest in:doc];
+                                        [self doJavascriptOrion:netflixcreaterequest withTOrionTab:tab withOrion:orion];
+                                        [self doJavascriptOrion:netflixrequestfunctions withTOrionTab:tab withOrion:orion];
+                                        [self doJavascriptOrion:netflixdorequest withTOrionTab:tab withOrion:orion];
                                         sleep(1);
-                                        long episodenum = [self getNetflixMovieID:(NSString *)[orion doJavaScript:netflixgetresponse in:doc]];
+                                        long episodenum = [self getNetflixMovieID:(NSString *)[self doJavascriptOrion:netflixgetresponse withTOrionTab:tab withOrion:orion]];
                                         NSString *njavascript = [netflixmetadatafunctions stringByReplacingOccurrencesOfString:@"(id)" withString:@(episodenum).stringValue];
-                                        [orion doJavaScript:njavascript in:doc];
-                                        [orion doJavaScript:netflixdorequest in:doc];
+                                        [self doJavascriptOrion:njavascript withTOrionTab:tab withOrion:orion];
+                                        [self doJavascriptOrion:netflixdorequest withTOrionTab:tab withOrion:orion];
                                         sleep(1);
-                                        NSString *tmpdom = [orion doJavaScript:netflixgetresponse in:doc];
+                                        NSString *tmpdom = [self doJavascriptOrion:netflixgetresponse withTOrionTab:tab withOrion:orion];
                                         if (tmpdom) {
                                              [DOM appendString:[self parseMetaData:tmpdom]];
                                         }
@@ -656,7 +657,7 @@ NSString *const netflixgetresponse = @"request.response;";
                               }
                               else if ([site isEqualToString:@"retrocrush"]){
                                    if (isActiveTabInWindow) {
-                                        NSString *tmpdom = [orion doJavaScript:retrocrushtitle in:doc];
+                                        NSString *tmpdom = [self doJavascriptOrion:retrocrushtitle withTOrionTab:tab withOrion:orion];
                                         if (tmpdom) {
                                              [DOM appendString:tmpdom];
                                         }
@@ -670,7 +671,7 @@ NSString *const netflixgetresponse = @"request.response;";
                               }
                               else if ([site isEqualToString:@"hulu"]){
                                    if (isActiveTabInWindow) {
-                                        NSString *tmpdom = [orion doJavaScript:hulumetadata in:doc];
+                                        NSString *tmpdom = [self doJavascriptOrion:hulumetadata withTOrionTab:tab withOrion:orion];
                                         if (tmpdom) {
                                              [DOM appendString:tmpdom];
                                         }
@@ -684,8 +685,8 @@ NSString *const netflixgetresponse = @"request.response;";
                               }
                               else if ([site isEqualToString:@"disneyplus"]) {
                                    if (isActiveTabInWindow) {
-                                        NSString *title = [orion doJavaScript:disneyplustitle in:doc];
-                                        NSString *metadata = [orion doJavaScript:disneyplusmeta in:doc];
+                                        NSString *title = [self doJavascriptOrion:disneyplustitle withTOrionTab:tab withOrion:orion];
+                                        NSString *metadata = [self doJavascriptOrion:disneyplusmeta withTOrionTab:tab withOrion:orion];
                                         if (title) {
                                              [DOM appendString:[NSString stringWithFormat:@"{\"title\":\"%@\",\"meta\":\"%@\",}",title, metadata ? metadata : @""]];
                                         }
@@ -700,7 +701,7 @@ NSString *const netflixgetresponse = @"request.response;";
                          }
                          else if ([site isEqualToString:@"funimation"] && [[ezregex alloc] findMatches:tab.URL pattern:@"account"].count > 0) {
                               if (isActiveTabInWindow) {
-                                   NSString *historyitem = [orion doJavaScript:funimationhistory in:doc];
+                                   NSString *historyitem = [self doJavascriptOrion:funimationhistory withTOrionTab:tab withOrion:orion];
                                    if (historyitem) {
                                         [DOM appendString:historyitem];
                                         site = @"funimation";
@@ -715,7 +716,7 @@ NSString *const netflixgetresponse = @"request.response;";
                          }
                          else if ([site isEqualToString:@"funimation"] && [[ezregex alloc] findMatches:tab.URL pattern:@"v\\/.*\\/.*"].count > 0) {
                               if (isActiveTabInWindow) {
-                                   NSString *metadata = [orion doJavaScript:funimationnewplayer in:doc];
+                                   NSString *metadata = [self doJavascriptOrion:funimationnewplayer withTOrionTab:tab withOrion:orion];
                                    if (metadata) {
                                         [DOM appendString:metadata];
                                         site = @"funimation";
@@ -736,7 +737,6 @@ NSString *const netflixgetresponse = @"request.response;";
                     }
                     
                }
-          }
      }
     // Check to see Roccat is running. If so, add tab's title and url to the array
     if ([browser checkIdentifier:@"org.Runecats.Roccat"]) {
@@ -849,5 +849,9 @@ NSString *const netflixgetresponse = @"request.response;";
         }
     }
     return nil;
+}
+
++ (NSString *)doJavascriptOrion:(NSString *)javascript withTOrionTab:(OrionTab *)tab withOrion:(OrionApplication *)orion {
+     return (NSString *)[orion doJavaScript:[NSString stringWithFormat:@"(() => { var o = document.querySelector('.erc-current-media-info').innerHTML; return o;})()",javascript] in:tab];
 }
 @end

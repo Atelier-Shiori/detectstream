@@ -9,15 +9,15 @@
 @class OrionApplication, OrionDocument, OrionWindow, OrionTab;
 
 enum OrionSaveOptions {
-	OrionSaveOptionsYes = 'yes ' /* Save the file. */,
-	OrionSaveOptionsNo = 'no  ' /* Do not save the file. */,
-	OrionSaveOptionsAsk = 'ask ' /* Ask the user whether or not to save the file. */
+    OrionSaveOptionsYes = 'yes ' /* Save the file. */,
+    OrionSaveOptionsNo = 'no  ' /* Do not save the file. */,
+    OrionSaveOptionsAsk = 'ask ' /* Ask the user whether or not to save the file. */
 };
 typedef enum OrionSaveOptions OrionSaveOptions;
 
 enum OrionPrintingErrorHandling {
-	OrionPrintingErrorHandlingStandard = 'lwst' /* Standard PostScript error handling */,
-	OrionPrintingErrorHandlingDetailed = 'lwdt' /* print a detailed report of PostScript errors */
+    OrionPrintingErrorHandlingStandard = 'lwst' /* Standard PostScript error handling */,
+    OrionPrintingErrorHandlingDetailed = 'lwdt' /* print a detailed report of PostScript errors */
 };
 typedef enum OrionPrintingErrorHandling OrionPrintingErrorHandling;
 
@@ -40,7 +40,6 @@ typedef enum OrionPrintingErrorHandling OrionPrintingErrorHandling;
 
 // The application's top-level scripting object.
 @interface OrionApplication : SBApplication
-+ (OrionApplication *) application;
 
 - (SBElementArray<OrionDocument *> *) documents;
 - (SBElementArray<OrionWindow *> *) windows;
